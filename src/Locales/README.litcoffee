@@ -1,0 +1,5 @@
+#  LOCALES  #
+
+##  Implementation  ##
+
+    Locales = {}

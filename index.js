@@ -1,7 +1,8 @@
 //= require react
 //= require react_ujs
 //= require_self
-//= require ./lib/laboratory.js
+//= require ./vendor/laboratory.min.js
+//= require ./dist/labcoat.min.js
 
 //  This loads all of our dependencies
 

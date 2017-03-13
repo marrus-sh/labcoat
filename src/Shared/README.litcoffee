@@ -1,0 +1,5 @@
+#  SHARED  #
+
+##  Implementation  ##
+
+    Shared = {}
