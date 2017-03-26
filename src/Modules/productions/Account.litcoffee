@@ -33,7 +33,9 @@ Our Account only has one property, a number specifying the `id` of the timeline.
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (account) -> @setState {account}
+        handleResponse: (event) ->
+            account = event.detail
+            @setState {account} if account.id is @props.id
 
 ###  Property change:
 
@@ -42,30 +44,22 @@ Essentially we remove our old request and send a new one.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.id isnt nextProps.id
-            Laboratory.Account.Removed.dispatch
-                id: @props.id
-                callback: @handleResponse
-            Laboratory.Account.Requested.dispatch
-                id: nextProps.id
-                callback: @handleResponse
+            Laboratory.dispatch "LaboratoryProfileRequested", {id: nextProps.id}
 
 ###  Loading:
 
 When our account first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.Account.Requested.dispatch
-                id: @props.id
-                callback: @handleResponse
+            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
+            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.id}
 
 ###  Unloading:
 
 When our account unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.Account.Removed.dispatch
-                id: @props.id
-                callback: @handleResponse
+            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
 
 ###  Rendering:
 
@@ -77,45 +71,45 @@ Otherwise, we will let the old data stay until our new information is loaded.
 
         render: ->
             return null unless @state.account?
-            彁 Modules.Module, {attributes: {id: "laboratory-account"}},
+            彁 Modules.Module, {attributes: {id: "labcoat-account"}},
                 彁 "header", {style: {backgroundImage: "url(#{@state.account.header})"}},
                     彁 "a", {src: @state.account.header, target: "_blank"}
                 彁 Shared.IDCard, {account: @state.account, externalLinks: true}
                 switch
-                    when @state.account.relationship & Laboratory.Relationship.SELF then null
-                    when @state.account.relationship & Laboratory.Relationship.FOLLOWING
+                    when @state.account.relationship & Laboratory.Profile.Relationship.SELF then null
+                    when @state.account.relationship & Laboratory.Profile.Relationship.FOLLOWING
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
                                 id: "account.unfollow"
                                 defaultMessage: "Unfollow"
-                            icon: "user-times"
-                    when @state.account.relationship & Laboratory.Relationship.BLOCKING
+                            icon: "icon.unfollow"
+                    when @state.account.relationship & Laboratory.Profile.Relationship.BLOCKING
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
                                 id: "account.blocked"
                                 defaultMessage: "Blocked"
-                            icon: "ban"
+                            icon: "icon.blocked"
                             disabled: true
-                    when @state.account.relationship & Laboratory.Relationship.REQUESTED
+                    when @state.account.relationship & Laboratory.Profile.Relationship.REQUESTED
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
-                                id: "account.requestsent"
+                                id: "account.requested"
                                 defaultMessage: "Request Sent"
-                            icon: "share-square"
+                            icon: "icon.requested"
                             disabled: true
                     else
                         if @state.account.locked
                             彁 Shared.Button,
                                 label: 彁 ReactIntl.FormattedMessage,
-                                    id: "account.requestfollow"
+                                    id: "account.request"
                                     defaultMessage: "Request Follow"
-                                icon: "user-secret"
+                                icon: "icon.request"
                         else
                             彁 Shared.Button,
                                 label: 彁 ReactIntl.FormattedMessage,
                                     id: "account.follow"
                                     defaultMessage: "Follow"
-                                icon: "user-plus"
+                                icon: "icon.follow"
                 彁 "p",
                     dangerouslySetInnerHTML:
                         __html: @state.account.bio

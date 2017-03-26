@@ -62,8 +62,8 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
             inactiveText: 彁 ReactIntl.FormattedMessage,
                 id: "toggle.off"
                 defaultMessage: "Off"
-            activeIcon: "check-circle-o"
-            inactiveIcon: "times"
+            activeIcon: "icon.on"
+            inactiveIcon: "icon.off"
 
         getInitialState: ->
             checked: !!@props.checked
@@ -81,9 +81,9 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
             switch event.type
                 when "click"
                     unless event.target is @input
-                        event.preventDefault()
-                        @input.focus()
-                        @input.click()
+                        do event.preventDefault
+                        do @input.focus
+                        do @input.click
                     @setState {checked: @input.checked}
                 when "onFocus"
                     @setState {hasFocus: true}
@@ -93,15 +93,15 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
                     @props.onBlur event if @props.onBlur
 
         render: ->
-            output_props = {className: "laboratory-toggle-screenreader-only", type: "checkbox", onFocus: @handleEvent, onBlur: @handleEvent, ref: (ref) => @input = ref}
-            output_props[key] = value for own key, value of @props when ["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf(key) is -1
-            彁 "label", {className: "laboratory-toggle" + (if @state.checked then " laboratory-toggle--checked" else "") + (if @state.disabled then " laboratory-toggle--disabled" else "") + (if @state.hasFocus then " laboratory-toggle--focus" else "") + (if @props.className then " " + @props.className else ""), onClick: @handleEvent},
-                彁 "span", {className: "laboratory-toggle-label laboratory-toggle-label-off"}, @props.inactiveText
-                彁 "div", {className: "laboratory-toggle-track"},
-                    彁 "div", {className: "laboratory-toggle-track-check"},
+            output_props = {className: "labcoat-toggle-screenreader-only", type: "checkbox", onFocus: @handleEvent, onBlur: @handleEvent, ref: (ref) => @input = ref}
+            output_props[key] = value for own key, value of @props when (["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf key) is -1
+            彁 "label", {className: "labcoat-toggle" + (if @state.checked then " labcoat-toggle--checked" else "") + (if @state.disabled then " labcoat-toggle--disabled" else "") + (if @state.hasFocus then " labcoat-toggle--focus" else "") + (if @props.className then " " + @props.className else ""), onClick: @handleEvent},
+                彁 "span", {className: "labcoat-toggle-label labcoat-toggle-label-off"}, @props.inactiveText
+                彁 "div", {className: "labcoat-toggle-track"},
+                    彁 "div", {className: "labcoat-toggle-track-check"},
                         彁 Shared.Icon, {name: @props.activeIcon}
-                    彁 "div", {className: "laboratory-toggle-track-x"},
+                    彁 "div", {className: "labcoat-toggle-track-x"},
                         彁 Shared.Icon, {name: @props.inactiveIcon}
-                    彁 "div", {className: "laboratory-toggle-thumb"}
+                    彁 "div", {className: "labcoat-toggle-thumb"}
                     彁 "input", output_props
-                彁 "span", {className: "laboratory-toggle-label laboratory-toggle-label-on"}, @props.activeText
+                彁 "span", {className: "labcoat-toggle-label labcoat-toggle-label-on"}, @props.activeText

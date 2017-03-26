@@ -48,7 +48,7 @@ When our component receives new props, we run our `close()` function if the `clo
 
         componentWillReceiveProps: (nextProps) ->
             return unless nextProps.close and not @state.shouldClose
-            @close()
+            do @close
 
 ###  Closing:
 
@@ -58,14 +58,14 @@ We do this on a `.5s` timeout to give our closing animation time to run.
 
         close: ->
             @setState {shouldClose: true}
-            window.setTimeout (=> if @props.closeTo or window.history?.length <= 1 then @context.router.push(@props.closeTo or "/") else @context.router.goBack()), 500
+            window.setTimeout (=> if @props.closeTo or window.history?.length <= 1 then @context.router.push @props.closeTo or "/" else do @context.router.goBack), 500
 
 ###  Rendering:
 
 The `render()` function displays our module: just a `<div>` curtain behind our `<main>` element, with children stuck inside.
 
         render: ->
-            彁 "div", (if @state.shouldClose then {id: "laboratory-module", "data-laboratory-dismiss": ""} else {id: "laboratory-module"}),
-                彁 "div", {id: "laboratory-curtain", onClick: @close}
+            彁 "div", (if @state.shouldClose then {id: "labcoat-module", "data-labcoat-dismiss": ""} else {id: "labcoat-module"}),
+                彁 "div", {id: "labcoat-curtain", onClick: @close}
                 彁 "main", (if @props.attributes? then @props.attributes else null),
                 @props.children

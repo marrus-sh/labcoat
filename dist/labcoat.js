@@ -12,11 +12,11 @@
            Source code available at:
       https://github.com/marrus-sh/labcoat
 
-                Version 0.1.0
+                Version 0.2.0
  */
 
 (function() {
-  var Columns, INITIAL_STATE, IndexRoute, Locales, Modules, ReactPureRenderMixin, Route, Router, Shared, UI, config, j, len, prop, ref1, ref2, run,
+  var Columns, IndexRoute, Locales, Modules, ReactPureRenderMixin, Route, Router, Shared, UI,
     slice = [].slice,
     hasProp = {}.hasOwnProperty,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -34,9 +34,9 @@
   Columns.Column = function(props) {
     return 彁('div', (props.id != null ? {
       id: props.id,
-      className: "laboratory-column"
+      className: "labcoat-column"
     } : {
-      className: "laboratory-column"
+      className: "labcoat-column"
     }), props.children);
   };
 
@@ -56,7 +56,7 @@
 
   Columns.Heading = function(props) {
     return 彁('h2', {
-      className: "laboratory-heading"
+      className: "labcoat-heading"
     }, props.icon ? 彁(Shared.Icon, {
       name: props.icon
     }) : null, props.children);
@@ -69,22 +69,26 @@
   Columns.Status = React.createClass({
     mixins: [ReactPureRenderMixin],
     propTypes: {
+      type: React.PropTypes.object.isRequired,
       id: React.PropTypes.number.isRequired,
       href: React.PropTypes.string,
-      author: React.PropTypes.object,
+      author: React.PropTypes.object.isRequired,
       inReplyTo: React.PropTypes.number,
-      content: React.PropTypes.string.isRequired,
-      datetime: React.PropTypes.string,
+      content: React.PropTypes.string,
+      datetime: React.PropTypes.object,
       isReblogged: React.PropTypes.bool,
       isFavourited: React.PropTypes.bool,
       isNSFW: React.PropTypes.bool,
       message: React.PropTypes.string,
-      visibility: React.PropTypes.string,
+      visibility: React.PropTypes.object,
       mediaAttachments: React.PropTypes.array,
       mentions: React.PropTypes.array,
       rebloggedBy: React.PropTypes.object,
       favouritedBy: React.PropTypes.object,
       follower: React.PropTypes.object
+    },
+    contextTypes: {
+      router: React.PropTypes.object.isRequired
     },
     getListOfMentions: function() {
       switch (this.props.mentions.length) {
@@ -95,7 +99,7 @@
             彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[0].id
             }, 彁("code", {
-              className: "laboratory-username"
+              className: "labcoat-username"
             }, this.props.mentions[0].username))
           ];
         case 2:
@@ -103,14 +107,20 @@
             彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[0].id
             }, 彁("code", {
-              className: "laboratory-username"
+              className: "labcoat-username"
             }, this.props.mentions[0].username)), 彁(ReactIntl.FormattedMessage, {
+              id: "character.space",
+              message: " "
+            }), 彁(ReactIntl.FormattedMessage, {
               id: "status.and",
-              message: " and "
+              message: "and"
+            }), 彁(ReactIntl.FormattedMessage, {
+              id: "character.space",
+              message: " "
             }), 彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[1].id
             }, 彁("code", {
-              className: "laboratory-username"
+              className: "labcoat-username"
             }, this.props.mentions[1].username))
           ];
         case 3:
@@ -118,18 +128,27 @@
             彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[0].id
             }, 彁("code", {
-              className: "laboratory-username"
-            }, this.props.mentions[0].username)), ", ", 彁(ReactRouter.Link, {
+              className: "labcoat-username"
+            }, this.props.mentions[0].username)), 彁(ReactIntl.FormattedMessage, {
+              id: "character.comma",
+              message: ", "
+            }), 彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[1].id
             }, 彁("code", {
-              className: "laboratory-username"
-            }, this.props.mentions[1].username)), ", ", 彁(ReactIntl.FormattedMessage, {
+              className: "labcoat-username"
+            }, this.props.mentions[1].username)), 彁(ReactIntl.FormattedMessage, {
+              id: "character.comma",
+              message: ", "
+            }), 彁(ReactIntl.FormattedMessage, {
               id: "status.and",
-              message: " and "
+              message: "and"
+            }), 彁(ReactIntl.FormattedMessage, {
+              id: "character.space",
+              message: " "
             }), 彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[2].id
             }, 彁("code", {
-              className: "laboratory-username"
+              className: "labcoat-username"
             }, this.props.mentions[2].username))
           ];
         default:
@@ -137,10 +156,13 @@
             彁(ReactRouter.Link, {
               to: "/user/" + this.props.mentions[0].id
             }, 彁("code", {
-              className: "laboratory-username"
+              className: "labcoat-username"
             }, this.props.mentions[0].username)), 彁(ReactIntl.FormattedMessage, {
+              id: "character.space",
+              message: " "
+            }), 彁(ReactIntl.FormattedMessage, {
               id: "status.etal",
-              message: " et al."
+              message: "et al."
             })
           ];
       }
@@ -148,16 +170,19 @@
     render: function() {
       if (this.props.follower) {
         return 彁("article", {
-          className: "laboratory-status"
+          className: "labcoat-status"
         }, 彁(Shared.IDCard, {
           account: this.props.follower
         }), 彁(ReactIntl.FormattedMessage, {
+          id: "character.space",
+          message: " "
+        }), 彁(ReactIntl.FormattedMessage, {
           id: "status.followedyou",
-          message: " followed you!"
+          message: "followed you!"
         }));
       } else {
         return 彁("article", {
-          className: "laboratory-status" + (this.props.isFavourited ? " laboratory-status--highlighted" : "")
+          className: "labcoat-status" + (this.props.isFavourited ? " labcoat-status--favourited" : "")
         }, (this.props.rebloggedBy != null) || (this.props.favouritedBy != null) || (this.props.inReplyTo != null) ? 彁.apply(null, ["aside", null].concat(slice.call(((function() {
           var ref1, ref2, ref3;
           switch (false) {
@@ -165,28 +190,40 @@
               return [彁(ReactRouter.Link, {
                   to: "/user/" + this.props.rebloggedBy.id
                 }, 彁("code", {
-                  className: "laboratory-username"
-                }, this.props.rebloggedBy.username))].concat(slice.call((((ref1 = this.props.mentions) != null ? ref1.length : void 0) ? [彁(ReactIntl.FormattedMessage, {
-                    id: "status.boostedthisreplyto",
-                    message: " boosted this reply to "
+                  className: "labcoat-username"
+                }, this.props.rebloggedBy.username)), 彁(ReactIntl.FormattedMessage, {
+                  id: "character.space",
+                  message: " "
+                })].concat(slice.call((((ref1 = this.props.mentions) != null ? ref1.length : void 0) ? [彁(ReactIntl.FormattedMessage, {
+                    id: "status.rebloggedthisreplyto",
+                    message: "boosted this reply to"
+                  }), 彁(ReactIntl.FormattedMessage, {
+                    id: "character.space",
+                    message: " "
                   })].concat(slice.call(this.getListOfMentions())) : [
                   彁(ReactIntl.FormattedMessage, {
-                    id: "status.boostedthisreply",
-                    message: " boosted this reply"
+                    id: "status.rebloggedthisreply",
+                    message: "boosted this reply"
                   })
                 ])));
             case !((this.props.inReplyTo != null) && (this.props.favouritedBy != null)):
               return [彁(ReactRouter.Link, {
                   to: "/user/" + this.props.favouritedBy.id
                 }, 彁("code", {
-                  className: "laboratory-username"
-                }, this.props.favouritedBy.username))].concat(slice.call((((ref2 = this.props.mentions) != null ? ref2.length : void 0) ? [彁(ReactIntl.FormattedMessage, {
-                    id: "status.highlightedthisreplyto",
-                    message: " highlighted this reply to "
+                  className: "labcoat-username"
+                }, this.props.favouritedBy.username)), 彁(ReactIntl.FormattedMessage, {
+                  id: "character.space",
+                  message: " "
+                })].concat(slice.call((((ref2 = this.props.mentions) != null ? ref2.length : void 0) ? [彁(ReactIntl.FormattedMessage, {
+                    id: "status.favouritedthisreplyto",
+                    message: "highlighted this reply to"
+                  }), 彁(ReactIntl.FormattedMessage, {
+                    id: "character.space",
+                    message: " "
                   })].concat(slice.call(this.getListOfMentions())) : [
                   彁(ReactIntl.FormattedMessage, {
-                    id: "status.highlightedthisreply",
-                    message: " highlighted this reply"
+                    id: "status.favouritedthisreply",
+                    message: "highlighted this reply"
                   })
                 ])));
             case this.props.rebloggedBy == null:
@@ -194,10 +231,13 @@
                 彁(ReactRouter.Link, {
                   to: "/user/" + this.props.rebloggedBy.id
                 }, 彁("code", {
-                  className: "laboratory-username"
+                  className: "labcoat-username"
                 }, this.props.rebloggedBy.username)), 彁(ReactIntl.FormattedMessage, {
-                  id: "status.boostedthispost",
-                  message: " boosted this post"
+                  id: "character.space",
+                  message: " "
+                }), 彁(ReactIntl.FormattedMessage, {
+                  id: "status.rebloggedthisstatus",
+                  message: "boosted this post"
                 })
               ];
             case this.props.favouritedBy == null:
@@ -205,17 +245,23 @@
                 彁(ReactRouter.Link, {
                   to: "/user/" + this.props.favouritedBy.id
                 }, 彁("code", {
-                  className: "laboratory-username"
+                  className: "labcoat-username"
                 }, this.props.favouritedBy.username)), 彁(ReactIntl.FormattedMessage, {
-                  id: "status.highlightedthispost",
-                  message: " highlighted this post"
+                  id: "character.space",
+                  message: " "
+                }), 彁(ReactIntl.FormattedMessage, {
+                  id: "status.favouritedthisstatus",
+                  message: "highlighted this post"
                 })
               ];
             case this.props.inReplyTo == null:
               if ((ref3 = this.props.mentions) != null ? ref3.length : void 0) {
                 return [彁(ReactIntl.FormattedMessage, {
                     id: "status.inreplyto",
-                    message: "In reply to "
+                    message: "In reply to"
+                  }), 彁(ReactIntl.FormattedMessage, {
+                    id: "character.space",
+                    message: " "
                   })].concat(slice.call(this.getListOfMentions()));
               } else {
                 return [
@@ -238,101 +284,137 @@
             }, formattedDate);
           };
         })(this))), 彁("div", {
-          className: "laboratory-statusContent",
+          className: "labcoat-statusContent",
           dangerouslySetInnerHTML: {
             __html: this.props.content
           }
-        }), 彁("footer", null, 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-replybutton",
-          icon: "reply",
+        }), this.props.type === Laboratory.Post.Type.STATUS || this.props.author.relationship !== Laboratory.Profile.Relationship.SELF ? 彁("footer", null, 彁(Shared.Action, {
+          className: "labcoat-reply",
+          icon: "icon.reply",
           label: 彁(ReactIntl.FormattedMessage, {
             id: "status.reply",
             defaultMessage: "Reply"
-          })
-        }), this.props.isFavourited ? 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-unhighlightbutton",
-          icon: "eraser",
+          }),
+          action: (function(_this) {
+            return function() {
+              return _this.context.router.push("/compose?text=" + (_this.props.author.relationship !== Laboratory.Profile.Relationship.SELF ? "@" + _this.props.author.localAccount : "") + "&inReplyTo=" + _this.props.id);
+            };
+          })(this)
+        }), this.props.isFavourited ? 彁(Shared.Action, {
+          active: true,
+          className: "labcoat-unfavourite",
+          icon: "icon.unfavourite",
           label: 彁(ReactIntl.FormattedMessage, {
-            id: "status.unhighlight",
+            id: "status.unfavourite",
             defaultMessage: "Unhighlight"
-          })
-        }) : 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-highlightbutton",
-          icon: "pencil",
+          }),
+          action: (function(_this) {
+            return function() {
+              return Laboratory.dispatch("LaboratoryPostSetFavourite", {
+                id: _this.props.id,
+                value: false
+              });
+            };
+          })(this)
+        }) : 彁(Shared.Action, {
+          active: false,
+          className: "labcoat-favourite",
+          icon: "icon.favourite",
           label: 彁(ReactIntl.FormattedMessage, {
-            id: "status.highlight",
+            id: "status.favourite",
             defaultMessage: "Highlight"
-          })
-        }), this.props.isReblogged ? 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-unboostbutton",
-          icon: "minus-square",
+          }),
+          action: (function(_this) {
+            return function() {
+              return Laboratory.dispatch("LaboratoryPostSetFavourite", {
+                id: _this.props.id,
+                value: true
+              });
+            };
+          })(this)
+        }), this.props.isReblogged ? 彁(Shared.Action, {
+          active: true,
+          className: "labcoat-unreblog",
+          icon: "icon.unreblog",
           label: 彁(ReactIntl.FormattedMessage, {
-            id: "status.unboost",
+            id: "status.unreblog",
             defaultMessage: "Unboost"
-          })
-        }) : this.props.visibility !== "private" ? 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-boostbutton",
-          icon: "plus-square",
+          }),
+          action: (function(_this) {
+            return function() {
+              return Laboratory.dispatch("LaboratoryPostSetReblog", {
+                id: _this.props.id,
+                value: false
+              });
+            };
+          })(this)
+        }) : this.props.visibility & Laboratory.Post.Visibility.REBLOGGABLE ? 彁(Shared.Action, {
+          active: false,
+          className: "labcoat-reblog",
+          icon: "icon.reblog",
           label: 彁(ReactIntl.FormattedMessage, {
-            id: "status.boost",
+            id: "status.reblog",
             defaultMessage: "Boost"
-          })
-        }) : 彁(Shared.Button, {
-          className: "laboratory-button--minimal",
-          containerClass: "laboratory-noboostbutton",
-          icon: "square-o",
+          }),
+          action: (function(_this) {
+            return function() {
+              return Laboratory.dispatch("LaboratoryPostSetReblog", {
+                id: _this.props.id,
+                value: true
+              });
+            };
+          })(this)
+        }) : 彁(Shared.Action, {
+          active: false,
+          className: "labcoat-noreblog",
+          icon: "icon.noreblog",
           disabled: true,
           label: 彁(ReactIntl.FormattedMessage, {
-            id: "status.noboost",
+            id: "status.noreblog",
             defaultMessage: "Private"
           })
-        })));
+        })) : null);
       }
     }
   });
 
   Columns.Empty = function() {
     return 彁(Columns.Column, {
-      id: "laboratory-empty"
+      id: "labcoat-empty"
     }, 彁(Columns.Heading));
   };
 
   Columns.Go = function(props) {
     var key, value;
     return 彁(Columns.Column, {
-      id: "laboratory-go"
+      id: "labcoat-go"
     }, 彁(Columns.Heading, {
-      icon: "arrow-right"
+      icon: "icon.go"
     }, 彁(ReactIntl.FormattedMessage, {
       id: "go.heading",
       defaultMessage: "let's GO!"
     })), 彁("nav", {
-      className: "laboratory-columnnav"
+      className: "labcoat-columnnav"
     }, 彁(Columns.GoLink, {
       to: "/user/" + props.myID,
-      icon: "list-alt"
+      icon: "icon.profile"
     }, 彁(ReactIntl.FormattedMessage, {
       id: 'go.profile',
       defaultMessage: "Profile"
     })), 彁(Columns.GoLink, {
       to: "/community",
-      icon: "users"
+      icon: "icon.community"
     }, 彁(ReactIntl.FormattedMessage, {
       id: 'go.community',
       defaultMessage: "Community"
     })), 彁(Columns.GoLink, {
       to: "/global",
-      icon: "link"
+      icon: "icon.global"
     }, 彁(ReactIntl.FormattedMessage, {
       id: 'go.global',
       defaultMessage: "Global"
     }))), 彁("footer", {
-      className: "laboratory-columnfooter"
+      className: "labcoat-columnfooter"
     }, 彁.apply(null, ["nav", null].concat(slice.call((function() {
       var ref1, results;
       ref1 = (props.footerLinks != null ? props.footerLinks : {});
@@ -355,64 +437,17 @@
 
   Columns.NotFound = function() {
     return 彁(Columns.Column, {
-      id: "laboratory-notfound"
+      id: "labcoat-notfound"
     }, 彁(Columns.Heading, {
-      icon: "exclamation-triangle"
+      icon: "icon.notfound"
     }, 彁(ReactIntl.FormattedMessage, {
-      id: 'notfound.not_found',
+      id: 'notfound.notfound',
       defaultMessage: "Not found"
     })), 彁(ReactIntl.FormattedMessage, {
-      id: 'notfound.not_found',
+      id: 'notfound.notfound',
       defaultMessage: "Not found"
     }));
   };
-
-  Columns.Notifications = React.createClass({
-    mixins: [ReactPureRenderMixin],
-    getInitialState: function() {
-      return {
-        posts: {},
-        postOrder: []
-      };
-    },
-    handleResponse: function(timeline) {
-      return this.setState(timeline);
-    },
-    componentWillMount: function() {
-      return Laboratory.Timeline.Requested.dispatch({
-        name: "notifications",
-        callback: this.handleResponse
-      });
-    },
-    componentWillUnmount: function() {
-      return Laboratory.Timeline.Removed.dispatch({
-        name: "notifications",
-        callback: this.handleResponse
-      });
-    },
-    render: function() {
-      var id;
-      return 彁(Columns.Column, {
-        id: "laboratory-notifications"
-      }, 彁(Columns.Heading, {
-        icon: "star-half-o"
-      }, 彁(ReactIntl.FormattedMessage, {
-        id: "notifications.notifications",
-        defaultMessage: "Notifications"
-      })), 彁.apply(null, ["div", {
-        className: "laboratory-posts"
-      }].concat(slice.call((function() {
-        var j, len, ref1, results;
-        ref1 = this.state.postOrder;
-        results = [];
-        for (j = 0, len = ref1.length; j < len; j++) {
-          id = ref1[j];
-          results.push(彁(Columns.Status, this.state.posts[id]));
-        }
-        return results;
-      }).call(this)))));
-    }
-  });
 
   Columns.Timeline = React.createClass({
     mixins: [ReactPureRenderMixin],
@@ -421,73 +456,120 @@
     },
     getInitialState: function() {
       return {
-        posts: {},
-        postOrder: []
+        timeline: null
       };
     },
-    handleResponse: function(timeline) {
-      return this.setState(timeline);
+    handleResponse: function(event) {
+      var params, timeline;
+      params = this.getParams();
+      timeline = event.detail;
+      if (timeline.type === params.type && timeline.query === params.query) {
+        return this.setState({
+          timeline: timeline
+        });
+      }
+    },
+    getParams: function(name) {
+      if (name == null) {
+        name = this.props.name;
+      }
+      switch (false) {
+        case name !== "home":
+          return {
+            type: Laboratory.Timeline.Type.HOME,
+            query: ""
+          };
+        case name !== "community":
+          return {
+            type: Laboratory.Timeline.Type.LOCAL,
+            query: ""
+          };
+        case name !== "global":
+          return {
+            type: Laboratory.Timeline.Type.GLOBAL,
+            query: ""
+          };
+        case (name.substr(0, 8)) !== "hashtag/":
+          return {
+            type: Laboratory.Timeline.Type.HASHTAG,
+            query: name.substr(8)
+          };
+        case (name.substr(0, 5)) !== "user/":
+          return {
+            type: Laboratory.Timeline.Type.USER,
+            query: name.substr(5)
+          };
+        case name !== "notifications":
+          return {
+            type: Laboratory.Timeline.Type.NOTIFICATIONS,
+            query: ""
+          };
+        case name !== "highlights":
+          return {
+            type: Laboratory.Timeline.Type.FAVOURITES,
+            query: ""
+          };
+        default:
+          return {
+            type: Laboratory.Timeline.Type.UNDEFINED,
+            query: ""
+          };
+      }
     },
     getIcon: function() {
-      switch (false) {
-        case this.props.name !== "home":
-          return "home";
-        case this.props.name !== "community":
-          return "users";
-        case this.props.name !== "global":
-          return "link";
-        case this.props.name.substr(0, 8) !== "hashtag/":
-          return "hashtag";
-        case this.props.name.substr(0, 5) !== "user/":
-          return "at";
+      switch ((this.getParams()).type) {
+        case Laboratory.Timeline.Type.HOME:
+          return "icon.home";
+        case Laboratory.Timeline.Type.LOCAL:
+          return "icon.community";
+        case Laboratory.Timeline.Type.GLOBAL:
+          return "icon.global";
+        case Laboratory.Timeline.Type.HASHTAG === "hashtag/":
+          return "icon.hashtag";
+        case Laboratory.Timeline.Type.USER === "user/":
+          return "icon.user";
+        case Laboratory.Timeline.Type.NOTIFICATIONS:
+          return "icon.notifications";
+        case Laboratory.Timeline.Type.FAVOURITES:
+          return "icon.favourite";
         default:
-          return "question-circle";
+          return "icon.mystery";
       }
     },
     componentWillReceiveProps: function(nextProps) {
       if (this.props.name === nextProps.name) {
         return;
       }
-      Laboratory.Timeline.Removed.dispatch({
-        name: this.props.name,
-        callback: this.handleResponse
-      });
-      return Laboratory.Timeline.Requested.dispatch({
-        name: nextProps.name,
-        callback: this.handleResponse
-      });
+      return Laboratory.dispatch("LaboratoryTimelineRequested", this.getParams(nextProps.name));
     },
     componentWillMount: function() {
-      return Laboratory.Timeline.Requested.dispatch({
-        name: this.props.name,
-        callback: this.handleResponse
-      });
+      Laboratory.listen("LaboratoryTimelineReceived", this.handleResponse);
+      return Laboratory.dispatch("LaboratoryTimelineRequested", this.getParams());
     },
     componentWillUnmount: function() {
-      return Laboratory.Timeline.Removed.dispatch({
-        name: this.props.name,
-        callback: this.handleResponse
-      });
+      return Laboratory.forget("LaboratoryTimelineReceived", this.handleResponse);
     },
     render: function() {
-      var id;
-      return 彁(Columns.Column, null, 彁(Columns.Heading, {
+      var post;
+      return 彁(Columns.Column, (this.props.name === "notifications" ? {
+        id: "labcoat-notifications"
+      } : null), 彁(Columns.Heading, {
         icon: this.getIcon()
       }, 彁(ReactIntl.FormattedMessage, {
         id: "timeline." + this.props.name,
-        defaultMessage: this.props.name.charAt(0).toLocaleUpperCase() + this.props.name.slice(1)
-      })), 彁.apply(null, ["div", {
-        className: "laboratory-posts"
+        defaultMessage: (this.props.name.charAt(0)).toLocaleUpperCase() + this.props.name.slice(1)
+      })), this.state.timeline != null ? 彁.apply(null, ["div", {
+        className: "labcoat-posts"
       }].concat(slice.call((function() {
         var j, len, ref1, results;
-        ref1 = this.state.postOrder;
+        ref1 = this.state.timeline.posts;
         results = [];
         for (j = 0, len = ref1.length; j < len; j++) {
-          id = ref1[j];
-          results.push(彁(Columns.Status, this.state.posts[id]));
+          post = ref1[j];
+          results.push(彁(Columns.Status, post));
         }
         return results;
-      }).call(this)))));
+      }).call(this)))) : null);
     }
   });
 
@@ -531,12 +613,12 @@
     },
     render: function() {
       return 彁("div", (this.state.shouldClose ? {
-        id: "laboratory-module",
-        "data-laboratory-dismiss": ""
+        id: "labcoat-module",
+        "data-labcoat-dismiss": ""
       } : {
-        id: "laboratory-module"
+        id: "labcoat-module"
       }), 彁("div", {
-        id: "laboratory-curtain",
+        id: "labcoat-curtain",
         onClick: this.close
       }), 彁("main", (this.props.attributes != null ? this.props.attributes : null), this.props.children));
     }
@@ -553,35 +635,31 @@
         account: null
       };
     },
-    handleResponse: function(account) {
-      return this.setState({
-        account: account
-      });
+    handleResponse: function(event) {
+      var account;
+      account = event.detail;
+      if (account.id === this.props.id) {
+        return this.setState({
+          account: account
+        });
+      }
     },
     componentWillReceiveProps: function(nextProps) {
       if (this.props.id === nextProps.id) {
         return;
       }
-      Laboratory.Account.Removed.dispatch({
-        id: this.props.id,
-        callback: this.handleResponse
-      });
-      return Laboratory.Account.Requested.dispatch({
-        id: nextProps.id,
-        callback: this.handleResponse
+      return Laboratory.dispatch("LaboratoryProfileRequested", {
+        id: nextProps.id
       });
     },
     componentWillMount: function() {
-      return Laboratory.Account.Requested.dispatch({
-        id: this.props.id,
-        callback: this.handleResponse
+      Laboratory.listen("LaboratoryProfileReceived", this.handleResponse);
+      return Laboratory.dispatch("LaboratoryProfileRequested", {
+        id: this.props.id
       });
     },
     componentWillUnmount: function() {
-      return Laboratory.Account.Removed.dispatch({
-        id: this.props.id,
-        callback: this.handleResponse
-      });
+      return Laboratory.forget("LaboratoryProfileReceived", this.handleResponse);
     },
     render: function() {
       if (this.state.account == null) {
@@ -589,7 +667,7 @@
       }
       return 彁(Modules.Module, {
         attributes: {
-          id: "laboratory-account"
+          id: "labcoat-account"
         }
       }, 彁("header", {
         style: {
@@ -603,42 +681,42 @@
         externalLinks: true
       }), (function() {
         switch (false) {
-          case !(this.state.account.relationship & Laboratory.Relationship.SELF):
+          case !(this.state.account.relationship & Laboratory.Profile.Relationship.SELF):
             return null;
-          case !(this.state.account.relationship & Laboratory.Relationship.FOLLOWING):
+          case !(this.state.account.relationship & Laboratory.Profile.Relationship.FOLLOWING):
             return 彁(Shared.Button, {
               label: 彁(ReactIntl.FormattedMessage, {
                 id: "account.unfollow",
                 defaultMessage: "Unfollow"
               }),
-              icon: "user-times"
+              icon: "icon.unfollow"
             });
-          case !(this.state.account.relationship & Laboratory.Relationship.BLOCKING):
+          case !(this.state.account.relationship & Laboratory.Profile.Relationship.BLOCKING):
             return 彁(Shared.Button, {
               label: 彁(ReactIntl.FormattedMessage, {
                 id: "account.blocked",
                 defaultMessage: "Blocked"
               }),
-              icon: "ban",
+              icon: "icon.blocked",
               disabled: true
             });
-          case !(this.state.account.relationship & Laboratory.Relationship.REQUESTED):
+          case !(this.state.account.relationship & Laboratory.Profile.Relationship.REQUESTED):
             return 彁(Shared.Button, {
               label: 彁(ReactIntl.FormattedMessage, {
-                id: "account.requestsent",
+                id: "account.requested",
                 defaultMessage: "Request Sent"
               }),
-              icon: "share-square",
+              icon: "icon.requested",
               disabled: true
             });
           default:
             if (this.state.account.locked) {
               return 彁(Shared.Button, {
                 label: 彁(ReactIntl.FormattedMessage, {
-                  id: "account.requestfollow",
+                  id: "account.request",
                   defaultMessage: "Request Follow"
                 }),
-                icon: "user-secret"
+                icon: "icon.request"
               });
             } else {
               return 彁(Shared.Button, {
@@ -646,7 +724,7 @@
                   id: "account.follow",
                   defaultMessage: "Follow"
                 }),
-                icon: "user-plus"
+                icon: "icon.follow"
               });
             }
         }
@@ -673,12 +751,22 @@
       maxChars: React.PropTypes.number.isRequired,
       myID: React.PropTypes.number.isRequired,
       defaultPrivacy: React.PropTypes.string,
-      visible: React.PropTypes.bool
+      visible: React.PropTypes.bool,
+      text: React.PropTypes.string,
+      inReplyTo: React.PropTypes.number
+    },
+    getDefaultProps: function() {
+      return {
+        text: "",
+        inReplyTo: void 0
+      };
     },
     getInitialState: function() {
       return {
         account: null,
-        text: "\n",
+        replyStatus: null,
+        text: this.props.text + "\n",
+        inReplyTo: isFinite(this.props.inReplyTo) ? Number(this.props.inReplyTo) : void 0,
         message: "",
         charsLeft: this.props.maxChars,
         makePublic: this.props.defaultPrivacy !== "private",
@@ -692,22 +780,36 @@
     contextTypes: {
       intl: React.PropTypes.object.isRequired
     },
-    handleResponse: function(account) {
-      return this.setState({
-        account: account
-      });
+    handleResponse: function(event) {
+      var response;
+      response = event.detail;
+      switch (false) {
+        case !(response instanceof Laboratory.Profile):
+          this.setState({
+            account: response
+          });
+          break;
+        case !(response instanceof Laboratory.Post && response.id === this.props.inReplyTo):
+          this.setState({
+            replyStatus: response
+          });
+      }
     },
     componentWillMount: function() {
-      return Laboratory.Account.Requested.dispatch({
-        id: this.props.myID,
-        callback: this.handleResponse
+      Laboratory.listen("LaboratoryProfileReceived", this.handleResponse);
+      Laboratory.dispatch("LaboratoryProfileRequested", {
+        id: this.props.myID
       });
+      if (isFinite(this.props.inReplyTo)) {
+        Laboratory.listen("LaboratoryPostReceived", this.handleResponse);
+        return Laboratory.dispatch("LaboratoryPostRequested", {
+          id: this.props.inReplyTo
+        });
+      }
     },
     componentWillUnmount: function() {
-      return Laboratory.Account.Removed.dispatch({
-        id: this.props.myID,
-        callback: this.handleResponse
-      });
+      Laboratory.forget("LaboratoryProfileReceived", this.handleResponse);
+      return Laboratory.forget("LaboratoryPostReceived", this.handleResponse);
     },
     input: {
       textbox: null,
@@ -720,13 +822,29 @@
     },
     componentWillReceiveProps: function(nextProps) {
       if (!this.props.visible && nextProps.visible) {
-        return this.setState({
+        this.setState({
           shouldClose: false
+        });
+      }
+      if ((isFinite(nextProps.inReplyTo)) && nextProps.inReplyTo !== this.props.inReplyTo) {
+        Laboratory.listen("LaboratoryPostReceived", this.handleResponse);
+        Laboratory.dispatch("LaboratoryPostRequested", {
+          id: nextProps.inReplyTo
+        });
+      }
+      if (nextProps.text !== this.props.text) {
+        this.setState({
+          text: nextProps.text + "\n"
+        });
+      }
+      if ((isFinite(nextProps.inReplyTo)) && nextProps.inReplyTo !== this.props.inReplyTo) {
+        return this.setState({
+          inReplyTo: Number(nextProps.inReplyTo)
         });
       }
     },
     getCharsLeft: function() {
-      return this.charsLeft = this.props.maxChars - (this.input.textbox.value + this.input.message.value).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "_").length + 1;
+      return this.charsLeft = this.props.maxChars - ((this.input.textbox.value + this.input.message.value).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "_")).length + 1;
     },
     format: function(text) {
       var i, j, lines, ref1, result;
@@ -774,16 +892,19 @@
           break;
         case "click":
           if (event.target === this.input.post && this.getCharsLeft() >= 0) {
-            Laboratory.Composer.Post.dispatch({
-              text: this.text,
+            Laboratory.dispatch("LaboratoryPostComposed", {
+              text: this.state.text,
               message: this.state.useMessage ? this.state.message : null,
               makePublic: this.state.makePublic,
               makeListed: this.state.makeListed,
-              makeNSFW: this.state.makeNSFW
+              makeNSFW: this.state.makeNSFW,
+              inReplyTo: this.state.inReplyTo
             });
             return this.setState({
-              text: "",
+              replyStatus: null,
+              text: "\n",
               message: "",
+              inReplyTo: void 0,
               charsLeft: this.props.maxChars,
               useMessage: false,
               makeNSFW: false,
@@ -794,18 +915,19 @@
       }
     },
     render: function() {
-      if (!this.props.visible) {
+      var ref1;
+      if (!(this.props.visible && (!this.state.inReplyTo || ((ref1 = this.state.replyStatus) != null ? ref1.id : void 0) === this.state.inReplyTo))) {
         return null;
       }
       return 彁(Modules.Module, {
         attributes: {
-          id: "laboratory-composer"
+          id: "labcoat-composer"
         },
         close: this.state.shouldClose
       }, 彁("header", null, this.state.account ? 彁(Shared.IDCard, {
         account: this.state.account
       }) : null), 彁(Shared.Textbox, {
-        id: "laboratory-composertextbox",
+        id: "labcoat-composertextbox",
         "aria-label": this.context.intl.messages["composer.placeholder"],
         onChange: ((function(_this) {
           return function(text) {
@@ -822,7 +944,7 @@
           };
         })(this))
       }), 彁("footer", null, 彁("span", {
-        id: "laboratory-count"
+        id: "labcoat-count"
       }, isNaN(this.state.charsLeft) ? "" : this.state.charsLeft), 彁(Shared.Button, {
         onClick: this.handleEvent,
         getRef: ((function(_this) {
@@ -831,15 +953,15 @@
           };
         })(this)),
         disabled: this.state.charsLeft < 0,
-        icon: "paper-plane-o",
         label: 彁(ReactIntl.FormattedMessage, {
           id: "composer.post",
           defaultMessage: "Post"
-        })
+        }),
+        icon: "icon.post"
       })), 彁("aside", {
-        id: "laboratory-composeroptions"
+        id: "labcoat-composeroptions"
       }, 彁("div", {
-        id: "laboratory-postoptions"
+        id: "labcoat-postoptions"
       }, 彁(Shared.Toggle, {
         getRef: (function(_this) {
           return function(ref) {
@@ -852,8 +974,8 @@
           id: "composer.private",
           defaultMessage: "Private"
         }),
-        inactiveIcon: "microphone-slash",
-        activeIcon: "rss",
+        inactiveIcon: "icon.private",
+        activeIcon: "icon.public",
         activeText: 彁(ReactIntl.FormattedMessage, {
           id: "composer.public",
           defaultMessage: "Public"
@@ -870,8 +992,8 @@
           id: "composer.unlisted",
           defaultMessage: "Unlisted"
         }),
-        inactiveIcon: "envelope-o",
-        activeIcon: "newspaper-o",
+        inactiveIcon: "icon.unlisted",
+        activeIcon: "icon.listed",
         activeText: 彁(ReactIntl.FormattedMessage, {
           id: "composer.listed",
           defaultMessage: "Listed"
@@ -886,17 +1008,17 @@
         onChange: this.handleEvent,
         disabled: this.state.forceNSFW,
         inactiveText: 彁(ReactIntl.FormattedMessage, {
-          id: "composer.safe",
+          id: "composer.sfw",
           defaultMessage: "Safe"
         }),
-        inactiveIcon: "picture-o",
-        activeIcon: "exclamation",
+        inactiveIcon: "icon.sfw",
+        activeIcon: "icon.nsfw",
         activeText: 彁(ReactIntl.FormattedMessage, {
-          id: "composer.sensitive",
+          id: "composer.nsfw",
           defaultMessage: "Sensitive"
         })
       })), 彁("div", {
-        id: "laboratory-hideoptions"
+        id: "labcoat-hideoptions"
       }, 彁(Shared.Toggle, {
         getRef: (function(_this) {
           return function(ref) {
@@ -906,15 +1028,15 @@
         checked: this.state.useMessage,
         onChange: this.handleEvent,
         inactiveText: "",
-        inactiveIcon: "ellipsis-h",
-        activeIcon: "question-circle-o",
+        inactiveIcon: "icon.nomessage",
+        activeIcon: "icon.message",
         activeText: 彁(ReactIntl.FormattedMessage, {
-          id: "composer.hidewithmessage",
+          id: "composer.message",
           defaultMessage: "Hide behind message"
         })
       }), 彁("input", {
         type: "text",
-        placeholder: "…… ……",
+        placeholder: this.context.intl.messages["composer.nomessage"],
         value: this.state.message,
         ref: (function(_this) {
           return function(ref) {
@@ -927,6 +1049,56 @@
   });
 
   Shared = {};
+
+  Shared.Action = React.createClass({
+    mixins: [ReactPureRenderMixin],
+    propTypes: {
+      active: React.PropTypes.bool,
+      icon: React.PropTypes.string.isRequired,
+      label: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]),
+      getRef: React.PropTypes.func,
+      className: React.PropTypes.string,
+      action: React.PropTypes.func
+    },
+    getDefaultProps: function() {
+      return {
+        active: false,
+        label: "",
+        action: function() {}
+      };
+    },
+    action: null,
+    componentDidMount: function() {
+      if (this.props.getRef) {
+        return this.props.getRef(this.action);
+      }
+    },
+    render: function() {
+      var key, output_props, ref1, val;
+      output_props = {
+        className: "labcoat-action",
+        ref: (function(_this) {
+          return function(ref) {
+            return _this.action = ref;
+          };
+        })(this)
+      };
+      ref1 = this.props;
+      for (key in ref1) {
+        if (!hasProp.call(ref1, key)) continue;
+        val = ref1[key];
+        if ((["className", "getRef", "ref", "label", "icon", "containerClass"].indexOf(key)) === -1) {
+          output_props[key] = val;
+        }
+      }
+      return 彁("label", {
+        className: "labcoat-actioncontainer" + (this.props.className ? " " + this.props.className : "") + (this.props.disabled ? " labcoat-actioncontainer--disabled" : "") + (this.props.active ? " labcoat-actioncontainer--active" : ""),
+        onClick: this.props.action
+      }, this.props.label, 彁("button", output_props, 彁(Shared.Icon, {
+        name: this.props.icon
+      })));
+    }
+  });
 
   Shared.Button = React.createClass({
     mixins: [ReactPureRenderMixin],
@@ -941,6 +1113,7 @@
         label: ""
       };
     },
+    button: null,
     componentDidMount: function() {
       if (this.props.getRef) {
         return this.props.getRef(this.button);
@@ -949,7 +1122,7 @@
     render: function() {
       var key, output_props, ref1, val;
       output_props = {
-        className: "laboratory-button",
+        className: "labcoat-button",
         ref: (function(_this) {
           return function(ref) {
             return _this.button = ref;
@@ -962,43 +1135,55 @@
         val = ref1[key];
         if (key === "className") {
           output_props[key] += " " + val;
-        } else if (["getRef", "ref", "label", "icon", "containerClass"].indexOf(key) === -1) {
+        } else if ((["getRef", "ref", "label", "icon", "containerClass"].indexOf(key)) === -1) {
           output_props[key] = val;
         }
       }
       return 彁("label", {
-        className: "laboratory-buttoncontainer" + (this.props.containerClass ? " " + this.props.containerClass : "") + (this.props.disabled ? " laboratory-buttoncontainer--disabled" : "")
+        className: "labcoat-buttoncontainer" + (this.props.containerClass ? " " + this.props.containerClass : "") + (this.props.disabled ? " labcoat-buttoncontainer--disabled" : "")
       }, this.props.label, 彁("button", output_props, 彁(Shared.Icon, {
         name: this.props.icon
       })));
     }
   });
 
-  Shared.Icon = function(props) {
-    return 彁('i', {
-      className: "fa fa-fw fa-" + props.name,
-      "aria-hidden": true
-    });
-  };
-
-  Shared.Icon.propTypes = {
-    name: React.PropTypes.string.isRequired
-  };
+  Shared.Icon = React.createClass({
+    mixins: [ReactPureRenderMixin],
+    propTypes: {
+      name: React.PropTypes.string.isRequired
+    },
+    contextTypes: {
+      intl: React.PropTypes.object.isRequired
+    },
+    render: function() {
+      return 彁('i', {
+        className: "fa fa-fw fa-" + (this.context.intl.messages[this.props.name] || this.props.name),
+        "aria-hidden": true
+      });
+    }
+  });
 
   Shared.IDCard = function(props) {
     if (!(props.account instanceof Object)) {
       return null;
     }
     return 彁('div', {
-      className: "laboratory-idcard"
-    }, 彁('a', {
-      href: props.account.avatar,
-      target: "_blank"
-    }, 彁('img', {
-      className: "laboratory-avatar",
+      className: "labcoat-idcard"
+    }, 彁.apply(null, slice.call((props.externalLinks ? [
+      "a", {
+        href: props.account.avatar,
+        target: "_blank"
+      }
+    ] : [
+      ReactRouter.Link, {
+        to: "user/" + props.account.id,
+        title: props.account.displayName
+      }
+    ])).concat([彁('img', {
+      className: "labcoat-avatar",
       src: props.account.avatar,
       alt: props.account.displayName
-    })), 彁.apply(null, slice.call((props.externalLinks ? [
+    })])), 彁.apply(null, slice.call((props.externalLinks ? [
       "a", {
         href: props.account.href,
         title: props.account.displayName,
@@ -1010,9 +1195,9 @@
         title: props.account.displayName
       }
     ])).concat([彁('b', {
-      className: "laboratory-displayname"
+      className: "labcoat-displayname"
     }, props.account.displayName)], [彁('code', {
-      className: "laboratory-username"
+      className: "labcoat-username"
     }, props.account.localAccount)])));
   };
 
@@ -1073,15 +1258,15 @@
       wkr = document.createTreeWalker(this.input);
       nde = null;
       out = "";
-      while (wkr.nextNode() != null) {
+      while ((wkr.nextNode()) != null) {
         nde = wkr.currentNode;
         if (nde.nodeType === Node.TEXT_NODE) {
           out += nde.textContent;
-        } else if (nde.nodeType === Node.ELEMENT_NODE && nde.tagName.toUpperCase() === "BR") {
+        } else if (nde.nodeType === Node.ELEMENT_NODE && nde.tagName.toUpperCase()() === "BR") {
           out += "\n";
         }
       }
-      if (out.length && out.slice(-1) !== "\n") {
+      if (out.length && (out.slice(-1)) !== "\n") {
         out += "\n";
       }
       return out;
@@ -1097,8 +1282,8 @@
       pre = rng.cloneRange();
       pre.selectNodeContents(this.input);
       pre.setEnd(rng.endContainer, rng.endOffset);
-      brs = pre.cloneContents().querySelectorAll("br").length;
-      this.caret = pre.toString().length + brs;
+      brs = ((pre.cloneContents()).querySelectorAll("br")).length;
+      this.caret = (pre.toString()).length + brs;
       pre.detach();
     },
     componentWillUpdate: function() {
@@ -1116,7 +1301,7 @@
         success = true;
       }
       while (true) {
-        if (wkr.nextNode() == null) {
+        if ((wkr.nextNode()) == null) {
           break;
         }
         nde = wkr.currentNode;
@@ -1154,7 +1339,7 @@
     render: function() {
       var key, output_props, ref1, value;
       output_props = {
-        className: "laboratory-textbox" + (this.props.value.toLowerCase() === "<br>" || this.props.value === "\n" || this.props.value === "" ? " laboratory-textbox--empty" : "") + (this.props.className != null ? " " + this.props.className : ""),
+        className: "labcoat-textbox" + (this.props.value.toLowerCase() === "<br>" || this.props.value === "\n" || this.props.value === "" ? " labcoat-textbox--empty" : "") + (this.props.className != null ? " " + this.props.className : ""),
         contentEditable: true,
         onKeyPress: this.handleEvent,
         onInput: this.handleEvent,
@@ -1172,7 +1357,7 @@
       for (key in ref1) {
         if (!hasProp.call(ref1, key)) continue;
         value = ref1[key];
-        if (["className", "contentEditable", "value", "getRef", "onChange", "onInput", "onBlur", "dangerouslySetInnerHTML", "ref"].indexOf(key) === -1) {
+        if ((["className", "contentEditable", "value", "getRef", "onChange", "onInput", "onBlur", "dangerouslySetInnerHTML", "ref"].indexOf(key)) === -1) {
           output_props[key] = value;
         }
       }
@@ -1208,8 +1393,8 @@
           id: "toggle.off",
           defaultMessage: "Off"
         }),
-        activeIcon: "check-circle-o",
-        inactiveIcon: "times"
+        activeIcon: "icon.on",
+        inactiveIcon: "icon.off"
       };
     },
     getInitialState: function() {
@@ -1267,7 +1452,7 @@
     render: function() {
       var key, output_props, ref1, value;
       output_props = {
-        className: "laboratory-toggle-screenreader-only",
+        className: "labcoat-toggle-screenreader-only",
         type: "checkbox",
         onFocus: this.handleEvent,
         onBlur: this.handleEvent,
@@ -1281,29 +1466,29 @@
       for (key in ref1) {
         if (!hasProp.call(ref1, key)) continue;
         value = ref1[key];
-        if (["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf(key) === -1) {
+        if ((["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf(key)) === -1) {
           output_props[key] = value;
         }
       }
       return 彁("label", {
-        className: "laboratory-toggle" + (this.state.checked ? " laboratory-toggle--checked" : "") + (this.state.disabled ? " laboratory-toggle--disabled" : "") + (this.state.hasFocus ? " laboratory-toggle--focus" : "") + (this.props.className ? " " + this.props.className : ""),
+        className: "labcoat-toggle" + (this.state.checked ? " labcoat-toggle--checked" : "") + (this.state.disabled ? " labcoat-toggle--disabled" : "") + (this.state.hasFocus ? " labcoat-toggle--focus" : "") + (this.props.className ? " " + this.props.className : ""),
         onClick: this.handleEvent
       }, 彁("span", {
-        className: "laboratory-toggle-label laboratory-toggle-label-off"
+        className: "labcoat-toggle-label labcoat-toggle-label-off"
       }, this.props.inactiveText), 彁("div", {
-        className: "laboratory-toggle-track"
+        className: "labcoat-toggle-track"
       }, 彁("div", {
-        className: "laboratory-toggle-track-check"
+        className: "labcoat-toggle-track-check"
       }, 彁(Shared.Icon, {
         name: this.props.activeIcon
       })), 彁("div", {
-        className: "laboratory-toggle-track-x"
+        className: "labcoat-toggle-track-x"
       }, 彁(Shared.Icon, {
         name: this.props.inactiveIcon
       })), 彁("div", {
-        className: "laboratory-toggle-thumb"
+        className: "labcoat-toggle-thumb"
       }), 彁("input", output_props)), 彁("span", {
-        className: "laboratory-toggle-label laboratory-toggle-label-on"
+        className: "labcoat-toggle-label labcoat-toggle-label-on"
       }, this.props.activeText));
     }
   });
@@ -1334,10 +1519,11 @@
         });
       } else if (event.type === "keypress" && event.target === this.input && (event.key === "Enter" || event.code === "Enter" || event.keyCode === 0x0D) && this.input.value.length && this.input.validity.valid) {
         window.open("about:blank", "LaboratoryOAuth");
-        Laboratory.Authorization.Requested.dispatch({
+        Laboratory.dispatch("LaboratoryAuthorizationRequested", {
+          name: this.props.title,
           url: "https://" + this.input.value,
           redirect: this.props.basename,
-          name: this.props.title
+          scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
         });
         this.setState({
           value: ""
@@ -1349,14 +1535,14 @@
         locale: this.props.locale,
         messages: Locales[this.props.locale]
       }, 彁("div", {
-        id: "laboratory-instancequery"
+        id: "labcoat-instancequery"
       }, 彁(ReactIntl.FormattedMessage, {
         id: "instancequery.queryinstance",
         defaultMessage: "What's your instance?"
       }), 彁("div", {
-        id: "laboratory-instancequeryinput"
+        id: "labcoat-instancequeryinput"
       }, 彁("code", {
-        className: "laboratory-username"
+        className: "labcoat-username"
       }, "username@"), 彁("input", {
         type: "text",
         pattern: "[0-9A-Za-z\-\.]+(\:[0-9]{1,4})?",
@@ -1399,7 +1585,8 @@
     getInitialState: function() {
       return {
         thirdColumn: 彁(Columns.Empty),
-        showComposer: false
+        showComposer: false,
+        composerQuery: null
       };
     },
     setThirdColumn: function(component, props) {
@@ -1409,6 +1596,18 @@
     },
     getThirdColumn: function() {
       return this.state.thirdColumn;
+    },
+    showComposer: function(nextState) {
+      return this.setState({
+        showComposer: true,
+        composerQuery: nextState.location.query || null
+      });
+    },
+    hideComposer: function() {
+      return this.setState({
+        showComposer: false,
+        composerQuery: null
+      });
     },
     componentWillMount: function() {
       this.history = (this.props.useBrowserHistory ? ReactRouter.useRouterHistory(History.createHistory) : ReactRouter.useRouterHistory(History.createHashHistory))({
@@ -1424,7 +1623,8 @@
               defaultPrivacy: _this.props.defaultPrivacy,
               thirdColumn: _this.getThirdColumn(),
               myID: _this.props.myID,
-              showComposer: _this.state.showComposer
+              showComposer: _this.state.showComposer,
+              composerQuery: _this.state.composerQuery
             }, props.children);
           };
         })(this)
@@ -1472,21 +1672,26 @@
           };
         })(this)
       }), 彁(Route, {
-        path: 'compose',
-        onEnter: ((function(_this) {
+        path: 'favourites',
+        onEnter: (function(_this) {
           return function() {
-            return _this.setState({
-              showComposer: true
+            return _this.setThirdColumn(Columns.Timeline, {
+              name: 'favourites'
             });
+          };
+        })(this)
+      }), 彁(Route, {
+        path: 'compose(?**)',
+        onEnter: ((function(_this) {
+          return function(nextState) {
+            return _this.showComposer(nextState);
           };
         })(this)),
-        onLeave: ((function(_this) {
+        onLeave: (function(_this) {
           return function() {
-            return _this.setState({
-              showComposer: false
-            });
+            return _this.hideComposer();
           };
-        })(this))
+        })(this)
       }), 彁(Route, {
         path: 'post/:id',
         component: Modules.Post
@@ -1538,11 +1743,11 @@
 
   UI.Header = function(props) {
     return 彁('header', {
-      id: "laboratory-header"
+      id: "labcoat-header"
     }, 彁(UI.Title, null, props.title), 彁(ReactRouter.Link, {
       to: "/compose"
     }, 彁(Shared.Button, {
-      icon: "pencil-square-o",
+      icon: "icon.compose",
       label: 彁(ReactIntl.FormattedMessage, {
         id: "composer.compose",
         defaultMessage: "Compose"
@@ -1567,23 +1772,24 @@
       maxChars: React.PropTypes.number.isRequired,
       myID: React.PropTypes.number.isRequired,
       thirdColumn: React.PropTypes.element.isRequired,
-      showComposer: React.PropTypes.bool
+      showComposer: React.PropTypes.bool,
+      composerQuery: React.PropTypes.object
     },
     handleEvent: function(e) {
       switch (e.type) {
         case "dragenter":
-          return document.getElementById("laboratory-ui").setAttribute("data-laboratory-dragging", "");
+          return (document.getElementById("labcoat-ui")).setAttribute("data-laboratory-dragging", "");
         case "dragover":
           e.preventDefault();
           return e.dataTransfer.dropEffect = "copy";
         case "dragleave":
           if (e.relatedTarget == null) {
-            return document.getElementById("laboratory-ui").removeAttribute("data-laboratory-dragging");
+            return (document.getElementById("labcoat-ui")).removeAttribute("data-laboratory-dragging");
           }
           break;
         case "drop":
           e.preventDefault();
-          return document.getElementById("laboratory-ui").removeAttribute("data-laboratory-dragging");
+          return (document.getElementById("labcoat-ui")).removeAttribute("data-laboratory-dragging");
       }
     },
     componentWillMount: function() {
@@ -1599,605 +1805,229 @@
       return document.removeEventListener("drop", this);
     },
     render: function() {
+      var ref1, ref2;
       return 彁('div', {
-        id: "laboratory-ui"
+        id: "labcoat-ui"
       }, 彁(UI.Header, {
         title: this.props.title
       }), 彁(Columns.Timeline, {
         name: "home"
-      }), 彁(Columns.Notifications), this.props.thirdColumn, this.props.children, 彁(Modules.Composer, {
+      }), 彁(Columns.Timeline, {
+        name: "notifications"
+      }), this.props.thirdColumn, this.props.children, 彁(Modules.Composer, {
         defaultPrivacy: this.props.defaultPrivacy,
         myID: this.props.myID,
         maxChars: this.props.maxChars,
-        visible: this.props.showComposer
+        visible: this.props.showComposer,
+        text: (ref1 = this.props.composerQuery) != null ? ref1.text : void 0,
+        inReplyTo: isFinite((ref2 = this.props.composerQuery) != null ? ref2.inReplyTo : void 0) ? Number(this.props.composerQuery.inReplyTo) : void 0
       }));
     }
   });
 
   Locales = {};
 
-  Locales.de = Object.freeze({
+  Locales.en = {
     "timeline.home": "Home",
-    "notifications.notifications": "Mitteilungen",
-    "composer.compose": "Schreiben",
-    "notfound.not_found": "Nicht gefunden",
-    "column_back_button.label": "Zurück",
-    "lightbox.close": "Schließen",
-    "loading_indicator.label": "Lade...",
-    "status.mention": "Erwähnen",
-    "status.delete": "Löschen",
-    "status.reply": "Antworten",
-    "status.reblog": "Teilen",
-    "status.favourite": "Favorisieren",
-    "status.reblogged_by": "{name} teilte",
-    "status.sensitive_warning": "Sensible Inhalte",
-    "status.sensitive_toggle": "Klicken um zu zeigen",
-    "status.open": "Öffnen",
-    "video_player.toggle_sound": "Ton umschalten",
-    "account.mention": "Erwähnen",
-    "account.edit_profile": "Profil bearbeiten",
-    "account.unblock": "Entblocken",
-    "account.unfollow": "Entfolgen",
-    "account.block": "Blocken",
-    "account.follow": "Folgen",
-    "account.posts": "Beiträge",
-    "account.follows": "Folgt",
-    "account.followers": "Folger",
-    "account.follows_you": "Folgt dir",
-    "account.requested": "Warte auf Erlaubnis",
-    "getting_started.heading": "Erste Schritte",
-    "getting_started.about_addressing": "Du kannst Leuten folgen falls du ihren Nutzernamen und ihre Domain kennst in dem du eine e-mail-artige Addresse in das Suchfeld oben an der Seite eingibst.",
-    "getting_started.about_shortcuts": "Falls der Zielnutzer an derselben Domain ist wie du funktioniert der Nutzername auch alleine. Das gilt auch für Erwähnungen in Beiträgen.",
-    "getting_started.about_developer": "Der Entwickler des Projekts kann unter Gargron@mastodon.social gefunden werden",
-    "getting_started.open_source_notice": "Mastodon ist quelloffene Software. Du kannst auf {github} dazu beitragen oder Probleme melden.",
-    "column.home": "Home",
-    "column.mentions": "Erwähnungen",
-    "column.public": "Gesamtes Bekanntes Netz",
-    "column.notifications": "Mitteilungen",
-    "column.follow_requests": "Folgeanfragen",
-    "tabs_bar.compose": "Schreiben",
-    "tabs_bar.home": "Home",
-    "tabs_bar.mentions": "Erwähnungen",
-    "tabs_bar.public": "Gesamtes Netz",
-    "tabs_bar.notifications": "Mitteilungen",
-    "compose_form.placeholder": "Worüber möchstest du schreiben?",
-    "compose_form.publish": "Veröffentlichen",
-    "compose_form.sensitive": "Medien als sensitiv markieren",
-    "compose_form.unlisted": "Öffentlich nicht auflisten",
-    "compose_form.private": "Als privat markieren",
-    "navigation_bar.edit_profile": "Profil bearbeiten",
-    "navigation_bar.preferences": "Einstellungen",
-    "navigation_bar.public_timeline": "Öffentlich",
-    "navigation_bar.logout": "Abmelden",
-    "navigation_bar.follow_requests": "Folgeanfragen",
-    "reply_indicator.cancel": "Abbrechen",
-    "search.placeholder": "Suche",
-    "search.account": "Konto",
-    "search.hashtag": "Hashtag",
-    "upload_button.label": "Media-Datei anfügen",
-    "upload_form.undo": "Entfernen",
-    "notification.follow": "{name} folgt dir",
-    "notification.favourite": "{name} favorisierte deinen Status",
-    "notification.reblog": "{name} teilte deinen Status",
-    "notification.mention": "{name} erwähnte dich",
-    "notifications.column_settings.alert": "Desktop-Benachrichtigunen",
-    "notifications.column_settings.show": "In der Spalte anzeigen",
-    "notifications.column_settings.follow": "Neue Folger:",
-    "notifications.column_settings.favourite": "Favorisierungen:",
-    "notifications.column_settings.mention": "Erwähnungen:",
-    "notifications.column_settings.reblog": "Geteilte Beiträge:",
-    "follow_request.authorize": "Erlauben",
-    "follow_request.reject": "Ablehnen",
-    "home.column_settings.basic": "Einfach",
-    "home.column_settings.advanced": "Fortgeschritten",
-    "home.column_settings.show_reblogs": "Geteilte Beiträge anzeigen",
-    "home.column_settings.show_replies": "Antworten anzeigen",
-    "home.column_settings.filter_regex": "Filter durch reguläre Ausdrücke",
-    "missing_indicator.label": "Nicht gefunden"
-  });
-
-  Locales.en = Object.freeze({
-    "timeline.home": "Home",
-    "notifications.notifications": "Notifications",
+    "timeline.community": "Community",
+    "timeline.global": "Global",
+    "timeline.notifications": "Notifications",
     "composer.compose": "Compose",
     "composer.post": "Post",
     "composer.private": "Private",
     "composer.public": "Public",
     "composer.unlisted": "Unlisted",
     "composer.listed": "Listed",
-    "composer.safe": "Safe",
-    "composer.sensitive": "Sensitive",
-    "composer.hidewithmessage": "Hide behind message",
+    "composer.sfw": "Safe",
+    "composer.nsfw": "Sensitive",
+    "composer.nomessage": "…… ……",
+    "composer.message": "Hide behind message",
     "composer.placeholder": "What's going on?",
     "account.follow": "Follow",
     "account.unfollow": "Unfollow",
     "account.blocking": "Blocking",
-    "account.requestfollow": "Request Follow",
-    "account.requestsent": "Request Sent",
+    "account.request": "Request Follow",
+    "account.requested": "Request Sent",
     "account.statuses": "Posts",
     "account.following": "Follows",
     "account.followers": "Followers",
-    "status.and": " and ",
-    "status.etal": " et al.",
-    "status.followedyou": " followed you!",
-    "status.boostedthisreplyto": " boosted this reply to ",
-    "status.boostedthisreply": " boosted this reply",
-    "status.boostedthispost": " boosted this post",
-    "status.highlightedthisreplyto": " highlighted this reply to ",
-    "status.highlightedthisreply": " highlighted this reply",
-    "status.highlightedthispost": " highlighted this post",
-    "status.inreplyto": "In reply to ",
+    "status.and": "and",
+    "status.etal": "et al.",
+    "status.reblog": "Boost",
+    "status.unreblog": "Unboost",
+    "status.noreblog": "Private",
+    "status.favourite": "Highlight",
+    "status.unfavourite": "Unhighlight",
+    "status.reply": "Reply",
+    "status.followedyou": "followed you!",
+    "status.rebloggedthisreplyto": "boosted this reply to",
+    "status.rebloggedthisreply": "boosted this reply",
+    "status.rebloggedthisstatus": "boosted this post",
+    "status.favouritedthisreplyto": "highlighted this reply to",
+    "status.favouritedthisreply": "highlighted this reply",
+    "status.favouritedthisstatus": "highlighted this post",
+    "status.inreplyto": "In reply to",
     "status.inreplytoself": "In reply to themselves",
     "go.heading": "let's GO!",
+    "go.profile": "Profile",
     "go.community": "Community",
     "go.global": "Global",
+    "notfound.notfound": "Not found",
     "toggle.off": "Off",
     "toggle.on": "On",
-    "notfound.not_found": "Not found",
-    "column_back_button.label": "Back",
-    "lightbox.close": "Close",
-    "loading_indicator.label": "Loading...",
-    "status.mention": "Mention",
-    "status.delete": "Delete",
-    "status.reply": "Reply",
-    "status.reblog": "Boost",
-    "status.favourite": "Favourite",
-    "status.reblogged_by": "{name} boosted",
-    "status.sensitive_warning": "Sensitive content",
-    "status.sensitive_toggle": "Click to view",
-    "video_player.toggle_sound": "Toggle sound",
-    "account.mention": "Mention",
-    "account.edit_profile": "Edit profile",
-    "account.unblock": "Unblock",
-    "account.unfollow": "Unfollow",
-    "account.block": "Block",
-    "account.follow": "Follow",
-    "account.posts": "Posts",
-    "account.follows": "Follows",
-    "account.followers": "Followers",
-    "account.follows_you": "Follows you",
-    "account.requested": "Awaiting approval",
-    "getting_started.heading": "Getting started",
-    "getting_started.about_addressing": "You can follow people if you know their username and the domain they are on by entering an e-mail-esque address into the search form.",
-    "getting_started.about_shortcuts": "If the target user is on the same domain as you just the username will work. The same rule applies to mentioning people in statuses.",
-    "getting_started.about_developer": "The developer of this project can be followed as Gargron@mastodon.social",
-    "getting_started.open_source_notice": "Mastodon is open source software. You can contribute or report issues on github at {github}.",
-    "column.home": "Home",
-    "column.mentions": "Mentions",
-    "column.public": "Public",
-    "column.notifications": "Notifications",
-    "tabs_bar.compose": "Compose",
-    "tabs_bar.home": "Home",
-    "tabs_bar.mentions": "Mentions",
-    "tabs_bar.public": "Public",
-    "tabs_bar.notifications": "Notifications",
-    "compose_form.placeholder": "What is on your mind?",
-    "compose_form.publish": "Toot",
-    "compose_form.sensitive": "Mark media as sensitive",
-    "compose_form.spoiler": "Hide text behind warning",
-    "compose_form.private": "Mark as private",
-    "compose_form.privacy_disclaimer": "Your private status will be delivered to mentioned users on {domains}. Do you trust {domainsCount plural one {that server} other {those servers}} to not leak your status?",
-    "compose_form.unlisted": "Do not display in public timeline",
-    "navigation_bar.edit_profile": "Edit profile",
-    "navigation_bar.preferences": "Preferences",
-    "navigation_bar.public_timeline": "Public timeline",
-    "navigation_bar.logout": "Logout",
-    "reply_indicator.cancel": "Cancel",
-    "search.placeholder": "Search",
-    "search.account": "Account",
-    "search.hashtag": "Hashtag",
-    "upload_button.label": "Add media",
-    "upload_form.undo": "Undo",
-    "notification.follow": "{name} followed you",
-    "notification.favourite": "{name} favourited your status",
-    "notification.reblog": "{name} boosted your status",
-    "notification.mention": "{name} mentioned you",
-    "notifications.column_settings.alert": "Desktop notifications",
-    "notifications.column_settings.show": "Show in column",
-    "notifications.column_settings.follow": "New followers:",
-    "notifications.column_settings.favourite": "Favourites:",
-    "notifications.column_settings.mention": "Mentions:",
-    "notifications.column_settings.reblog": "Boosts:",
-    "missing_indicator.label": "Not found"
-  });
-
-  Locales.es = Object.freeze({
-    "timeline.home": "Inicio",
-    "notifications.notifications": "Notificaciones",
-    "composer.compose": "Redactar",
-    "notfound.not_found": "No encontrada",
-    "column_back_button.label": "Atrás",
-    "lightbox.close": "Cerrar",
-    "loading_indicator.label": "Cargando...",
-    "status.mention": "Mencionar",
-    "status.delete": "Borrar",
-    "status.reply": "Responder",
-    "status.reblog": "Republicar",
-    "status.favourite": "Favorito",
-    "status.reblogged_by": "{name} republicado",
-    "video_player.toggle_sound": "Act/Desac. sonido",
-    "account.mention": "Mención",
-    "account.edit_profile": "Editar perfil",
-    "account.unblock": "Desbloquear",
-    "account.unfollow": "Dejar de seguir",
-    "account.block": "Bloquear",
-    "account.follow": "Seguir",
-    "account.block": "Bloquear",
-    "account.posts": "Publicaciones",
-    "account.follows": "Seguir",
-    "account.followers": "Seguidores",
-    "account.follows_you": "Te sigue",
-    "getting_started.heading": "Primeros pasos",
-    "getting_started.about_addressing": "Puedes seguir a gente si conoces su nombre de usuario y el dominio en el que están registrados introduciendo algo similar a una dirección de correo electrónico en el formulario en la parte superior de la barra lateral.",
-    "getting_started.about_shortcuts": "Si el usuario que buscas está en el mismo dominio que tú simplemente funcionará introduciendo el nombre de usuario. La misma regla se aplica para mencionar a usuarios.",
-    "getting_started.about_developer": "Puedes seguir al desarrollador de este proyecto en Gargron@mastodon.social",
-    "column.home": "Inicio",
-    "column.mentions": "Menciones",
-    "column.public": "Historia pública",
-    "column.notifications": "Notificaciones",
-    "tabs_bar.compose": "Redactar",
-    "tabs_bar.home": "Inicio",
-    "tabs_bar.mentions": "Menciones",
-    "tabs_bar.public": "Público",
-    "tabs_bar.notifications": "Notificaciones",
-    "compose_form.placeholder": "¿En qué estás pensando?",
-    "compose_form.publish": "Publicar",
-    "compose_form.sensitive": "Marcar el contenido como sensible",
-    "compose_form.unlisted": "Privado",
-    "navigation_bar.edit_profile": "Editar perfil",
-    "navigation_bar.preferences": "Preferencias",
-    "navigation_bar.public_timeline": "Público",
-    "navigation_bar.logout": "Cerrar sesión",
-    "reply_indicator.cancel": "Cancelar",
-    "search.placeholder": "Buscar",
-    "search.account": "Cuenta",
-    "search.hashtag": "Etiqueta",
-    "upload_button.label": "Añadir medio",
-    "upload_form.undo": "Deshacer",
-    "notification.follow": "{name} le esta ahora siguiendo",
-    "notification.favourite": "{name} marcó como favorito su estado",
-    "notification.reblog": "{name} volvió a publicar su estado",
-    "notification.mention": "Fue mencionado por {name}"
-  });
-
-  Locales.fr = Object.freeze({
-    "timeline.home": "Accueil",
-    "notifications.notifications": "Notifications",
-    "composer.compose": "Composer",
-    "notfound.not_found": "Pas trouvé",
-    "column_back_button.label": "Retour",
-    "lightbox.close": "Fermer",
-    "loading_indicator.label": "Chargement…",
-    "status.mention": "Mentionner",
-    "status.delete": "Effacer",
-    "status.reply": "Répondre",
-    "status.reblog": "Partager",
-    "status.favourite": "Ajouter aux favoris",
-    "status.reblogged_by": "{name} a partagé :",
-    "status.sensitive_warning": "Contenu délicat",
-    "status.sensitive_toggle": "Cliquer pour dévoiler",
-    "video_player.toggle_sound": "Mettre/Couper le son",
-    "account.mention": "Mentionner",
-    "account.edit_profile": "Modifier le profil",
-    "account.unblock": "Débloquer",
-    "account.unfollow": "Ne plus suivre",
-    "account.block": "Bloquer",
-    "account.follow": "Suivre",
-    "account.posts": "Statuts",
-    "account.follows": "Abonnements",
-    "account.followers": "Abonnés",
-    "account.follows_you": "Vous suit",
-    "getting_started.heading": "Pour commencer",
-    "getting_started.about_addressing": "Vous pouvez vous suivre les statuts de quelqu’un en entrant dans le champs de recherche leur identifiant et le domaine de leur instance séparés par un @ à la manière d’une adresse courriel.",
-    "getting_started.about_shortcuts": "Si cette personne utilise la même instance que vous l’identifiant suffit. C’est le même principe pour mentionner quelqu’un dans vos statuts.",
-    "getting_started.about_developer": "Pour suivre le développeur de ce projet c’est Gargron@mastodon.social",
-    "column.home": "Accueil",
-    "column.mentions": "Mentions",
-    "column.public": "Fil public",
-    "column.notifications": "Notifications",
-    "tabs_bar.compose": "Composer",
-    "tabs_bar.home": "Accueil",
-    "tabs_bar.mentions": "Mentions",
-    "tabs_bar.public": "Public",
-    "tabs_bar.notifications": "Notifications",
-    "compose_form.placeholder": "Qu’avez-vous en tête ?",
-    "compose_form.publish": "Pouet",
-    "compose_form.sensitive": "Marquer le contenu comme délicat",
-    "compose_form.unlisted": "Ne pas apparaître dans le fil public",
-    "navigation_bar.edit_profile": "Modifier le profil",
-    "navigation_bar.preferences": "Préférences",
-    "navigation_bar.public_timeline": "Public",
-    "navigation_bar.logout": "Déconnexion",
-    "reply_indicator.cancel": "Annuler",
-    "search.placeholder": "Chercher",
-    "search.account": "Compte",
-    "search.hashtag": "Mot-clé",
-    "upload_button.label": "Joindre un média",
-    "upload_form.undo": "Annuler",
-    "notification.follow": "{name} vous suit.",
-    "notification.favourite": "{name} a ajouté à ses favoris :",
-    "notification.reblog": "{name} a partagé votre statut :",
-    "notification.mention": "{name} vous a mentionné⋅e :"
-  });
-
-  Locales.hu = Object.freeze({
-    "timeline.home": "Kezdőlap",
-    "notifications.notifications": "Értesítések",
-    "composer.compose": "Összeállítás",
-    "notfound.not_found": "Nem található",
-    "column_back_button.label": "Vissza",
-    "lightbox.close": "Bezárás",
-    "loading_indicator.label": "Betöltés...",
-    "status.mention": "Említés",
-    "status.delete": "Törlés",
-    "status.reply": "Válasz",
-    "status.reblog": "Reblog",
-    "status.favourite": "Kedvenc",
-    "status.reblogged_by": "{name} reblogolta",
-    "status.sensitive_warning": "Érzékeny tartalom",
-    "status.sensitive_toggle": "Katt a megtekintéshez",
-    "video_player.toggle_sound": "Hang kapcsolása",
-    "account.mention": "Említés",
-    "account.edit_profile": "Profil szerkesztése",
-    "account.unblock": "Blokkolás levétele",
-    "account.unfollow": "Követés abbahagyása",
-    "account.block": "Blokkolás",
-    "account.follow": "Követés",
-    "account.posts": "Posts",
-    "account.follows": "Követők",
-    "account.followers": "Követők",
-    "account.follows_you": "Követnek téged",
-    "getting_started.heading": "Első lépések",
-    "getting_started.about_addressing": "Követhetsz embereket felhasználónevük és a doménjük ismeretében amennyiben megadod ezt az e-mail-szerű címet az oldalsáv tetején lévő rubrikában.",
-    "getting_started.about_shortcuts": "Ha a célzott személy azonos doménen tartózkodik a felhasználónév elegendő. Ugyanez érvényes mikor személyeket említesz az állapotokban.",
-    "getting_started.about_developer": "A projekt fejlesztője követhető mint Gargron@mastodon.social",
-    "column.home": "Kezdőlap",
-    "column.mentions": "Említések",
-    "column.public": "Nyilvános",
-    "column.notifications": "Értesítések",
-    "tabs_bar.compose": "Összeállítás",
-    "tabs_bar.home": "Kezdőlap",
-    "tabs_bar.mentions": "Említések",
-    "tabs_bar.public": "Nyilvános",
-    "tabs_bar.notifications": "Notifications",
-    "compose_form.placeholder": "Mire gondolsz?",
-    "compose_form.publish": "Tülk!",
-    "compose_form.sensitive": "Tartalom érzékenynek jelölése",
-    "compose_form.unlisted": "Listázatlan mód",
-    "navigation_bar.edit_profile": "Profil szerkesztése",
-    "navigation_bar.preferences": "Beállítások",
-    "navigation_bar.public_timeline": "Nyilvános időfolyam",
-    "navigation_bar.logout": "Kijelentkezés",
-    "reply_indicator.cancel": "Mégsem",
-    "search.placeholder": "Keresés",
-    "search.account": "Fiók",
-    "search.hashtag": "Hashtag",
-    "upload_button.label": "Média hozzáadása",
-    "upload_form.undo": "Mégsem",
-    "notification.follow": "{name} követ téged",
-    "notification.favourite": "{name} kedvencnek jelölte az állapotod",
-    "notification.reblog": "{name} reblogolta az állapotod",
-    "notification.mention": "{name} megemlített"
-  });
-
-  Locales.pt = Object.freeze({
-    "timeline.home": "Home",
-    "notifications.notifications": "Notificações",
-    "composer.compose": "Compôr",
-    "notfound.not_found": "Não encontrada",
-    "column_back_button.label": "Voltar",
-    "lightbox.close": "Fechar",
-    "loading_indicator.label": "Carregando...",
-    "status.mention": "Menção",
-    "status.delete": "Deletar",
-    "status.reply": "Responder",
-    "status.reblog": "Reblogar",
-    "status.favourite": "Favoritar",
-    "status.reblogged_by": "{name} reblogou",
-    "video_player.toggle_sound": "Alterar som",
-    "account.mention": "Menção",
-    "account.edit_profile": "Editar perfil",
-    "account.unblock": "Desbloquear",
-    "account.unfollow": "Unfollow",
-    "account.block": "Bloquear",
-    "account.follow": "Seguir",
-    "account.block": "Bloquear",
-    "account.posts": "Posts",
-    "account.follows": "Segue",
-    "account.followers": "Seguidores",
-    "account.follows_you": "Segue você",
-    "getting_started.heading": "Primeiros passos",
-    "getting_started.about_addressing": "Podes seguir pessoas se sabes o nome de usuário deles e o domínio em que estão entrando um endereço similar a e-mail no campo no topo da barra lateral.",
-    "getting_started.about_shortcuts": "Se o usuário alvo está no mesmo domínio só o nome funcionará. A mesma regra se aplica a mencionar pessoas nas postagens.",
-    "getting_started.about_developer": "O desenvolvedor desse projeto pode ser seguido em Gargron@mastodon.social",
-    "column.home": "Home",
-    "column.mentions": "Menções",
-    "column.public": "Público",
-    "tabs_bar.compose": "Compôr",
-    "tabs_bar.home": "Home",
-    "tabs_bar.mentions": "Menções",
-    "tabs_bar.public": "Público",
-    "tabs_bar.notifications": "Notificações",
-    "compose_form.placeholder": "Que estás pensando?",
-    "compose_form.publish": "Publicar",
-    "compose_form.sensitive": "Marcar conteúdo como sensível",
-    "compose_form.unlisted": "Modo não-listado",
-    "navigation_bar.edit_profile": "Editar perfil",
-    "navigation_bar.preferences": "Preferências",
-    "navigation_bar.public_timeline": "Timeline Pública",
-    "navigation_bar.logout": "Logout",
-    "reply_indicator.cancel": "Cancelar",
-    "search.placeholder": "Busca",
-    "search.account": "Conta",
-    "search.hashtag": "Hashtag",
-    "upload_button.label": "Adicionar media",
-    "upload_form.undo": "Desfazer",
-    "notification.follow": "{name} seguiu você",
-    "notification.favourite": "{name} favoritou  seu post",
-    "notification.reblog": "{name} reblogou o seu post",
-    "notification.mention": "{name} mecionou você"
-  });
-
-  Locales.uk = Object.freeze({
-    "timeline.home": "Головна",
-    "notifications.notifications": "Сповіщення",
-    "composer.compose": "Написати",
-    "notfound.not_found": "Не знайдено",
-    "column_back_button.label": "Назад",
-    "lightbox.close": "Закрити",
-    "loading_indicator.label": "Завантаження...",
-    "status.mention": "Згадати",
-    "status.delete": "Видалити",
-    "status.reply": "Відповісти",
-    "status.reblog": "Передмухнути",
-    "status.favourite": "Подобається",
-    "status.reblogged_by": "{name} передмухнув(-ла)",
-    "status.sensitive_warning": "Непристойний зміст",
-    "status.sensitive_toggle": "Натисніть щоб подивитися",
-    "video_player.toggle_sound": "Увімкнути/вимкнути звук",
-    "account.mention": "Згадати",
-    "account.edit_profile": "Налаштування профілю",
-    "account.unblock": "Розблокувати",
-    "account.unfollow": "Відписатися",
-    "account.block": "Заблокувати",
-    "account.follow": "Підписатися",
-    "account.posts": "Пости",
-    "account.follows": "Підписки",
-    "account.followers": "Підписники",
-    "account.follows_you": "Підписаний",
-    "getting_started.heading": "Ласкаво просимо",
-    "getting_started.about_addressing": "Ви можете підписуватись на людей якщо ви знаєте їх ім'я користувача чи домен шляхом введення email-подібної адреси у верхньому рядку бокової панелі.",
-    "getting_started.about_shortcuts": "Якщо користувач якого ви шукаєте знаходиться на тому ж домені що й ви можна просто ввести ім'я користувача. Це правило стосується й згадування людей у статусах.",
-    "getting_started.about_developer": "Розробник проекту знаходиться за адресою Gargron@mastodon.social",
-    "column.home": "Головна",
-    "column.mentions": "Згадування",
-    "column.public": "Стіна",
-    "column.notifications": "Сповіщення",
-    "tabs_bar.compose": "Написати",
-    "tabs_bar.home": "Головна",
-    "tabs_bar.mentions": "Згадування",
-    "tabs_bar.public": "Стіна",
-    "tabs_bar.notifications": "Сповіщення",
-    "compose_form.placeholder": "Що у Вас на думці?",
-    "compose_form.publish": "Дмухнути",
-    "compose_form.sensitive": "Непристойний зміст",
-    "compose_form.unlisted": "Таємний режим",
-    "navigation_bar.edit_profile": "Редагувати профіль",
-    "navigation_bar.preferences": "Налаштування",
-    "navigation_bar.public_timeline": "Публічна стіна",
-    "navigation_bar.logout": "Вийти",
-    "reply_indicator.cancel": "Відмінити",
-    "search.placeholder": "Пошук",
-    "search.account": "Аккаунт",
-    "search.hashtag": "Хештеґ",
-    "upload_button.label": "Додати медіа",
-    "upload_form.undo": "Відмінити",
-    "notification.follow": "{name} підписався(-лась) на Вас",
-    "notification.favourite": "{name} сподобався ваш допис",
-    "notification.reblog": "{name} передмухнув(-ла) Ваш статус",
-    "notification.mention": "{name} згадав(-ла) Вас"
-  });
+    "icon.home": "home",
+    "icon.community": "users",
+    "icon.global": "link",
+    "icon.hashtag": "hashtag",
+    "icon.user": "at",
+    "icon.notifications": "star-half-o",
+    "icon.mystery": "question-circle",
+    "icon.notfound": "exclamation-triangle",
+    "icon.go": "arrow-right",
+    "icon.profile": "list-alt",
+    "icon.reblog": "plus-square",
+    "icon.unreblog": "minus-square",
+    "icon.noreblog": "square-o",
+    "icon.favourite": "pencil",
+    "icon.unfavourite": "eraser",
+    "icon.reply": "reply",
+    "icon.follow": "user-plus",
+    "icon.unfollow": "user-times",
+    "icon.blocked": "ban",
+    "icon.request": "user-secret",
+    "icon.requested": "share-square",
+    "icon.post": "paper-plane-o",
+    "icon.private": "microphone-slash",
+    "icon.public": "rss",
+    "icon.unlisted": "envelope-o",
+    "icon.listed": "newspaper-o",
+    "icon.sfw": "picture-o",
+    "icon.nsfw": "exclamation",
+    "icon.nomessage": "ellipsis-h",
+    "icon.message": "question-circle-o",
+    "icon.on": "check-circle-o",
+    "icon.off": "times",
+    "icon.compose": "pencil-square-o",
+    "character.space": " ",
+    "character.comma": ", "
+  };
 
   Object.defineProperty(window, "Labcoat", {
     value: Object.freeze({
-      ℹ: "\n............... LABCOAT ................\n\n A client-side frontend for Mastodon, a\nfree & open-source social network server\n           - - by Kibigo! - -\n\n    Licensed under the MIT License.\n       Source code available at:\n  https://github.com/marrus-sh/labcoat\n\n            Version 0.1.0\n",
-      Nº: 1.0
+      "ℹ": "https://github.com/marrus-sh/labcoat",
+      "Nº": 2.0
     }),
     enumerable: true
   });
 
   ReactIntl.addLocaleData(slice.call(ReactIntlLocaleData.en).concat(slice.call(ReactIntlLocaleData.de), slice.call(ReactIntlLocaleData.es), slice.call(ReactIntlLocaleData.fr), slice.call(ReactIntlLocaleData.pt), slice.call(ReactIntlLocaleData.hu), slice.call(ReactIntlLocaleData.uk)));
 
-  config = document.documentElement.hasAttribute("data-labcoat-config") ? JSON.parse(document.documentElement.getAttribute("data-labcoat-config")) : {};
-
-  if ((typeof INITIAL_STATE !== "undefined" && INITIAL_STATE !== null ? INITIAL_STATE.meta : void 0) == null) {
-    INITIAL_STATE = {
-      meta: {}
-    };
-  }
-
-  ref1 = ["title", "basename", "useBrowserHistory", "locale", "root", "defaultPrivacy", "accessToken", "origin"];
-  for (j = 0, len = ref1.length; j < len; j++) {
-    prop = ref1[j];
-    if (config[prop] == null) {
-      config[prop] = {
-        title: INITIAL_STATE.meta.title || "Labcoat",
-        basename: INITIAL_STATE.meta.router_basename != null ? INITIAL_STATE.meta.router_basename : "/web",
-        useBrowserHistory: INITIAL_STATE.meta.use_history || (INITIAL_STATE.meta.use_history == null),
-        locale: INITIAL_STATE.meta.locale,
-        root: INITIAL_STATE.meta.react_root,
-        defaultPrivacy: ((ref2 = INITIAL_STATE.composer) != null ? ref2.default_privacy : void 0) || "unlisted",
-        accessToken: INITIAL_STATE.meta.accessToken,
-        origin: INITIAL_STATE.meta.origin || "/"
-      }[prop];
+  window.addEventListener("load", function() {
+    var INITIAL_STATE, config, data, elt, j, len, locale, message, prop, ref1, ref2, ref3, run, value;
+    if ((elt = document.getElementById("labcoat-config")) && elt.tagName.toUpperCase() === "SCRIPT") {
+      config = JSON.parse(elt.text);
     }
-  }
-
-  if (config.display != null) {
-    if (indexOf.call(config.display, "simple") >= 0) {
-      document.documentElement.setAttribute("data-labcoat-simple");
-    } else {
-      document.documentElement.removeAttribute("data-labcoat-simple");
+    if (config == null) {
+      config = {};
     }
-    if (indexOf.call(config.display, "no-transparency") >= 0) {
-      document.documentElement.setAttribute("data-labcoat-no-transparency");
-    } else {
-      document.documentElement.removeAttribute("data-labcoat-no-transparency");
+    if ((typeof INITIAL_STATE !== "undefined" && INITIAL_STATE !== null ? INITIAL_STATE.meta : void 0) == null) {
+      INITIAL_STATE = {
+        meta: {}
+      };
     }
-    if (indexOf.call(config.display, "reduce-motion") >= 0) {
-      document.documentElement.setAttribute("data-labcoat-reduce-motion");
-    } else {
-      document.documentElement.removeAttribute("data-labcoat-reduce-motion");
-    }
-  }
-
-  run = function() {
-    var callback, elt;
-    document.title = config.title;
-    config.root = (function() {
-      switch (false) {
-        case !(config.root && (elt = document.getElementById(String(config.root)))):
-          return elt;
-        case !(elt = document.getElementById("frontend")):
-          return elt;
-        case !(elt = document.getElementsByClassName("app-body").item(0)):
-          return elt;
-        default:
-          return document.body;
+    ref1 = ["title", "basename", "useBrowserHistory", "locale", "root", "defaultPrivacy", "accessToken", "origin"];
+    for (j = 0, len = ref1.length; j < len; j++) {
+      prop = ref1[j];
+      if (config[prop] == null) {
+        config[prop] = {
+          title: INITIAL_STATE.meta.title || "Labcoat",
+          basename: INITIAL_STATE.meta.router_basename != null ? INITIAL_STATE.meta.router_basename : "/web",
+          useBrowserHistory: INITIAL_STATE.meta.use_history || (INITIAL_STATE.meta.use_history == null),
+          locale: INITIAL_STATE.meta.locale,
+          root: INITIAL_STATE.meta.react_root,
+          defaultPrivacy: ((ref2 = INITIAL_STATE.composer) != null ? ref2.default_privacy : void 0) || "unlisted",
+          accessToken: INITIAL_STATE.meta.accessToken,
+          origin: INITIAL_STATE.meta.origin || "/"
+        }[prop];
       }
-    })();
-    if (config.accessToken) {
-      Laboratory.Initialization.Received.dispatch({
-        data: {
-          access_token: config.accessToken
-        }
-      });
-    } else {
-      ReactDOM.render(彁(Shared.InstanceQuery, {
-        title: config.title,
-        locale: config.locale,
-        basename: config.basename
-      }), config.root);
     }
-    callback = function() {
-      ReactDOM.unmountComponentAtNode(config.root);
-      ReactDOM.render(彁(Shared.Frontend, {
-        title: config.title,
-        locale: config.locale,
-        myID: Laboratory.user,
-        useBrowserHistory: config.useBrowserHistory,
-        basename: config.basename,
-        defaultPrivacy: config.defaultPrivacy
-      }), config.root);
-      return document.removeEventListener("LaboratoryAccountReceived", callback);
+    if (config.display != null) {
+      if (indexOf.call(config.display, "simple") >= 0) {
+        document.documentElement.setAttribute("data-labcoat-simple");
+      } else {
+        document.documentElement.removeAttribute("data-labcoat-simple");
+      }
+      if (indexOf.call(config.display, "no-transparency") >= 0) {
+        document.documentElement.setAttribute("data-labcoat-no-transparency");
+      } else {
+        document.documentElement.removeAttribute("data-labcoat-no-transparency");
+      }
+      if (indexOf.call(config.display, "reduce-motion") >= 0) {
+        document.documentElement.setAttribute("data-labcoat-reduce-motion");
+      } else {
+        document.documentElement.removeAttribute("data-labcoat-reduce-motion");
+      }
+    }
+    ref3 = config.locales;
+    for (locale in ref3) {
+      data = ref3[locale];
+      if (!(Locales[locale] instanceof Object)) {
+        Locales[locale] = {};
+      }
+      for (message in data) {
+        value = data[message];
+        Locales[locale][message] = value;
+      }
+    }
+    document.documentElement.setAttribute("lang", config.locale);
+    run = function() {
+      var callback;
+      document.title = config.title;
+      config.root = (function() {
+        switch (false) {
+          case !(config.root && (elt = document.getElementById(String(config.root)))):
+            return elt;
+          case !(elt = document.getElementById("frontend")):
+            return elt;
+          case !(elt = (document.getElementsByClassName("app-body")).item(0)):
+            return elt;
+          default:
+            return document.body;
+        }
+      })();
+      if (config.accessToken) {
+        Laboratory.dispatch("LaboratoryAuthorizationGranted", {
+          accessToken: config.accessToken,
+          origin: config.origin,
+          scope: Authorization.Scope.READWRITEFOLLOW
+        });
+      } else {
+        ReactDOM.render(彁(Shared.InstanceQuery, {
+          title: config.title,
+          locale: config.locale,
+          basename: config.basename
+        }), config.root);
+      }
+      callback = function() {
+        ReactDOM.unmountComponentAtNode(config.root);
+        ReactDOM.render(彁(Shared.Frontend, {
+          title: config.title,
+          locale: config.locale,
+          myID: Laboratory.auth.me,
+          useBrowserHistory: config.useBrowserHistory,
+          basename: config.basename,
+          defaultPrivacy: config.defaultPrivacy
+        }), config.root);
+        return Laboratory.forget("LaboratoryAuthorizationReceived", callback);
+      };
+      Laboratory.listen("LaboratoryAuthorizationReceived", callback);
+      return Laboratory.forget("LaboratoryInitializationReady", callback);
     };
-    return document.addEventListener("LaboratoryAccountReceived", callback);
-  };
-
-  if (typeof Laboratory !== "undefined" && Laboratory !== null ? Laboratory.ready : void 0) {
-    run();
-  } else {
-    document.addEventListener("LaboratoryInitializationReady", run);
-  }
+    if (typeof Laboratory !== "undefined" && Laboratory !== null ? Laboratory.ready : void 0) {
+      return run();
+    } else {
+      return Laboratory.listen("LaboratoryInitializationReady", run);
+    }
+  });
 
 }).call(this);

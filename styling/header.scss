@@ -1,5 +1,5 @@
-#laboratory-ui {
-  #laboratory-header {
+#labcoat-ui {
+  #labcoat-header {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -8,19 +8,19 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 31.5pt;
+    height: 2.1em;
     margin: 0;
-    padding: 5.25pt 30pt;
-    font-size: 15pt;
+    padding: .35em 2rem;
+    font-size: 1rem;
     line-height: 1;
     text-transform: uppercase;
     white-space: nowrap;
-    color: $laboratory-headerTextColor;
-    background-color: transparentize($laboratory-headerColor, 1 - $laboratory-headerBackgroundOpacity);
+    color: $labcoat-headerTextColor;
+    background-color: transparentize($labcoat-headerColor, 1 - $labcoat-headerBackgroundOpacity);
 
     &:before, &:after {  //  Used for centering
       display: block;
-      width: calc(50% - 495pt);  // 990pt = 3 * width of column - left padding (but not right)
+      width: calc(50% - 33.5rem);  // 67rem = 3 * width of column - left padding (but not right)
       content: "";
     }
 
@@ -30,7 +30,7 @@
       margin: 0 auto 0 0;
       padding: 0;
       overflow: hidden;
-      font-size: 22.5pt;
+      font-size: 1.5em;
       font-weight: 900;
       text-transform: none;
       text-decoration: underline;

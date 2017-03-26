@@ -1,99 +1,115 @@
 @import 'palettes';
 
-/*
-  This stylesheet assigns the default values to SCSS variables used by
-  the Laboratory frontend. You can browse this file to gather a sense
-  for what customizations are available.
-*/
+//  This stylesheet assigns the default values to SCSS variables used
+//  by the Laboratory frontend. You can browse this file to gather a
+//  sense for what customizations are available.
 
 /*  FONTS  */
 
-/*
-  Including font files is outside of the scope of this package.
-  You should do that yourself by editing the home view.
-*/
+//  Including font files is outside of the scope of this package.
+//  You should do that yourself by editing the home view.
 
-$laboratory-sans: 'Lato', 'Helvetica Neue', 'Helvetica', sans-serif !default;
-$laboratory-mono: "Inconsolata", "Courier Prime", monospace !default;
+$labcoat-sans: "Lato", "Helvetica Neue", "Helvetica", sans-serif !default;
+$labcoat-mono: "Inconsolata", "Courier Prime", monospace !default;
 
-/*  BACKGROUNDS  */
+/*  SIMPLE COLOURS  */
 
-/*
-  These don't have to be plain colours if you don't want them to be.
-*/
+//  For those without a lot of patience.
 
-$laboratory-queryBackground: linear-gradient(to top, $print_black 20%, $print_dim 80%) !default;
-$laboratory-background: $print_dim !default;
+$labcoat-rearColor: $print_dim !default;
+$labcoat-rearAccentColor: $print_black !default;
+$labcoat-rearMinorColor: $print_dark !default;
+$labcoat-frontColor: $print_bright !default;
+$labcoat-frontAccentColor: $print_white !default;
+$labcoat-frontMinorColor: $print_light !default;
 
-/*  COLOURS  */
-
-$laboratory-backgroundColor: $print_dim !default;
-$laboratory-queryTextColor: $print_bright !default;
-$laboratory-queryTextMinor: $print_light !default;
-$laboratory-queryTextMajor: $print_white !default;
-$laboratory-queryMarkColor: $print_black !default;
-$laboratory-columnColor: $print_black !default;
-$laboratory-columnTextColor: $print_bright !default;
-$laboratory-columnAccentTextColor: $print_white !default;
-$laboratory-columnHeadingColor: $print_white !default;
-$laboratory-columnHeadingTextColor: $print_dim !default;
-$laboratory-cardColor: $print_bright !default;
-$laboratory-cardTextColor: $print_black !default;
-$laboratory-cardAccentTextColor: $print_dark !default;
-$laboratory-cardHighlightColor: $print_white !default;
-$laboratory-cardHighlightTextColor: $print_dim !default;
-$laboratory-cardHighlightAccentTextColor: $print_medium !default;
-$laboratory-cardAsideColor: $print_dark !default;
-$laboratory-cardAsideTextColor: $print_light !default;
-$laboratory-cardAsideAccentTextColor: $print_bright !default;
-$laboratory-cardButtonColor: $print_white !default;
-$laboratory-cardButtonTextColor: $print_dark !default;
-$laboratory-cardButtonBorderColor: $print !default;
-$laboratory-cardButtonHoverColor: $print_light !default;
-$laboratory-cardButtonHoverTextColor: $print_black !default;
-$laboratory-cardButtonActiveColor: $print_dim !default;
-$laboratory-cardButtonActiveTextColor: $print_white !default;
-$laboratory-cardButtonActiveHoverColor: $print_black !default;
-$laboratory-cardButtonActiveHoverTextColor: $print_bright !default;
-$laboratory-headerColor: $print_white !default;
-$laboratory-headerTextColor: $print_dim !default;
-$laboratory-buttonColor: $print_dark !default;
-$laboratory-buttonTextColor: $print_white !default;
-$laboratory-buttonHoverColor: $print_black !default;
-$laboratory-buttonHoverTextColor: $print_bright !default;
-$laboratory-curtainColor: $print_dim !default;
-$laboratory-moduleColor: $print_bright !default;
-$laboratory-moduleTextColor: $print_dim !default;
-$laboratory-moduleBorderColor: $print !default;
-$laboratory-moduleShadowColor: $print_black !default;
-$laboratory-moduleAccentTextColor: $print_black !default;
-$laboratory-moduleAsideColor: $print_light !default;
-$laboratory-moduleAsideTextColor: $print_black !default;
-$laboratory-moduleAsideBorderColor: $print_medium !default;
-$laboratory-textboxColor: $print_white !default;
-$laboratory-textboxTextColor: $print_black !default;
-$laboratory-textboxPlaceholderColor: $print;
-$laboratory-textboxBorderColor: $print !default;
-$laboratory-composerMessageColor: $print_bright !default;
-$laboratory-composerMessageTextColor: $print_black !default;
-$laboratory-composerMessageBorderColor: $print_medium !default;
-$laboratory-accountFooterColor: $print_white !default;
-$laboratory-accountFooterTextColor: $print_medium !default;
-$laboratory-toggleOffColor: $print_white !default;
-$laboratory-toggleOnColor: $print_black !default;
-$laboratory-toggleHoverOffColor: $print_white !default;
-$laboratory-toggleHoverOnColor: $print_black !default;
-$laboratory-toggleForegroundOffColor: $print_dark !default;
-$laboratory-toggleForegroundOnColor: $print_light !default;
+$labcoat-invertedRearColor: $print_bright !default;
+$labcoat-invertedRearAccentColor: $print_white !default;
+$labcoat-invertedRearMinorColor: $print_light !default;
+$labcoat-invertedFrontColor: $print_black !default;
+$labcoat-invertedFrontAccentColor: $print_dark !default;
+$labcoat-invertedFrontMinorColor: $print_dim !default;
+$labcoat-invertedFrontVeryMinorColor: $print_medium !default;
+$labcoat-invertedMidColor: $print !default;
 
 /*  OPACITIES  */
 
-$laboratory-headerBackgroundOpacity: .95 !default;
-$laboratory-columnBackgroundOpacity: .95 !default;
-$laboratory-notificationBackgroundOpacity: .4 !default;
+$labcoat-headerBackgroundOpacity: .95 !default;
+$labcoat-columnBackgroundOpacity: .95 !default;
+$labcoat-notificationBackgroundOpacity: .4 !default;
 //  Waiting for `backdrop-filter` to be implemented:
-//  $laboratory-notificationBackgroundFilter: contrast(150%) blur(5pt) !default;
-$laboratory-notificationForegroundOpacity: .9 !default;
-$laboratory-curtainOpacity: .35 !default;
-$laboratory-toggleInactiveOpacity: .4 !default;
-$laboratory-leadingCommAtOpacity: .65 !default;
+//  $labcoat-notificationBackgroundFilter: contrast(150%) blur(5pt) !default;
+$labcoat-notificationForegroundOpacity: .85 !default;
+$labcoat-curtainOpacity: .35 !default;
+$labcoat-toggleInactiveOpacity: .4 !default;
+$labcoat-leadingCommAtOpacity: .65 !default;
+
+/*  BACKGROUNDS  */
+
+//  These don't have to be plain colours if you don't want them to be.
+
+$labcoat-queryBackground: linear-gradient(to top, $labcoat-rearAccentColor 20%, $labcoat-rearColor 80%) !default;
+$labcoat-background: $labcoat-rearColor !default;
+
+/*  ADVANCED COLOURS  */
+
+//  Incredibly precise colour management.
+
+$labcoat-backgroundColor: $labcoat-rearColor !default;
+$labcoat-queryTextColor: $labcoat-frontColor !default;
+$labcoat-queryTextMinor: $labcoat-frontMinorColor !default;
+$labcoat-queryTextMajor: $labcoat-frontAccentColor !default;
+$labcoat-queryMarkColor: $labcoat-rearAccentColor !default;
+$labcoat-columnColor: $labcoat-rearAccentColor !default;
+$labcoat-columnTextColor: $labcoat-frontColor !default;
+$labcoat-columnAccentTextColor: $labcoat-frontAccentColor !default;
+$labcoat-columnHeadingColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-columnHeadingTextColor: $labcoat-invertedFrontMinorColor !default;
+$labcoat-cardColor: $labcoat-invertedRearColor !default;
+$labcoat-cardTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-cardAccentTextColor: $labcoat-invertedFrontAccentColor !default;
+$labcoat-cardHighlightColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-cardHighlightTextColor: $labcoat-invertedFrontMinorColor !default;
+$labcoat-cardHighlightAccentTextColor: $labcoat-invertedFrontVeryMinorColor !default;
+$labcoat-cardAsideColor: $labcoat-rearMinorColor !default;
+$labcoat-cardAsideTextColor: $labcoat-frontMinorColor !default;
+$labcoat-cardAsideAccentTextColor: $labcoat-frontColor !default;
+$labcoat-headerColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-headerTextColor: $labcoat-invertedFrontMinorColor !default;
+$labcoat-buttonColor: $labcoat-rearMinorColor !default;
+$labcoat-buttonTextColor: $labcoat-frontAccentColor !default;
+$labcoat-buttonHoverColor: $labcoat-rearAccentColor !default;
+$labcoat-buttonHoverTextColor: $labcoat-frontColor !default;
+$labcoat-actionColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-actionTextColor: $labcoat-invertedFrontAccentColor !default;
+$labcoat-actionBorderColor: $labcoat-invertedMidColor !default;
+$labcoat-actionHoverColor: $labcoat-invertedRearMinorColor !default;
+$labcoat-actionHoverTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-actionActiveColor: $labcoat-rearColor !default;
+$labcoat-actionActiveTextColor: $labcoat-frontAccentColor !default;
+$labcoat-actionActiveHoverColor: $labcoat-rearAccentColor !default;
+$labcoat-actionActiveHoverTextColor: $labcoat-frontColor !default;
+$labcoat-curtainColor: $labcoat-rearColor !default;
+$labcoat-moduleColor: $labcoat-invertedRearColor !default;
+$labcoat-moduleTextColor: $labcoat-invertedFrontMinorColor !default;
+$labcoat-moduleBorderColor: $labcoat-invertedMidColor !default;
+$labcoat-moduleShadowColor: $labcoat-rearAccentColor !default;
+$labcoat-moduleAccentTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-moduleAsideColor: $labcoat-invertedRearMinorColor !default;
+$labcoat-moduleAsideTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-moduleAsideBorderColor: $labcoat-invertedFrontVeryMinorColor !default;
+$labcoat-textboxColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-textboxTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-textboxPlaceholderColor: $labcoat-invertedMidColor;
+$labcoat-textboxBorderColor: $labcoat-invertedMidColor !default;
+$labcoat-composerMessageColor: $labcoat-invertedRearColor !default;
+$labcoat-composerMessageTextColor: $labcoat-invertedFrontColor !default;
+$labcoat-composerMessageBorderColor: $labcoat-invertedFrontVeryMinorColor !default;
+$labcoat-accountFooterColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-accountFooterTextColor: $labcoat-invertedFrontVeryMinorColor !default;
+$labcoat-toggleOffColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-toggleOnColor: $labcoat-rearAccentColor !default;
+$labcoat-toggleHoverOffColor: $labcoat-invertedRearAccentColor !default;
+$labcoat-toggleHoverOnColor: $labcoat-rearAccentColor !default;
+$labcoat-toggleForegroundOffColor: $labcoat-rearMinorColor !default;
+$labcoat-toggleForegroundOnColor: $labcoat-invertedRearMinorColor !default;

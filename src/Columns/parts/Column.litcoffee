@@ -16,5 +16,5 @@
 The `Column` is just a simple functional React component.
 
     Columns.Column = (props) ->
-        彁 'div', (if props.id? then {id: props.id, className: "laboratory-column"} else {className: "laboratory-column"}),
+        彁 'div', (if props.id? then {id: props.id, className: "labcoat-column"} else {className: "labcoat-column"}),
             props.children

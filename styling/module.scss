@@ -1,5 +1,5 @@
-#laboratory-ui {
-  #laboratory-module {
+#labcoat-ui {
+  #labcoat-module {
     display: block;
     position: fixed;
     top: 0;
@@ -9,15 +9,15 @@
     overflow: auto;
     z-index: 100;
 
-    &[data-laboratory-dismiss] {
-      *[data-laboratory-reduce_motion] & {
+    &[data-labcoat-dismiss] {
+      *[data-labcoat-reduce_motion] & {
         display: none;
       }
 
-      #laboratory-curtain {
+      #labcoat-curtain {
         animation: laboratorycurtainfadeout .5s both;
 
-        *[data-laboratory-no_transparency] &, *[data-laboratory-reduce_motion] & {
+        *[data-labcoat-no_transparency] &, *[data-labcoat-reduce_motion] & {
           display: none;
           animation: none;
         }
@@ -26,46 +26,46 @@
       main {
         animation: laboratorymodulefadeout .5s both;
 
-        *[data-laboratory-no_transparency] &:not(#laboratory-composer),
-        *[data-laboratory-reduce_motion] & {
+        *[data-labcoat-no_transparency] &:not(#labcoat-composer),
+        *[data-labcoat-reduce_motion] & {
           display: none;
           animation: none;
         }
       }
 
-      #laboratory-composer {
+      #labcoat-composer {
         animation: laboratorymoduleslideout .5s ease-in both;
 
-        *[data-laboratory-reduce_motion] & {
+        *[data-labcoat-reduce_motion] & {
           animation: none;
         }
       }
     }
 
     a[href] {
-      color: $laboratory-moduleAccentTextColor;
+      color: $labcoat-moduleAccentTextColor;
     }
   }
 
-  #laboratory-curtain {
+  #labcoat-curtain {
     display: block;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background: $laboratory-curtainColor;
-    opacity: $laboratory-curtainOpacity;
+    background: $labcoat-curtainColor;
+    opacity: $labcoat-curtainOpacity;
     cursor: default;
     animation: laboratorycurtainfadein .5s both;
     z-index: 101;
 
-    *[data-laboratory-no_transparency] & {
+    *[data-labcoat-no_transparency] & {
       opacity: 1;
       animation: none;
     }
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       animation: none;
     }
   }
@@ -73,51 +73,52 @@
   main {
     display: block;
     position: relative;
-    margin: 63pt auto;
-    border-radius: 5pt;
-    padding: 21pt;
-    width: calc(100% - 42pt);
-    max-width: 483pt;
+    margin: 4.2rem auto;
+    border-radius: .33333rem;
+    border-radius: calc(1rem / 3);
+    padding: 1.4rem;
+    width: calc(100% - 1.4rem);
+    max-width: 32rem;
     overflow: auto;
-    color: $laboratory-moduleTextColor;
-    background-color: $laboratory-moduleColor;
-    box-shadow: 0 0 3.75pt -1.25pt $laboratory-moduleShadowColor;
-    font-size: 18pt;
+    color: $labcoat-moduleTextColor;
+    background-color: $labcoat-moduleColor;
+    box-shadow: 0 0 .25rem .09375rem $labcoat-moduleShadowColor;
+    font-size: 1.2rem;
     font-weight: 300;
     line-height: 1.35;
     animation: laboratorymodulefadein .5s both;
     z-index: 200;
 
-    @media (max-width: 480px) {
-      margin: 21pt auto;
+    @media (max-width: 32rem) {
+      margin: 1.4rem auto;
     }
 
-    *[data-laboratory-no_transparency] & {
+    *[data-labcoat-no_transparency] & {
       animation: none;
     }
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       animation: none;
     }
 
     aside {
       position: relative;
-      margin: -21pt -21pt 0;
+      margin: -1.4rem -1.4rem 0;
       border: none;
-      border-bottom: thin $laboratory-moduleAsideBorderColor solid;
-      padding: 21pt;
-      font-size: 15pt;
+      border-bottom: thin $labcoat-moduleAsideBorderColor solid;
+      padding: 1.4rem;
+      font-size: 1rem;
       font-weight: 400;
       line-height: 1.4;
-      color: $laboratory-moduleAsideTextColor;
-      background: $laboratory-moduleAsideColor;
+      color: $labcoat-moduleAsideTextColor;
+      background: $labcoat-moduleAsideColor;
     }
 
     *:not(aside) ~ aside {
-      margin: 0 -21pt -21pt;
+      margin: 0 -1.4rem -1.4rem;
       border: none;
-      border-top: thin $laboratory-moduleAsideBorderColor solid;
-      padding: 21pt
+      border-top: thin $labcoat-moduleAsideBorderColor solid;
+      padding: 1.4rem;
     }
 
     p {
@@ -126,88 +127,88 @@
       white-space: pre-wrap;
 
       & + p {
-        margin-top: 24.3pt;
+        margin-top: 1.0125em;
       }
     }
   }
 
-  #laboratory-composer {
+  #labcoat-composer {
     animation: laboratorymoduleslidein .5s ease-in-out both;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       animation: none;
     }
 
     & > header {
       display: flex;
-      margin: 0 0 9pt;
+      margin: 0 0 .6rem;
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
 
-      *.laboratory-idcard {
+      *.labcoat-idcard {
         margin: 0 auto 0 0;
-        font-size: 37.5pt;
+        font-size: 2em;
       }
     }
 
     & > footer {
       display: flex;
-      margin: 9pt 0;
+      margin: .6rem 0;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
       text-transform: uppercase;
     }
 
-    *.laboratory-button {
+    *.labcoat-button {
       font-size: inherit;
     }
   }
 
-  #laboratory-composertextbox {
-    height: 128pt;
+  #labcoat-composertextbox {
+    height: 7em;
 
-    @media (max-width: 480px) {
-      height: 84pt;
+    @media (max-width: 32rem) {
+      height: 4.5em;
     }
   }
 
-  #laboratory-composeroptions {
+  #labcoat-composeroptions {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: stretch;
-    min-height: 84pt;
+    min-height: 5.6em;
 
-    *[data-laboratory-simple] & {
+    *[data-labcoat-simple] & {
       display: block;
       text-align: center;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 32rem) {
       display: block;
       text-align: center;
     }
   }
 
-  #laboratory-postoptions {
+  #labcoat-postoptions {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
     flex: auto;
-    padding-right: 21pt;
-    width: calc(50% - 42pt);
+    padding-right: 1.5em;
+    width: calc(50% - 3em);
 
-    @media (max-width: 480px) {
+    @media (max-width: 32rem) {
       display: block;
-      padding-bottom: 10.5pt;
+      padding-bottom: .7em;
       padding-right: 0;
       width: auto;
     }
 
-    *[data-laboratory-simple] & {
+    *[data-labcoat-simple] & {
       display: inline;
       padding: 0;
       width: auto;
@@ -215,23 +216,23 @@
     }
   }
 
-  #laboratory-hideoptions {
+  #labcoat-hideoptions {
     display: block;
     flex: auto;
-    border-left: thin $laboratory-moduleAsideBorderColor solid;
-    padding-left: 21pt;
-    width: calc(50% - 42pt);
+    border-left: thin $labcoat-moduleAsideBorderColor solid;
+    padding-left: 1.5em;
+    width: calc(50% - 3em);
 
-    @media (max-width: 480px) {
+    @media (max-width: 32rem) {
       display: block;
-      border-top: thin $laboratory-moduleAsideBorderColor solid;
+      border-top: thin $labcoat-moduleAsideBorderColor solid;
       border-left: none;
-      padding-top: 10.5pt;
+      padding-top: .7em;
       padding-left: 0;
       width: auto;
     }
 
-    *[data-laboratory-simple] & {
+    *[data-labcoat-simple] & {
       display: inline;
       border: none;
       padding: 0;
@@ -240,15 +241,15 @@
 
     & > input[type="text"] {
       display: block;
-      margin: 10.5pt 0;
-      border: thin $laboratory-composerMessageBorderColor solid;
-      padding: 0 7.5pt;
-      width: calc(100% - 15pt);
+      margin: .7em 0;
+      border: thin $labcoat-composerMessageBorderColor solid;
+      padding: 0 .5em;
+      width: calc(100% - 1em);
       height: 0;
       overflow: auto;
       resize: none;
-      color: $laboratory-composerMessageTextColor;
-      background-color: $laboratory-composerMessageColor;
+      color: $labcoat-composerMessageTextColor;
+      background-color: $labcoat-composerMessageColor;
       font-family: inherit;
       font-size: inherit;
       font-weight: 400;
@@ -258,66 +259,66 @@
       opacity: 0;
       transition: padding .5s, height .5s, visibility .5s, opacity .5s ease-in;
 
-      *[data-laboratory-reduce_motion] & {
+      *[data-labcoat-reduce_motion] & {
         transition: none;
       }
     }
 
-    & > *.laboratory-toggle--checked ~ input[type="text"] {
-      padding: 5.25pt 7.5pt;
-      height: 21pt;
+    & > *.labcoat-toggle--checked ~ input[type="text"] {
+      padding: .35em .5em;
+      height: 1.4em;
       visibility: visible;
       opacity: 1;
     }
   }
 
-  #laboratory-account {
-    @media (max-width: 480px) {
+  #labcoat-account {
+    @media (max-width: 32rem) {
       text-align: center;
     }
 
     header {
       display: block;
-      margin: -21pt -21pt 0;
+      margin: -1.4rem -1.4rem 0;
       padding: 0;
-      height: 126pt;
+      height: 8.4em;
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      background-color: $laboratory-moduleAsideColor;
+      background-color: $labcoat-moduleAsideColor;
     }
 
-    *.laboratory-idcard {
+    *.labcoat-idcard {
       margin: .2em 0 .4em;
-      font-size: 42pt;
+      font-size: 2.8em;
 
-      *.laboratory-avatar {
+      *.labcoat-avatar {
         margin: -1em .25em 0 0;
         height: 2em;
         width: 2em;
       }
     }
 
-    *.laboratory-buttoncontainer {
+    *.labcoat-buttoncontainer {
       float: right;
       margin: 9pt 0;
 
       @media (max-width: 480px) {
         float: none;
-        font-size: 15pt;
+        font-size: 1em;
       }
     }
 
     footer {
       display: block;
-      margin: 9pt -21pt -21pt;
-      border-top: thin $laboratory-moduleBorderColor solid;
-      padding: 9pt;
-      color: $laboratory-accountFooterTextColor;
-      background: $laboratory-accountFooterColor;
+      margin: .6rem -1.4rem -1.4rem;
+      border-top: thin $labcoat-moduleBorderColor solid;
+      padding: .6rem;
+      color: $labcoat-accountFooterTextColor;
+      background: $labcoat-accountFooterColor;
 
       @media (max-width: 480px) {
-        padding: 9pt 0;
+        padding: .6rem 0;
       }
 
       table {
@@ -326,7 +327,7 @@
         border-collapse: collapse;
         padding: 0;
         width: 100%;
-        font-size: 15pt;
+        font-size: 1rem;
         line-height: 1.4;
         text-align: right;
 
@@ -339,19 +340,19 @@
         td {
           margin: 0;
           border: none;
-          padding: 0 27pt;
+          padding: 0 1.8em;
 
-          @media (max-width: 480px) {
-            padding: 0 9pt;
+          @media (max-width: 32rem) {
+            padding: 0 .6em;
           }
 
           & + td {
-            border-left: thin $laboratory-moduleBorderColor solid;
+            border-left: thin $labcoat-moduleBorderColor solid;
           }
 
           b {
             display: block;
-            font-size: 21pt;
+            font-size: 1.4em;
             line-height: 1;
           }
         }
@@ -365,13 +366,13 @@
     opacity: 0;
   }
   to {
-    opacity: $laboratory-curtainOpacity;
+    opacity: $labcoat-curtainOpacity;
   }
 }
 
 @keyframes laboratorycurtainfadeout {
   from {
-    opacity: $laboratory-curtainOpacity;
+    opacity: $labcoat-curtainOpacity;
   }
   to {
     opacity: 0;
@@ -409,7 +410,7 @@
     bottom: 0;
   }
   20% {
-    bottom: -42pt;
+    bottom: -2.8rem;
   }
   to {
     bottom: 150vh;

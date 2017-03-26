@@ -67,7 +67,8 @@ Here we define the initial properties, as above.
 
         getInitialState: ->
             thirdColumn: 彁 Columns.Empty
-            showComposer: false
+            showComposer: no
+            composerQuery: null
 
 ###  Third column processing:
 
@@ -78,6 +79,18 @@ The function `setThirdColumn` allows us to manage this ourselves.
 
         getThirdColumn: -> @state.thirdColumn
 
+###  Composer processing:
+
+        showComposer: (nextState) ->
+            @setState
+                showComposer: yes
+                composerQuery: nextState.location.query || null
+
+        hideComposer: ->
+            @setState
+                showComposer: no
+                composerQuery: null
+
 ###  Loading:
 
 `componentWillMount` tells React what to do once our engine is about to load.
@@ -86,7 +99,7 @@ The function `setThirdColumn` allows us to manage this ourselves.
 
 This starts tracking our browser history for our router:
 
-            @history = (if @props.useBrowserHistory then ReactRouter.useRouterHistory(History.createHistory) else ReactRouter.useRouterHistory(History.createHashHistory))({basename: @props.basename})
+            @history = (if @props.useBrowserHistory then ReactRouter.useRouterHistory History.createHistory else ReactRouter.useRouterHistory History.createHashHistory) {basename: @props.basename}
 
 ####  Pre-caluclating routes.
 
@@ -94,7 +107,7 @@ The React router will issue a warning in the console if you try modifying its ro
 This is a problem because every time our state changes, `render()` will re-create our arrow functions and React will interpret this as an attempted change.
 By calculating our routes ahead of time, we avoid this problem.
 
-            @routes = 彁 Route, {path: '/', component: (props) => 彁 UI.UI, {title: @props.title, maxChars: @props.maxChars, defaultPrivacy: @props.defaultPrivacy, thirdColumn: @getThirdColumn(), myID: @props.myID, showComposer: @state.showComposer}, props.children},
+            @routes = 彁 Route, {path: '/', component: (props) => 彁 UI.UI, {title: @props.title, maxChars: @props.maxChars, defaultPrivacy: @props.defaultPrivacy, thirdColumn: do @getThirdColumn, myID: @props.myID, showComposer: @state.showComposer, composerQuery: @state.composerQuery}, props.children},
 
                 #  Go:
 
@@ -109,10 +122,11 @@ By calculating our routes ahead of time, we avoid this problem.
                 彁 Route, {path: 'global', onEnter: => @setThirdColumn Columns.Timeline, {name: 'global'}}
                 彁 Route, {path: 'community', onEnter: => @setThirdColumn Columns.Timeline, {name: 'community'}}
                 彁 Route, {path: 'hashtag/:id', onEnter: (nextState) => @setThirdColumn Columns.Timeline, {name: 'hashtag/' + nextState.params.id}}
+                彁 Route, {path: 'favourites', onEnter: => @setThirdColumn Columns.Timeline, {name: 'favourites'}}
 
                 #  Statuses:
 
-                彁 Route, {path: 'compose', onEnter: (=> @setState(showComposer: true)), onLeave: (=> @setState(showComposer: false))}
+                彁 Route, {path: 'compose(?**)', onEnter: ((nextState) => @showComposer nextState), onLeave: => @hideComposer()}
                 彁 Route, {path: 'post/:id', component: Modules.Post}
 
                 #  Accounts:
@@ -133,7 +147,7 @@ All we really care about is closing our stream.
 
         componentWillUnmount: ->
             if @subscription?
-                @subscription.close()
+                do @subscription.close
                 @subscription = undefined
             return
 

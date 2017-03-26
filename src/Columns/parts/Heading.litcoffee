@@ -18,7 +18,7 @@
 The `Heading` is just a simple functional React component.
 
     Columns.Heading = (props) ->
-        彁 'h2', {className: "laboratory-heading"},
+        彁 'h2', {className: "labcoat-heading"},
             if props.icon
                 彁 Shared.Icon, {name: props.icon}
             else null

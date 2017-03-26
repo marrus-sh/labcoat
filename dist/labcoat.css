@@ -6,23 +6,12 @@
   yet distinctive look. Mastodon doesn't ship with this colour scheme,
   so we define it here if it hasn't already been defined.
 */
-/*
-  This stylesheet assigns the default values to SCSS variables used by
-  the Laboratory frontend. You can browse this file to gather a sense
-  for what customizations are available.
-*/
 /*  FONTS  */
-/*
-  Including font files is outside of the scope of this package.
-  You should do that yourself by editing the home view.
-*/
-/*  BACKGROUNDS  */
-/*
-  These don't have to be plain colours if you don't want them to be.
-*/
-/*  COLOURS  */
+/*  SIMPLE COLOURS  */
 /*  OPACITIES  */
-#laboratory-instancequery {
+/*  BACKGROUNDS  */
+/*  ADVANCED COLOURS  */
+#labcoat-instancequery {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -34,33 +23,33 @@
   right: 0;
   color: #dedbd9;
   background: linear-gradient(to top, #1f1a14 20%, #302f2b 80%);
-  font-size: 42pt;
+  font-size: 3.5rem;
   line-height: 1.2;
   text-align: center; }
-  #laboratory-instancequery code, #laboratory-instancequery pre {
+  #labcoat-instancequery code, #labcoat-instancequery pre {
     font-family: "Inconsolata", "Courier Prime", monospace; }
-  #laboratory-instancequery #laboratory-instancequeryinput {
-    margin: 42pt 0 21pt;
+  #labcoat-instancequery #labcoat-instancequeryinput {
+    margin: 2.8rem 0 1.4rem;
     font-family: "Inconsolata", "Courier Prime", monospace;
-    font-size: 36pt; }
-    #laboratory-instancequery #laboratory-instancequeryinput *.laboratory-username {
+    font-size: 2.4rem; }
+    #labcoat-instancequery #labcoat-instancequeryinput *.labcoat-username {
       color: #b8b3b0; }
-      #laboratory-instancequery #laboratory-instancequeryinput *.laboratory-username::before {
+      #labcoat-instancequery #labcoat-instancequeryinput *.labcoat-username::before {
         opacity: 0.65;
         content: "@"; }
-    #laboratory-instancequery #laboratory-instancequeryinput input {
+    #labcoat-instancequery #labcoat-instancequeryinput input {
       display: inline-block;
       margin: 0;
       border: none;
       border-bottom: thick #dedbd9 solid;
       padding: 0;
-      width: 360pt;
+      width: 24rem;
       color: #faf8f7;
       background-color: #1f1a14;
       font-size: inherit;
       font-family: inherit;
       text-align: center; }
-      #laboratory-instancequery #laboratory-instancequeryinput input:invalid {
+      #labcoat-instancequery #labcoat-instancequeryinput input:invalid {
         color: #b8b3b0; }
 
 *:root:root:root:root:root [hidden] {
@@ -72,32 +61,31 @@ html, body {
   padding: 0;
   background-color: #302f2b;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
-  font-size: 15pt;
   font-style: normal;
   font-weight: normal;
   font-synthesis: none;
   line-height: 1.4; }
 
-#laboratory-ui {
+#labcoat-ui {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
   position: relative;
   margin: 0;
-  padding: 42pt 0 0;
+  padding: 2.8rem 0 0;
   width: 100%;
-  height: calc(100vh - 42pt);
+  height: calc(100vh - 2.8rem);
   overflow: auto;
   background: #302f2b;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
-  font-size: 15pt;
+  font-size: 1rem;
   font-style: normal;
   font-weight: normal;
   font-synthesis: none;
   line-height: 1.4; }
-  @media (max-width: 480px) {
-    #laboratory-ui {
+  @media (max-width: 32rem) {
+    #labcoat-ui {
       -ms-scroll-snap-type: mandatory;
       -webkit-scroll-snap-type: mandatory;
       scroll-snap-type: mandatory;
@@ -107,35 +95,35 @@ html, body {
       -ms-scroll-snap-points-x: repeat(100%);
       -webkit-scroll-snap-points-x: repeat(100%);
       scroll-snap-points-x: repeat(100%); } }
-  #laboratory-ui::before, #laboratory-ui::after {
+  #labcoat-ui::before, #labcoat-ui::after {
     display: block;
-    width: calc(50% - 510pt);
+    width: calc(50% - 34.5rem);
     min-width: 1px;
     content: ""; }
-  #laboratory-ui::before {
+  #labcoat-ui::before {
     margin-right: -1px; }
-  #laboratory-ui::after {
+  #labcoat-ui::after {
     margin-left: -1px; }
-  #laboratory-ui a[href] {
+  #labcoat-ui a[href] {
     color: inherit;
     text-decoration: none;
     transition: color .35s; }
-    *[data-laboratory-reduce_motion] #laboratory-ui a[href] {
+    *[data-labcoat-reduce_motion] #labcoat-ui a[href] {
       transition: none; }
-  #laboratory-ui code, #laboratory-ui pre {
+  #labcoat-ui code, #labcoat-ui pre {
     font-family: "Inconsolata", "Courier Prime", monospace; }
-  #laboratory-ui label {
+  #labcoat-ui label {
     display: inline-flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-style: small-caps; }
-    #laboratory-ui label > span {
+    #labcoat-ui label > span {
       overflow: hidden;
       text-overflow: ellipsis; }
-      *[data-laboratory-simple] #laboratory-ui label > span, #laboratory-ui label > span:empty {
+      *[data-labcoat-simple] #labcoat-ui label > span, #labcoat-ui label > span:empty {
         display: none; }
-  #laboratory-ui *.laboratory-idcard {
+  #labcoat-ui *.labcoat-idcard {
     display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
@@ -146,43 +134,43 @@ html, body {
     vertical-align: middle;
     font-size: 1.2em;
     font-weight: 400; }
-    #laboratory-ui *.laboratory-idcard a[href] {
+    #labcoat-ui *.labcoat-idcard a[href] {
       color: inherit; }
-      :root:root:root #laboratory-ui *.laboratory-idcard a[href] {
+      :root:root:root #labcoat-ui *.labcoat-idcard a[href] {
         color: inherit; }
-    #laboratory-ui *.laboratory-idcard *.laboratory-avatar {
+    #labcoat-ui *.labcoat-idcard *.labcoat-avatar {
       display: block;
       margin: 0 .2em 0;
       border-radius: .1em;
       height: 1em;
       width: 1em; }
-    #laboratory-ui *.laboratory-idcard *.laboratory-displayname {
+    #labcoat-ui *.labcoat-idcard *.labcoat-displayname {
       display: block;
       font-size: .4em;
       line-height: 1.2; }
-      #laboratory-ui *.laboratory-idcard *.laboratory-displayname:empty {
+      #labcoat-ui *.labcoat-idcard *.labcoat-displayname:empty {
         text-align: center; }
-        #laboratory-ui *.laboratory-idcard *.laboratory-displayname:empty::after {
+        #labcoat-ui *.labcoat-idcard *.labcoat-displayname:empty::after {
           content: "———"; }
-    #laboratory-ui *.laboratory-idcard *.laboratory-username {
+    #labcoat-ui *.labcoat-idcard *.labcoat-username {
       display: block;
       font-size: .4em;
       line-height: 1; }
-  #laboratory-ui *.laboratory-displayname {
+  #labcoat-ui *.labcoat-displayname {
     font-weight: 700; }
-    #laboratory-ui *.laboratory-displayname:empty::after {
+    #labcoat-ui *.labcoat-displayname:empty::after {
       content: "———"; }
-  #laboratory-ui *.laboratory-username {
+  #labcoat-ui *.labcoat-username {
     font-family: "Inconsolata", "Courier Prime", monospace;
     font-weight: 400; }
-    #laboratory-ui *.laboratory-username::before {
+    #labcoat-ui *.labcoat-username::before {
       opacity: 0.65;
       content: "@"; }
-  #laboratory-ui *.laboratory-buttoncontainer {
+  #labcoat-ui *.labcoat-buttoncontainer {
     cursor: pointer; }
-    #laboratory-ui *.laboratory-buttoncontainer.laboratory-buttoncontainer--disabled {
+    #labcoat-ui *.labcoat-buttoncontainer.labcoat-buttoncontainer--disabled {
       cursor: not-allowed; }
-  #laboratory-ui *.laboratory-button {
+  #labcoat-ui *.labcoat-button {
     display: inline-block;
     flex: none;
     margin: 0 .4em;
@@ -196,34 +184,62 @@ html, body {
     line-height: 1;
     cursor: pointer;
     transition: color .5s, background-color .5s; }
-    #laboratory-ui *.laboratory-button:hover {
+    #labcoat-ui *.labcoat-button:hover {
       color: #dedbd9;
       background-color: #1f1a14; }
-    #laboratory-ui *.laboratory-button[disabled], #laboratory-ui *.laboratory-button[disabled]:hover {
+    #labcoat-ui *.labcoat-button[disabled], #labcoat-ui *.labcoat-button[disabled]:hover {
       margin: -1px calc(.4em - 1px);
       border: 1px #57534c solid;
       color: inherit;
       background-color: transparent;
       cursor: not-allowed; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-button {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-button {
       transition: none; }
-    #laboratory-ui *.laboratory-button.laboratory-button--minimal {
-      margin: 0 -.375em 0 .25em;
-      padding: .1em 0;
+  #labcoat-ui *.labcoat-actioncontainer {
+    flex: auto;
+    margin: 0;
+    padding: .35em .5em;
+    color: #57534c;
+    background-color: #faf8f7;
+    transition: color .5s, background-color .5s;
+    cursor: pointer; }
+    #labcoat-ui *.labcoat-actioncontainer:hover {
+      color: #1f1a14;
+      background-color: #b8b3b0; }
+    #labcoat-ui *.labcoat-actioncontainer.labcoat-actioncontainer--active {
+      color: #faf8f7;
+      background-color: #302f2b; }
+      #labcoat-ui *.labcoat-actioncontainer.labcoat-actioncontainer--active:hover {
+        color: #dedbd9;
+        background-color: #1f1a14; }
+    #labcoat-ui *.labcoat-actioncontainer.labcoat-actioncontainer--disabled {
       color: inherit;
-      background-color: transparent; }
-      #laboratory-ui *.laboratory-button.laboratory-button--minimal[disabled] {
-        margin: 0 .2em;
-        border: none;
-        cursor: not-allowed; }
-      [data-laboratory-simple] #laboratory-ui *.laboratory-button.laboratory-button--minimal {
-        margin: 0 .25em; }
-  #laboratory-ui *.laboratory-textbox {
+      background-color: transparent;
+      cursor: not-allowed; }
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-actioncontainer {
+      transition: none; }
+    #labcoat-ui *.labcoat-actioncontainer + .labcoat-actioncontainer {
+      border-left: thin #948d87 solid; }
+  #labcoat-ui *.labcoat-action {
+    display: inline-block;
+    margin: 0 -.375em 0 .25em;
+    border: none;
+    padding: .1em 0;
+    color: inherit;
+    background-color: transparent;
+    transition: color .5s, background-color .5s; }
+    #labcoat-ui *.labcoat-action[disabled], #labcoat-ui *.labcoat-action[disabled]:hover {
+      color: inherit;
+      background-color: transparent;
+      cursor: not-allowed; }
+    [data-labcoat-simple] #labcoat-ui *.labcoat-action {
+      margin: 0 .25em; }
+  #labcoat-ui *.labcoat-textbox {
     position: relative;
     margin: 0;
     border: thin #948d87 solid;
-    border-radius: 7pt;
-    padding: 12.15pt 18pt;
+    border-radius: .4em;
+    padding: .675em 1em;
     outline: none;
     box-shadow: none;
     overflow: auto;
@@ -236,7 +252,7 @@ html, body {
     line-height: inherit;
     white-space: pre-wrap;
     appearance: none; }
-  #laboratory-ui *.laboratory-textbox[aria-label]::before {
+  #labcoat-ui *.labcoat-textbox[aria-label]::before {
     display: block;
     position: absolute;
     top: 40%;
@@ -252,43 +268,43 @@ html, body {
     pointer-events: none;
     transition: opacity .25s;
     content: attr(aria-label); }
-  #laboratory-ui *.laboratory-textbox[aria-label].laboratory-textbox--empty:not(:focus)::before {
+  #labcoat-ui *.labcoat-textbox[aria-label].labcoat-textbox--empty:not(:focus)::before {
     opacity: 1; }
-  #laboratory-ui *.laboratory-toggle {
+  #labcoat-ui *.labcoat-toggle {
     margin: 0 .5em;
     border: 0;
     padding: 0;
     font-size: inherit;
     line-height: 1.4;
     cursor: pointer; }
-  #laboratory-ui *.laboratory-toggle-label {
+  #labcoat-ui *.labcoat-toggle-label {
     flex: auto;
     margin: 0 .5em;
     width: calc(50% - 2em);
     font-variant: small-caps;
     transition: opacity .25s; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle-label {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle-label {
       transition: none; }
-  #laboratory-ui *.laboratory-toggle-label-off {
+  #labcoat-ui *.labcoat-toggle-label-off {
     text-align: right;
     opacity: 1; }
-  #laboratory-ui *.laboratory-toggle-label-on {
+  #labcoat-ui *.labcoat-toggle-label-on {
     text-align: left;
     opacity: 0.4; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-label-off {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-label-off {
     opacity: 0.4; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-label-on {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-label-on {
     opacity: 1; }
-  #laboratory-ui *.laboratory-toggle--disabled, #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled {
+  #labcoat-ui *.labcoat-toggle--disabled, #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled {
     cursor: not-allowed; }
-    #laboratory-ui *.laboratory-toggle--disabled *.laboratory-toggle-label, #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled *.laboratory-toggle-label {
+    #labcoat-ui *.labcoat-toggle--disabled *.labcoat-toggle-label, #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled *.labcoat-toggle-label {
       opacity: 0.4; }
-    #laboratory-ui *.laboratory-toggle--disabled *.laboratory-toggle-track, #laboratory-ui *.laboratory-toggle--disabled *.laboratory-toggle-thumb, #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled *.laboratory-toggle-track, #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled *.laboratory-toggle-thumb {
+    #labcoat-ui *.labcoat-toggle--disabled *.labcoat-toggle-track, #labcoat-ui *.labcoat-toggle--disabled *.labcoat-toggle-thumb, #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled *.labcoat-toggle-track, #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled *.labcoat-toggle-thumb {
       background: transparent;
       transition: background-color 0.25s; }
-      *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle--disabled *.laboratory-toggle-track, *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle--disabled *.laboratory-toggle-thumb, *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled *.laboratory-toggle-track, *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle--checked.laboratory-toggle--disabled *.laboratory-toggle-thumb {
+      *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle--disabled *.labcoat-toggle-track, *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle--disabled *.labcoat-toggle-thumb, *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled *.labcoat-toggle-track, *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle--checked.labcoat-toggle--disabled *.labcoat-toggle-thumb {
         transition: none; }
-  #laboratory-ui .laboratory-toggle-screenreader-only {
+  #labcoat-ui .labcoat-toggle-screenreader-only {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -297,7 +313,7 @@ html, body {
     padding: 0;
     position: absolute;
     width: 1px; }
-  #laboratory-ui *.laboratory-toggle-track {
+  #labcoat-ui *.labcoat-toggle-track {
     display: inline-block;
     flex: none;
     position: relative;
@@ -313,21 +329,21 @@ html, body {
     line-height: 1;
     user-select: none;
     transition: all 0.25s ease; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle-track {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle-track {
       transition: none; }
-  #laboratory-ui *.laboratory-toggle:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, #laboratory-ui *.laboratory-toggle.laboratory-toggle--focus *.laboratory-toggle-track {
+  #labcoat-ui *.labcoat-toggle:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, #labcoat-ui *.labcoat-toggle.labcoat-toggle--focus *.labcoat-toggle-track {
     background-color: #faf8f7; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle.laboratory-toggle--focus *.laboratory-toggle-track {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle.labcoat-toggle--focus *.labcoat-toggle-track {
       background-color: #faf8f7; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-track {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-track {
     border-color: #1f1a14;
     color: #b8b3b0;
     background-color: #1f1a14; }
-  #laboratory-ui *.laboratory-toggle.laboratory-toggle--checked:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, #laboratory-ui *.laboratory-toggle.laboratory-toggle--checked.laboratory-toggle--focus *.laboratory-toggle-track {
+  #labcoat-ui *.labcoat-toggle.labcoat-toggle--checked:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, #labcoat-ui *.labcoat-toggle.labcoat-toggle--checked.labcoat-toggle--focus *.labcoat-toggle-track {
     background-color: #1f1a14; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle.laboratory-toggle--checked:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle.laboratory-toggle--checked.laboratory-toggle--focus *.laboratory-toggle-track {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle.labcoat-toggle--checked:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle.labcoat-toggle--checked.labcoat-toggle--focus *.labcoat-toggle-track {
       background-color: #1f1a14; }
-  #laboratory-ui *.laboratory-toggle-track-check {
+  #labcoat-ui *.labcoat-toggle-track-check {
     position: absolute;
     height: 1em;
     top: 0;
@@ -338,11 +354,11 @@ html, body {
     line-height: 1;
     opacity: 0;
     transition: opacity 0.25s ease; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle-track-check {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle-track-check {
       transition: none; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-track-check {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-track-check {
     opacity: 1; }
-  #laboratory-ui *.laboratory-toggle-track-x {
+  #labcoat-ui *.labcoat-toggle-track-x {
     position: absolute;
     height: 1em;
     top: 0;
@@ -353,11 +369,11 @@ html, body {
     line-height: 1;
     opacity: 1;
     transition: opacity 0.25s ease; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle-track-x {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle-track-x {
       transition: none; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-track-x {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-track-x {
     opacity: 0; }
-  #laboratory-ui *.laboratory-toggle-thumb {
+  #labcoat-ui *.labcoat-toggle-thumb {
     position: absolute;
     top: 0;
     left: 0;
@@ -369,13 +385,13 @@ html, body {
     background-color: #57534c;
     box-sizing: border-box;
     transition: all 0.25s ease; }
-    *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-toggle-thumb {
+    *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-toggle-thumb {
       transition: none; }
-  #laboratory-ui *.laboratory-toggle--checked *.laboratory-toggle-thumb {
+  #labcoat-ui *.labcoat-toggle--checked *.labcoat-toggle-thumb {
     left: 1em;
     background-color: #b8b3b0; }
 
-#laboratory-ui #laboratory-header {
+#labcoat-ui #labcoat-header {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -384,236 +400,218 @@ html, body {
   top: 0;
   left: 0;
   right: 0;
-  height: 31.5pt;
+  height: 2.1em;
   margin: 0;
-  padding: 5.25pt 30pt;
-  font-size: 15pt;
+  padding: .35em 2rem;
+  font-size: 1rem;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
   color: #302f2b;
   background-color: rgba(250, 248, 247, 0.95); }
-  #laboratory-ui #laboratory-header:before, #laboratory-ui #laboratory-header:after {
+  #labcoat-ui #labcoat-header:before, #labcoat-ui #labcoat-header:after {
     display: block;
-    width: calc(50% - 495pt);
+    width: calc(50% - 33.5rem);
     content: ""; }
-  #laboratory-ui #laboratory-header h1 {
+  #labcoat-ui #labcoat-header h1 {
     display: inline;
     flex: auto;
     margin: 0 auto 0 0;
     padding: 0;
     overflow: hidden;
-    font-size: 22.5pt;
+    font-size: 1.5em;
     font-weight: 900;
     text-transform: none;
     text-decoration: underline;
     text-overflow: ellipsis; }
-  #laboratory-ui #laboratory-header a[href] {
+  #labcoat-ui #labcoat-header a[href] {
     color: inherit; }
 
-#laboratory-ui *.laboratory-column {
+#labcoat-ui *.labcoat-column {
   display: block;
   position: relative;
-  flex: 250pt 1 1;
-  margin: 21pt 10pt 42pt;
-  padding: 42pt 10pt 10.5pt;
-  max-width: 300pt;
-  min-width: 225pt;
+  flex: 18rem 1 1;
+  margin: 2.1rem .75rem;
+  padding: 2.8rem .75rem .7rem;
+  max-width: 20rem;
+  min-width: 15rem;
   color: #dedbd9;
   background-color: rgba(31, 26, 20, 0.95); }
-  @media (max-width: 480px) {
-    #laboratory-ui *.laboratory-column {
+  @media (max-width: 32rem) {
+    #labcoat-ui *.labcoat-column {
       flex: none;
-      margin: 7pt 5pt;
-      padding-top: 52.5pt;
-      width: calc(100vw - 30pt);
+      margin: .5rem;
+      padding-top: 3.5rem;
+      width: calc(100vw - 2.5rem);
       max-width: none;
       min-width: 0; } }
-  *[data-laboratory-simple] #laboratory-ui *.laboratory-column {
-    padding-top: 10.5pt; }
-  #laboratory-ui *.laboratory-column a[href] {
+  *[data-labcoat-simple] #labcoat-ui *.labcoat-column {
+    padding-top: .7rem; }
+  #labcoat-ui *.labcoat-column a[href] {
     color: #faf8f7; }
-    #laboratory-ui *.laboratory-column a[href]:hover {
+    #labcoat-ui *.labcoat-column a[href]:hover {
       color: #dedbd9; }
-#laboratory-ui *.laboratory-heading {
+#labcoat-ui *.labcoat-heading {
   display: block;
   position: absolute;
-  top: -10.5pt;
-  left: -10pt;
+  top: -.7rem;
+  left: -.625rem;
   margin: 0;
-  padding: 7pt 5pt 7pt;
-  width: calc(100% - 10pt);
-  height: 28pt;
+  padding: .5rem .375rem;
+  width: calc(100% - .75rem);
+  height: 2rem;
   overflow: hidden;
   white-space: nowrap;
   color: #302f2b;
   background-color: #faf8f7;
-  font-size: 20pt;
+  font-size: 1.4rem;
   font-weight: 400;
   font-variant: small-caps;
-  line-height: 28pt;
+  line-height: 2rem;
   text-overflow: ellipsis; }
-  @media (max-width: 480px) {
-    #laboratory-ui *.laboratory-heading {
+  @media (max-width: 32rem) {
+    #labcoat-ui *.labcoat-heading {
       top: 0;
       left: 0; } }
-  *[data-laboratory-simple] #laboratory-ui *.laboratory-heading {
-    top: -20pt;
-    left: -20pt;
-    width: 32pt;
+  *[data-labcoat-simple] #labcoat-ui *.labcoat-heading {
+    top: -1.4rem;
+    left: -1.4rem;
+    width: 2.25rem;
     color: #faf8f7;
     background: transparent; }
-    *[data-laboratory-simple] #laboratory-ui *.laboratory-heading *:not(:first-child) {
+    *[data-labcoat-simple] #labcoat-ui *.labcoat-heading *:not(:first-child) {
       display: none; }
-  #laboratory-ui *.laboratory-heading i.fa:first-child {
-    margin-right: 5pt;
-    width: 32pt; }
-#laboratory-ui *.laboratory-posts {
-  height: calc(100vh - 157.5pt);
+  #labcoat-ui *.labcoat-heading i.fa:first-child {
+    margin-right: .375rem;
+    width: 2.25rem; }
+#labcoat-ui *.labcoat-posts {
+  height: calc(100vh - 10.5rem);
   overflow-x: hidden;
   overflow-y: auto; }
-#laboratory-ui *.laboratory-columnnav {
+  @media (max-width: 32rem) {
+    #labcoat-ui *.labcoat-posts {
+      height: calc(100vh - 8.05rem); }
+      *[data-labcoat-simple] #labcoat-ui *.labcoat-posts {
+        height: calc(100vh - 5.25rem); } }
+  *[data-labcoat-simple] #labcoat-ui *.labcoat-posts {
+    height: calc(100vh - 8.4rem); }
+#labcoat-ui *.labcoat-columnnav {
   display: block;
-  padding: 21pt 0; }
-  #laboratory-ui *.laboratory-columnnav a[href] {
+  padding: 1.4rem 0; }
+  #labcoat-ui *.labcoat-columnnav a[href] {
     display: block;
-    margin: 0 0 7pt;
-    padding: 7pt 5pt 7pt;
-    height: 28pt;
+    margin: 0 0 .5rem;
+    padding: .5rem .375rem;
+    height: 2rem;
     overflow: hidden;
     white-space: nowrap;
     color: #1f1a14;
     background-color: #dedbd9;
-    font-size: 20pt;
+    font-size: 1.4rem;
     font-weight: 400;
-    line-height: 28pt;
+    line-height: 2rem;
     text-overflow: ellipsis;
     transition: margin .35s ease-in-out, color .35s, background-color .35s; }
-    #laboratory-ui *.laboratory-columnnav a[href]:hover {
-      margin-left: 5pt;
-      margin-right: -5pt;
+    #labcoat-ui *.labcoat-columnnav a[href]:hover {
+      margin-left: .375rem;
+      margin-right: -.375rem;
       color: #302f2b;
       background-color: #faf8f7; }
-      *[data-laboratory-reduce_motion] #laboratory-ui *.laboratory-columnnav a[href]:hover {
+      *[data-labcoat-reduce_motion] #labcoat-ui *.labcoat-columnnav a[href]:hover {
         margin-left: 0;
         margin-right: 0;
         transition: none; }
-    #laboratory-ui *.laboratory-columnnav a[href] i.fa:first-child {
-      margin-right: 5pt;
-      width: 32pt; }
-#laboratory-ui *.laboratory-columnfooter {
+    #labcoat-ui *.labcoat-columnnav a[href] i.fa:first-child {
+      margin-right: .375rem;
+      width: 2.25rem; }
+#labcoat-ui *.labcoat-columnfooter {
   display: block;
-  font-size: 12pt;
+  font-size: .75rem;
   text-align: center; }
-  #laboratory-ui *.laboratory-columnfooter nav a[href] {
+  #labcoat-ui *.labcoat-columnfooter nav a[href] {
     display: inline-block;
-    margin: 0 .5em; }
-#laboratory-ui #laboratory-notifications {
+    margin: 0 .375em; }
+#labcoat-ui #labcoat-notifications {
   background-color: rgba(31, 26, 20, 0.4); }
-  *[data-laboratory-no_transparency] #laboratory-ui #laboratory-notifications {
+  *[data-labcoat-no_transparency] #labcoat-ui #labcoat-notifications {
     background-color: #1f1a14; }
-  #laboratory-ui #laboratory-notifications *.laboratory-heading, #laboratory-ui #laboratory-notifications *.laboratory-posts {
-    opacity: 0.9; }
-    *[data-laboratory-no_transparency] #laboratory-ui #laboratory-notifications *.laboratory-heading, *[data-laboratory-no_transparency] #laboratory-ui #laboratory-notifications *.laboratory-posts {
+  #labcoat-ui #labcoat-notifications *.labcoat-heading, #labcoat-ui #labcoat-notifications *.labcoat-posts {
+    opacity: 0.85; }
+    *[data-labcoat-no_transparency] #labcoat-ui #labcoat-notifications *.labcoat-heading, *[data-labcoat-no_transparency] #labcoat-ui #labcoat-notifications *.labcoat-posts {
       opacity: 1; }
-#laboratory-ui *.laboratory-status {
+#labcoat-ui *.labcoat-status {
   display: block;
-  margin: 0 0 7pt;
-  padding: 7pt 5pt 7pt;
+  margin: 0 0 .5rem;
+  padding: .5rem .375rem;
   overflow: hidden;
   color: #1f1a14;
   background-color: #dedbd9;
   text-overflow: ellipsis;
   transition: color .5s, background-color .5s; }
-  #laboratory-ui *.laboratory-status.laboratory-status--highlighted {
+  #labcoat-ui *.labcoat-status.labcoat-status--highlighted {
     color: #302f2b;
     background-color: #faf8f7; }
-    #laboratory-ui *.laboratory-status.laboratory-status--highlighted a[href] {
+    #labcoat-ui *.labcoat-status.labcoat-status--highlighted a[href] {
       color: #75706a; }
-      #laboratory-ui *.laboratory-status.laboratory-status--highlighted a[href]:hover {
+      #labcoat-ui *.labcoat-status.labcoat-status--highlighted a[href]:hover {
         color: inherit; }
-  #laboratory-ui *.laboratory-status a[href] {
+  #labcoat-ui *.labcoat-status a[href] {
     color: #57534c; }
-    #laboratory-ui *.laboratory-status a[href]:hover {
+    #labcoat-ui *.labcoat-status a[href]:hover {
       color: inherit; }
-  #laboratory-ui *.laboratory-status aside {
-    margin: -7pt -5pt 7pt;
-    padding: 7pt 10pt;
+  #labcoat-ui *.labcoat-status aside {
+    margin: -.5rem -.375rem .5rem;
+    padding: .5rem .75rem;
     color: #b8b3b0;
     background-color: #57534c;
-    font-size: 12pt;
+    font-size: .75rem;
     font-weight: 300; }
-    #laboratory-ui *.laboratory-status aside::after {
+    #labcoat-ui *.labcoat-status aside::after {
       content: ":"; }
-    #laboratory-ui *.laboratory-status aside a[href] {
+    #labcoat-ui *.labcoat-status aside a[href] {
       color: #dedbd9; }
-      #laboratory-ui *.laboratory-status aside a[href]:hover {
+      #labcoat-ui *.labcoat-status aside a[href]:hover {
         color: inherit; }
-  #laboratory-ui *.laboratory-status.laboratory-status--highlighted aside {
+  #labcoat-ui *.labcoat-status.labcoat-status--highlighted aside {
     color: #b8b3b0;
     background-color: #57534c; }
-    #laboratory-ui *.laboratory-status.laboratory-status--highlighted aside a[href] {
+    #labcoat-ui *.labcoat-status.labcoat-status--highlighted aside a[href] {
       color: #dedbd9; }
-      #laboratory-ui *.laboratory-status.laboratory-status--highlighted aside a[href]:hover {
+      #labcoat-ui *.labcoat-status.labcoat-status--highlighted aside a[href]:hover {
         color: inherit; }
-  #laboratory-ui *.laboratory-status header {
-    margin: 0 0 7pt; }
-    #laboratory-ui *.laboratory-status header time {
+  #labcoat-ui *.labcoat-status header {
+    margin: 0 0 .5rem; }
+    #labcoat-ui *.labcoat-status header time {
       float: right;
-      font-size: 12pt;
+      font-size: .75rem;
       font-weight: 300; }
-  #laboratory-ui *.laboratory-status *.laboratory-idcard {
-    font-size: 30pt;
+  #labcoat-ui *.labcoat-status *.labcoat-idcard {
+    font-size: 2rem;
     margin: 0 .2em 0 0; }
-  #laboratory-ui *.laboratory-status footer {
+  #labcoat-ui *.labcoat-status footer {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
-    margin: 7pt -5pt -7pt;
+    margin: .5rem -.375rem -.5rem;
     border-top: thin #948d87 solid;
     padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
     text-transform: uppercase;
-    font-size: 11pt; }
-    #laboratory-ui *.laboratory-status footer *.laboratory-buttoncontainer {
-      flex: auto;
-      margin: 0;
-      padding: 7pt 5pt;
-      color: #57534c;
-      background-color: #faf8f7;
-      transition: color .5s, background-color .5s; }
-      *[data-reduce_motion] #laboratory-ui *.laboratory-status footer *.laboratory-buttoncontainer {
-        transition: none; }
-      #laboratory-ui *.laboratory-status footer *.laboratory-buttoncontainer:hover {
-        color: #1f1a14;
-        background-color: #b8b3b0; }
-      #laboratory-ui *.laboratory-status footer *.laboratory-buttoncontainer + .laboratory-buttoncontainer {
-        border-left: thin #948d87 solid; }
-    #laboratory-ui *.laboratory-status footer *.laboratory-unboostbutton, #laboratory-ui *.laboratory-status footer *.laboratory-unhighlightbutton {
-      color: #faf8f7;
-      background-color: #302f2b; }
-      #laboratory-ui *.laboratory-status footer *.laboratory-unboostbutton:hover, #laboratory-ui *.laboratory-status footer *.laboratory-unhighlightbutton:hover {
-        color: #dedbd9;
-        background-color: #1f1a14; }
-    #laboratory-ui *.laboratory-status footer *.laboratory-noboostbutton, #laboratory-ui *.laboratory-status footer *.laboratory-noboostbutton:hover {
-      color: inherit;
-      background-color: transparent; }
-#laboratory-ui *.laboratory-statusContent p {
+    font-size: .75rem; }
+#labcoat-ui *.labcoat-statusContent p {
   margin: 0;
-  padding: 0 10pt;
+  padding: 0 .625em;
   text-align: left;
   white-space: pre-wrap;
   hyphens: auto; }
-  #laboratory-ui *.laboratory-statusContent p + p {
-    text-indent: 15pt; }
-  #laboratory-ui *.laboratory-statusContent p a[href] {
-    hyphens: none;
-    text-decoration: underline;
-    text-decoration-style: dashed; }
+  #labcoat-ui *.labcoat-statusContent p + p {
+    margin-top: 1.05em; }
+  #labcoat-ui *.labcoat-statusContent p a[href] {
+    hyphens: none; }
 
-#laboratory-ui #laboratory-module {
+#labcoat-ui #labcoat-module {
   display: block;
   position: fixed;
   top: 0;
@@ -622,25 +620,25 @@ html, body {
   right: 0;
   overflow: auto;
   z-index: 100; }
-  *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-module[data-laboratory-dismiss] {
+  *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-module[data-labcoat-dismiss] {
     display: none; }
-  #laboratory-ui #laboratory-module[data-laboratory-dismiss] #laboratory-curtain {
+  #labcoat-ui #labcoat-module[data-labcoat-dismiss] #labcoat-curtain {
     animation: laboratorycurtainfadeout .5s both; }
-    *[data-laboratory-no_transparency] #laboratory-ui #laboratory-module[data-laboratory-dismiss] #laboratory-curtain, *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-module[data-laboratory-dismiss] #laboratory-curtain {
+    *[data-labcoat-no_transparency] #labcoat-ui #labcoat-module[data-labcoat-dismiss] #labcoat-curtain, *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-module[data-labcoat-dismiss] #labcoat-curtain {
       display: none;
       animation: none; }
-  #laboratory-ui #laboratory-module[data-laboratory-dismiss] main {
+  #labcoat-ui #labcoat-module[data-labcoat-dismiss] main {
     animation: laboratorymodulefadeout .5s both; }
-    *[data-laboratory-no_transparency] #laboratory-ui #laboratory-module[data-laboratory-dismiss] main:not(#laboratory-composer), *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-module[data-laboratory-dismiss] main {
+    *[data-labcoat-no_transparency] #labcoat-ui #labcoat-module[data-labcoat-dismiss] main:not(#labcoat-composer), *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-module[data-labcoat-dismiss] main {
       display: none;
       animation: none; }
-  #laboratory-ui #laboratory-module[data-laboratory-dismiss] #laboratory-composer {
+  #labcoat-ui #labcoat-module[data-labcoat-dismiss] #labcoat-composer {
     animation: laboratorymoduleslideout .5s ease-in both; }
-    *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-module[data-laboratory-dismiss] #laboratory-composer {
+    *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-module[data-labcoat-dismiss] #labcoat-composer {
       animation: none; }
-  #laboratory-ui #laboratory-module a[href] {
+  #labcoat-ui #labcoat-module a[href] {
     color: #1f1a14; }
-#laboratory-ui #laboratory-curtain {
+#labcoat-ui #labcoat-curtain {
   display: block;
   position: fixed;
   top: 0;
@@ -652,141 +650,142 @@ html, body {
   cursor: default;
   animation: laboratorycurtainfadein .5s both;
   z-index: 101; }
-  *[data-laboratory-no_transparency] #laboratory-ui #laboratory-curtain {
+  *[data-labcoat-no_transparency] #labcoat-ui #labcoat-curtain {
     opacity: 1;
     animation: none; }
-  *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-curtain {
+  *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-curtain {
     animation: none; }
-#laboratory-ui main {
+#labcoat-ui main {
   display: block;
   position: relative;
-  margin: 63pt auto;
-  border-radius: 5pt;
-  padding: 21pt;
-  width: calc(100% - 42pt);
-  max-width: 483pt;
+  margin: 4.2rem auto;
+  border-radius: .33333rem;
+  border-radius: calc(1rem / 3);
+  padding: 1.4rem;
+  width: calc(100% - 1.4rem);
+  max-width: 32rem;
   overflow: auto;
   color: #302f2b;
   background-color: #dedbd9;
-  box-shadow: 0 0 3.75pt -1.25pt #1f1a14;
-  font-size: 18pt;
+  box-shadow: 0 0 0.25rem 0.09375rem #1f1a14;
+  font-size: 1.2rem;
   font-weight: 300;
   line-height: 1.35;
   animation: laboratorymodulefadein .5s both;
   z-index: 200; }
-  @media (max-width: 480px) {
-    #laboratory-ui main {
-      margin: 21pt auto; } }
-  *[data-laboratory-no_transparency] #laboratory-ui main {
+  @media (max-width: 32rem) {
+    #labcoat-ui main {
+      margin: 1.4rem auto; } }
+  *[data-labcoat-no_transparency] #labcoat-ui main {
     animation: none; }
-  *[data-laboratory-reduce_motion] #laboratory-ui main {
+  *[data-labcoat-reduce_motion] #labcoat-ui main {
     animation: none; }
-  #laboratory-ui main aside {
+  #labcoat-ui main aside {
     position: relative;
-    margin: -21pt -21pt 0;
+    margin: -1.4rem -1.4rem 0;
     border: none;
     border-bottom: thin #75706a solid;
-    padding: 21pt;
-    font-size: 15pt;
+    padding: 1.4rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.4;
     color: #1f1a14;
     background: #b8b3b0; }
-  #laboratory-ui main *:not(aside) ~ aside {
-    margin: 0 -21pt -21pt;
+  #labcoat-ui main *:not(aside) ~ aside {
+    margin: 0 -1.4rem -1.4rem;
     border: none;
     border-top: thin #75706a solid;
-    padding: 21pt; }
-  #laboratory-ui main p {
+    padding: 1.4rem; }
+  #labcoat-ui main p {
     margin: 0;
     text-align: left;
     white-space: pre-wrap; }
-    #laboratory-ui main p + p {
-      margin-top: 24.3pt; }
-#laboratory-ui #laboratory-composer {
+    #labcoat-ui main p + p {
+      margin-top: 1.0125em; }
+#labcoat-ui #labcoat-composer {
   animation: laboratorymoduleslidein .5s ease-in-out both; }
-  *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-composer {
+  *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-composer {
     animation: none; }
-  #laboratory-ui #laboratory-composer > header {
+  #labcoat-ui #labcoat-composer > header {
     display: flex;
-    margin: 0 0 9pt;
+    margin: 0 0 .6rem;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center; }
-    #laboratory-ui #laboratory-composer > header *.laboratory-idcard {
+    #labcoat-ui #labcoat-composer > header *.labcoat-idcard {
       margin: 0 auto 0 0;
-      font-size: 37.5pt; }
-  #laboratory-ui #laboratory-composer > footer {
+      font-size: 2em; }
+  #labcoat-ui #labcoat-composer > footer {
     display: flex;
-    margin: 9pt 0;
+    margin: .6rem 0;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     text-transform: uppercase; }
-  #laboratory-ui #laboratory-composer *.laboratory-button {
+  #labcoat-ui #labcoat-composer *.labcoat-button {
     font-size: inherit; }
-#laboratory-ui #laboratory-composertextbox {
-  height: 128pt; }
-  @media (max-width: 480px) {
-    #laboratory-ui #laboratory-composertextbox {
-      height: 84pt; } }
-#laboratory-ui #laboratory-composeroptions {
+#labcoat-ui #labcoat-composertextbox {
+  height: 7em; }
+  @media (max-width: 32rem) {
+    #labcoat-ui #labcoat-composertextbox {
+      height: 4.5em; } }
+#labcoat-ui #labcoat-composeroptions {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
-  min-height: 84pt; }
-  *[data-laboratory-simple] #laboratory-ui #laboratory-composeroptions {
+  min-height: 5.6em; }
+  *[data-labcoat-simple] #labcoat-ui #labcoat-composeroptions {
     display: block;
     text-align: center; }
-  @media (max-width: 480px) {
-    #laboratory-ui #laboratory-composeroptions {
+  @media (max-width: 32rem) {
+    #labcoat-ui #labcoat-composeroptions {
       display: block;
       text-align: center; } }
-#laboratory-ui #laboratory-postoptions {
+#labcoat-ui #labcoat-postoptions {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   flex: auto;
-  padding-right: 21pt;
-  width: calc(50% - 42pt); }
-  @media (max-width: 480px) {
-    #laboratory-ui #laboratory-postoptions {
+  padding-right: 1.5em;
+  width: calc(50% - 3em); }
+  @media (max-width: 32rem) {
+    #labcoat-ui #labcoat-postoptions {
       display: block;
-      padding-bottom: 10.5pt;
+      padding-bottom: .7em;
       padding-right: 0;
       width: auto; } }
-  *[data-laboratory-simple] #laboratory-ui #laboratory-postoptions {
+  *[data-labcoat-simple] #labcoat-ui #labcoat-postoptions {
     display: inline;
     padding: 0;
     width: auto;
     text-align: center; }
-#laboratory-ui #laboratory-hideoptions {
+#labcoat-ui #labcoat-hideoptions {
   display: block;
   flex: auto;
   border-left: thin #75706a solid;
-  padding-left: 21pt;
-  width: calc(50% - 42pt); }
-  @media (max-width: 480px) {
-    #laboratory-ui #laboratory-hideoptions {
+  padding-left: 1.5em;
+  width: calc(50% - 3em); }
+  @media (max-width: 32rem) {
+    #labcoat-ui #labcoat-hideoptions {
       display: block;
       border-top: thin #75706a solid;
       border-left: none;
-      padding-top: 10.5pt;
+      padding-top: .7em;
       padding-left: 0;
       width: auto; } }
-  *[data-laboratory-simple] #laboratory-ui #laboratory-hideoptions {
+  *[data-labcoat-simple] #labcoat-ui #labcoat-hideoptions {
     display: inline;
     border: none;
     padding: 0;
     width: auto; }
-  #laboratory-ui #laboratory-hideoptions > input[type="text"] {
+  #labcoat-ui #labcoat-hideoptions > input[type="text"] {
     display: block;
-    margin: 10.5pt 0;
+    margin: .7em 0;
     border: thin #75706a solid;
-    padding: 0 7.5pt;
-    width: calc(100% - 15pt);
+    padding: 0 .5em;
+    width: calc(100% - 1em);
     height: 0;
     overflow: auto;
     resize: none;
@@ -800,74 +799,74 @@ html, body {
     visibility: hidden;
     opacity: 0;
     transition: padding .5s, height .5s, visibility .5s, opacity .5s ease-in; }
-    *[data-laboratory-reduce_motion] #laboratory-ui #laboratory-hideoptions > input[type="text"] {
+    *[data-labcoat-reduce_motion] #labcoat-ui #labcoat-hideoptions > input[type="text"] {
       transition: none; }
-  #laboratory-ui #laboratory-hideoptions > *.laboratory-toggle--checked ~ input[type="text"] {
-    padding: 5.25pt 7.5pt;
-    height: 21pt;
+  #labcoat-ui #labcoat-hideoptions > *.labcoat-toggle--checked ~ input[type="text"] {
+    padding: .35em .5em;
+    height: 1.4em;
     visibility: visible;
     opacity: 1; }
-@media (max-width: 480px) {
-  #laboratory-ui #laboratory-account {
+@media (max-width: 32rem) {
+  #labcoat-ui #labcoat-account {
     text-align: center; } }
-#laboratory-ui #laboratory-account header {
+#labcoat-ui #labcoat-account header {
   display: block;
-  margin: -21pt -21pt 0;
+  margin: -1.4rem -1.4rem 0;
   padding: 0;
-  height: 126pt;
+  height: 8.4em;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-color: #b8b3b0; }
-#laboratory-ui #laboratory-account *.laboratory-idcard {
+#labcoat-ui #labcoat-account *.labcoat-idcard {
   margin: .2em 0 .4em;
-  font-size: 42pt; }
-  #laboratory-ui #laboratory-account *.laboratory-idcard *.laboratory-avatar {
+  font-size: 2.8em; }
+  #labcoat-ui #labcoat-account *.labcoat-idcard *.labcoat-avatar {
     margin: -1em .25em 0 0;
     height: 2em;
     width: 2em; }
-#laboratory-ui #laboratory-account *.laboratory-buttoncontainer {
+#labcoat-ui #labcoat-account *.labcoat-buttoncontainer {
   float: right;
   margin: 9pt 0; }
   @media (max-width: 480px) {
-    #laboratory-ui #laboratory-account *.laboratory-buttoncontainer {
+    #labcoat-ui #labcoat-account *.labcoat-buttoncontainer {
       float: none;
-      font-size: 15pt; } }
-#laboratory-ui #laboratory-account footer {
+      font-size: 1em; } }
+#labcoat-ui #labcoat-account footer {
   display: block;
-  margin: 9pt -21pt -21pt;
+  margin: .6rem -1.4rem -1.4rem;
   border-top: thin #948d87 solid;
-  padding: 9pt;
+  padding: .6rem;
   color: #75706a;
   background: #faf8f7; }
   @media (max-width: 480px) {
-    #laboratory-ui #laboratory-account footer {
-      padding: 9pt 0; } }
-  #laboratory-ui #laboratory-account footer table {
+    #labcoat-ui #labcoat-account footer {
+      padding: .6rem 0; } }
+  #labcoat-ui #labcoat-account footer table {
     margin: 0;
     border: 0;
     border-collapse: collapse;
     padding: 0;
     width: 100%;
-    font-size: 15pt;
+    font-size: 1rem;
     line-height: 1.4;
     text-align: right; }
-    #laboratory-ui #laboratory-account footer table tr {
+    #labcoat-ui #labcoat-account footer table tr {
       margin: 0;
       border: none;
       padding: 0; }
-    #laboratory-ui #laboratory-account footer table td {
+    #labcoat-ui #labcoat-account footer table td {
       margin: 0;
       border: none;
-      padding: 0 27pt; }
-      @media (max-width: 480px) {
-        #laboratory-ui #laboratory-account footer table td {
-          padding: 0 9pt; } }
-      #laboratory-ui #laboratory-account footer table td + td {
+      padding: 0 1.8em; }
+      @media (max-width: 32rem) {
+        #labcoat-ui #labcoat-account footer table td {
+          padding: 0 .6em; } }
+      #labcoat-ui #labcoat-account footer table td + td {
         border-left: thin #948d87 solid; }
-      #laboratory-ui #laboratory-account footer table td b {
+      #labcoat-ui #labcoat-account footer table td b {
         display: block;
-        font-size: 21pt;
+        font-size: 1.4em;
         line-height: 1; }
 
 @keyframes laboratorycurtainfadein {
@@ -899,6 +898,6 @@ html, body {
   from {
     bottom: 0; }
   20% {
-    bottom: -42pt; }
+    bottom: -2.8rem; }
   to {
     bottom: 150vh; } }

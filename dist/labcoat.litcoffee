@@ -42,151 +42,6 @@ CoffeeScript is a very powerful language for writing code that is elegant and ea
 Take advantage of this!
 Having text explanations above and below doesn't excuse messy code.
 
-##  Style Guide  ##
-
-This section describes the style conventions you are likely to encounter when reading Labcoat source.
-
-###  Markdown:
-
-Except where otherwise noted, prose should attempt to follow the Chicago Manual of Style.
-Em dashes with no surrounding spaces are used for parantheticals.
-Abbreviations are written either all-lowercase or all-uppercase, with the former preferred except at the beginning of sentences, and no trailing period (eg: url, id, html).
-The following sections provide more information on Markdown-specific conventions.
-
-####  Headings.
-
-Headings should always be indicated using hash marks, as shown in the code below.
-Place two spaces between the hash marks and the heading text.
-
-```markdown
-    #  THIS IS A TITLE  #
-    ##  This Is A H2 Heading  ##
-    ###  This is a H3 heading:
-    ####  This is a H4 heading.
-    #####  THIS IS A H5 HEADING
-    ######  this is a h6 heading
-```
-
-####  Paragraphs.
-
-Markdown paragraphs are written with one sentence per line.
-This helps document which sentences have changed when looking at git diffs.
-Don't break a sentence across multiple lines; similarly, don't put more than one sentence on the same line.
-
-####  Lists.
-
-Markdown lists come in two forms: expanded and condensed.
-Condensed lists look like this:
-
-- This is an unnumbered list item.
-    - This is a sub-item.
-- Note that there is a space before and after the list, but not in-between items.
-- Never use a condensed list for something more than one sentence long.
-
-Expanded lists look like this:
-
- -  This is an expanded list.
-    Use this for lists that contain multiple sentences.
-
- -  You'll notice that there is a blank line between each list item.
-    This renders each list as a paragraph.
-
-1.  Numbered lists should always be rendered in an expanded form.
-
-2.  Even though Markdown doesn't require it, try to keep numbering accurate for numbered lists.
-
-####  Code blocks.
-
-Code blocks in source code files should always be placed inside blockquotes using GFM fenced code syntax, like this:
-
->   ```coffeescript
->       -> "Here is some CoffeeScript code."
->   ```
-
-Literate CoffeeScript will interpret any indented lines as source code, so encapsulating documentation code in blockquotes helps keep everything nicely separated.
-
-#####  LANGUAGES
-
-Labcoat is written in CoffeeScript, but documentation code should be written instead using plain JavaScript.
-Knowledge of CoffeeScript should not be a prerequisite for interfacing with the Laboratory engine.
-
-Labcoat's source doesn't use JSX, but for conciseness its documentation *should*.
-
-####  Issues and notes.
-
-If you want to reference an open issue, or make a note, the syntax for this is as follows:
-
->   __Note :__
->   This is a note.
-
-Note the space between the colon and the word "Note".
-Again, each sentence should be on its own line.
-If the issue has a GitHub link, you might include that:
-
->   __[Issue #XX](https://github.com/marrus-sh/labcoat/issues/XX) :__
->   Here is a comment regarding that issue
-
-Following this syhtax will make finding references to notes and issues easy when searching through pages of source.
-
-####  Other considerations.
-
-If you need to make a line-break, **always** use a `<br>` element.
-**Never** use blank spaces at the end of a line to indicate a manual break.
-
-Two asterisks are used for **important content**, while one asterisk is used for *emphasis*.
-Use underscores if you need __boldfaced__ or _italicized_ text without these semantics.
-
-References to code should use `backticks`.
-HTML elements should be lowercase and surrounded by angle brackets, like `<this>`; React elements should be capitalized like `<This>` but otherwise rendered in a similar manner.
-You may optionally specify attributes as well; `<div class="so">` refers to `<div>` elements with the class `so`.
-Functions and constructors should be followed by parentheses, like `this()`.
-However, when referring to instances and prototypes, no parentheses are used; for example, one might say `something` is an instance of `ThisOne` even though it was created using the constructor `ThisOne()`.
-
-###  CoffeeScript:
-
-####  Variable naming.
-
-Variables and functions are named using `camelCase`, with the first letter lowercase.
-Functions which are meant to serve as constructors, objects which act as modules, and React elements are named using `CamelCase`, with the first letter capitalized.
-Enumerals and other constants are named using `UPPERCASE_LETTERS_WITH_UNDERSCORES`.
-
-The Mastodon API frequently makes use of `lowercase_letters_with_underscores` for its parameter names, although we shouldn't have to deal with this directly (as we will be using Laboratory for our event interfacing).
-
-####  Spacing.
-
-Lines should be indented using 4 spaces.
-This is very important as it keeps code readable even when it is broken up by long paragraphs of text documentation.
-
-####  Strings.
-
-Strings are double-quoted where possible.
-Generally speaking, try to avoid performing substitutions in stings using the `"#{}"` syntax; instead concatenate multiple strings with your code using `+`.
-
-####  Functions.
-
-Generally speaking, if you can avoid using parentheses when calling a function, do.
-Include parentheses only if the code becomes very ambiguous to readers otherwise.
-
-####  Objects.
-
-Only wrap an object in `{}` if you are declaring it all on one line; using the multi-line YAML-like syntax is greatly preffered.
-This includes in function calls—you don't need parentheses around the object either in this case.
-
-####  Constructors.
-
-Constructors should be written as functions with separate prototypes.
-**Do not use CoffeeScript's `class` syntax to write constructors.**
-Constructors and their prototypes should always be frozen using `Object.freeze` to prevent them from being modified after creation.
-
-####  Local variables and closure.
-
-Because our CoffeeScript files are concatenated into a single file before compilation, local variables from one file are also available in another.
-In general, **you should not use local variables**, and whenever you need to declare a variable outside of the scope of a function you should encapsulate it in a `do ->` statement.
-
-####  Postfix forms.
-
-Generally speaking, you should use the postfix forms of `if`, `unless`, `for`, `while`, etc. where possible.
-
 ##  Implementation  ##
 
 This file doesn't actually do much, but it's the first thing that our Labcoat script runs.
@@ -207,7 +62,7 @@ This is the first file in our compiled source, so let's identify ourselves real 
                Source code available at:
           https://github.com/marrus-sh/labcoat
 
-                    Version 0.1.0
+                    Version 0.2.0
 
     ###
 
@@ -253,7 +108,7 @@ We can't be bothered to test both every time we need to use it, so we'll store i
 The `Column` is just a simple functional React component.
 
     Columns.Column = (props) ->
-        彁 'div', (if props.id? then {id: props.id, className: "laboratory-column"} else {className: "laboratory-column"}),
+        彁 'div', (if props.id? then {id: props.id, className: "labcoat-column"} else {className: "labcoat-column"}),
             props.children
 
 
@@ -309,7 +164,7 @@ The `GoLink` component is a simple functional React component which just package
 The `Heading` is just a simple functional React component.
 
     Columns.Heading = (props) ->
-        彁 'h2', {className: "laboratory-heading"},
+        彁 'h2', {className: "labcoat-heading"},
             if props.icon
                 彁 Shared.Icon, {name: props.icon}
             else null
@@ -325,23 +180,25 @@ The `Heading` is just a simple functional React component.
 
 >   ```jsx
 >       <Status
+>           type=React.PropTypes.object.isRequired
 >           id=React.PropTypes.number.isRequired
 >           href=React.PropTypes.string
->           author=React.PropTypes.object
+>           author=React.PropTypes.object.isRequired
 >           inReplyTo=React.PropTypes.number
 >           content=React.PropTypes.string
->           datetime=React.PropTypes.string
+>           datetime=React.PropTypes.object
 >           isReblogged=React.PropTypes.bool
 >           isFavourited=React.PropTypes.bool
 >           isNSFW=React.PropTypes.bool
 >           message=React.PropTypes.string
->           visibility=React.PropTypes.string
+>           visibility=React.PropTypes.object
 >           mediaAttachments=React.PropTypes.array
 >           mentions=React.PropTypes.array
->           follower=React.PropTypes.object
 >       />
 >   ```
 >   Creates a `Status` component, which contains a post or a notification. The accepted properties are:
+>   -   **`type` [REQUIRED `object`] :**
+>       The status's `Laboratory.PostType`.
 >   -   **`id` [REQUIRED `number`] :**
 >       The id of the status.
 >   -   **`href` [OPTIONAL `string`] :**
@@ -350,9 +207,9 @@ The `Heading` is just a simple functional React component.
 >       The account which posted the status.
 >   -   **`inReplyTo` [OPTIONAL `number`] :**
 >       The id of the status this status is replying to.
->   -   **`content` [REQUIRED `string`] :**
+>   -   **`content` [OPTIONAL `string`] :**
 >       The content of the status.
->   -   **`datetime` [REQUIRED `string`] :**
+>   -   **`datetime` [OPTIONAL `object`] :**
 >       The time the status was created.
 >   -   **`isReblogged` [OPTIONAL `boolean`] :**
 >       Whether or not the user has reblogged this status.
@@ -362,7 +219,7 @@ The `Heading` is just a simple functional React component.
 >       Whether or not this status contains sensitive media.
 >   -   **`message` [OPTIONAL `string`] :**
 >       Spoiler text to display over the status.
->   -   **`visibility` [OPTIONAL `string`] :**
+>   -   **`visibility` [OPTIONAL `object`] :**
 >       The visibility of the status.
 >   -   **`mediaAttachments` [OPTIONAL `array`] :**
 >       An array of media attachments.
@@ -372,8 +229,6 @@ The `Heading` is just a simple functional React component.
 >       The account which reblogged this status.
 >   -   **`favouritedBy` [OPTIONAL `object`] :**
 >       The account which favourited this status.
->   -   **`follower` [OPTIONAL `object`] :**
->       The account which initiated a follow.
 
 ##  The Component  ##
 
@@ -384,22 +239,32 @@ The `Status` component is a fairly involved React component, which loads an `<ar
         mixins: [ReactPureRenderMixin]
 
         propTypes:
+            type: React.PropTypes.object.isRequired
             id: React.PropTypes.number.isRequired
             href: React.PropTypes.string
-            author: React.PropTypes.object
+            author: React.PropTypes.object.isRequired
             inReplyTo: React.PropTypes.number
-            content: React.PropTypes.string.isRequired
-            datetime: React.PropTypes.string
+            content: React.PropTypes.string
+            datetime: React.PropTypes.object
             isReblogged: React.PropTypes.bool
             isFavourited: React.PropTypes.bool
             isNSFW: React.PropTypes.bool
             message: React.PropTypes.string
-            visibility: React.PropTypes.string
+            visibility: React.PropTypes.object
             mediaAttachments: React.PropTypes.array
             mentions: React.PropTypes.array
             rebloggedBy: React.PropTypes.object
             favouritedBy: React.PropTypes.object
             follower: React.PropTypes.object
+
+###  Pulling from the context:
+
+We grab the router from the React context in order to handle page navigation.
+
+        contextTypes:
+            router: React.PropTypes.object.isRequired
+
+###  Listing the mentions:
 
 Our function `getListOfMentions()` gets the list of people mentioned in the post, although this is only shown if the post is a reply.
 We follow the Chicago convention of using "et al." if there are more than three accounts.
@@ -408,100 +273,144 @@ We follow the Chicago convention of using "et al." if there are more than three 
             when 0 then []
             when 1 then [
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[0].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[0].username
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[0].username
             ]
             when 2 then [
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[0].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[0].username
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[0].username
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.space"
+                    message: " "
                 彁 ReactIntl.FormattedMessage,
                     id: "status.and"
-                    message: " and "
+                    message: "and"
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.space"
+                    message: " "
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[1].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[1].username
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[1].username
             ]
             when 3 then [
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[0].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[0].username
-                ", "
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[0].username
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.comma"
+                    message: ", "
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[1].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[1].username
-                ", "
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[1].username
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.comma"
+                    message: ", "
                 彁 ReactIntl.FormattedMessage,
                     id: "status.and"
-                    message: " and "
+                    message: "and"
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.space"
+                    message: " "
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[2].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[2].username
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[2].username
             ]
             else [
                 彁 ReactRouter.Link, {to: "/user/" + @props.mentions[0].id},
-                    彁 "code", {className: "laboratory-username"}, @props.mentions[0].username
+                    彁 "code", {className: "labcoat-username"}, @props.mentions[0].username
+                彁 ReactIntl.FormattedMessage,
+                    id: "character.space"
+                    message: " "
                 彁 ReactIntl.FormattedMessage,
                     id: "status.etal"
-                    message: " et al."
+                    message: "et al."
             ]
 
         render: ->
             if @props.follower
-                彁 "article", {className: "laboratory-status"},
+                彁 "article", {className: "labcoat-status"},
                     彁 Shared.IDCard,
                         account: @props.follower
                     彁 ReactIntl.FormattedMessage,
+                        id: "character.space"
+                        message: " "
+                    彁 ReactIntl.FormattedMessage,
                         id: "status.followedyou"
-                        message: " followed you!"
+                        message: "followed you!"
             else
-                彁 "article", {className: "laboratory-status" + (if @props.isFavourited then " laboratory-status--highlighted" else "")},
-                    if @props.rebloggedBy? or @props.favouritedBy? or @props.inReplyTo? then 彁 "aside", null,
-                        (switch
+                彁 "article", {className: "labcoat-status" + (if @props.isFavourited then " labcoat-status--favourited" else "")},
+                    if @props.rebloggedBy? or @props.favouritedBy? or @props.inReplyTo? then 彁 "aside", null, (
+                        switch
                             when @props.inReplyTo? and @props.rebloggedBy? then [
                                 彁 ReactRouter.Link, {to: "/user/" + @props.rebloggedBy.id},
-                                    彁 "code", {className: "laboratory-username"}, @props.rebloggedBy.username
-                                (if @props.mentions?.length then [
-                                    彁 ReactIntl.FormattedMessage,
-                                        id: "status.boostedthisreplyto"
-                                        message: " boosted this reply to "
-                                    @getListOfMentions()...
-                                ]
-                                else [
-                                    彁 ReactIntl.FormattedMessage,
-                                        id: "status.boostedthisreply"
-                                        message: " boosted this reply"
-                                ])...
+                                    彁 "code", {className: "labcoat-username"}, @props.rebloggedBy.username
+                                彁 ReactIntl.FormattedMessage,
+                                    id: "character.space"
+                                    message: " "
+                                (
+                                    if @props.mentions?.length then [
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "status.rebloggedthisreplyto"
+                                            message: "boosted this reply to"
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "character.space"
+                                            message: " "
+                                        do @getListOfMentions...
+                                    ]
+                                    else [
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "status.rebloggedthisreply"
+                                            message: "boosted this reply"
+                                    ]
+                                )...
                             ]
                             when @props.inReplyTo? and @props.favouritedBy? then [
                                 彁 ReactRouter.Link, {to: "/user/" + @props.favouritedBy.id},
-                                    彁 "code", {className: "laboratory-username"}, @props.favouritedBy.username
-                                (if @props.mentions?.length then [
-                                    彁 ReactIntl.FormattedMessage,
-                                        id: "status.highlightedthisreplyto"
-                                        message: " highlighted this reply to "
-                                    @getListOfMentions()...
-                                ]
-                                else [
-                                    彁 ReactIntl.FormattedMessage,
-                                        id: "status.highlightedthisreply"
-                                        message: " highlighted this reply"
-                                ])...
+                                    彁 "code", {className: "labcoat-username"}, @props.favouritedBy.username
+                                彁 ReactIntl.FormattedMessage,
+                                    id: "character.space"
+                                    message: " "
+                                (
+                                    if @props.mentions?.length then [
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "status.favouritedthisreplyto"
+                                            message: "highlighted this reply to"
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "character.space"
+                                            message: " "
+                                        do @getListOfMentions...
+                                    ]
+                                    else [
+                                        彁 ReactIntl.FormattedMessage,
+                                            id: "status.favouritedthisreply"
+                                            message: "highlighted this reply"
+                                    ]
+                                )...
                             ]
                             when @props.rebloggedBy? then [
                                 彁 ReactRouter.Link, {to: "/user/" + @props.rebloggedBy.id},
-                                    彁 "code", {className: "laboratory-username"}, @props.rebloggedBy.username
+                                    彁 "code", {className: "labcoat-username"}, @props.rebloggedBy.username
                                 彁 ReactIntl.FormattedMessage,
-                                    id: "status.boostedthispost"
-                                    message: " boosted this post"
+                                    id: "character.space"
+                                    message: " "
+                                彁 ReactIntl.FormattedMessage,
+                                    id: "status.rebloggedthisstatus"
+                                    message: "boosted this post"
                             ]
                             when @props.favouritedBy? then [
                                 彁 ReactRouter.Link, {to: "/user/" + @props.favouritedBy.id},
-                                    彁 "code", {className: "laboratory-username"}, @props.favouritedBy.username
+                                    彁 "code", {className: "labcoat-username"}, @props.favouritedBy.username
                                 彁 ReactIntl.FormattedMessage,
-                                    id: "status.highlightedthispost"
-                                    message: " highlighted this post"
+                                    id: "character.space"
+                                    message: " "
+                                彁 ReactIntl.FormattedMessage,
+                                    id: "status.favouritedthisstatus"
+                                    message: "highlighted this post"
                             ]
                             when @props.inReplyTo?
                                 if @props.mentions?.length then [
                                     彁 ReactIntl.FormattedMessage,
                                         id: "status.inreplyto"
-                                        message: "In reply to "
-                                    @getListOfMentions()...
+                                        message: "In reply to"
+                                    彁 ReactIntl.FormattedMessage,
+                                        id: "character.space"
+                                        message: " "
+                                    do @getListOfMentions...
                                 ]
                                 else [
                                     彁 ReactIntl.FormattedMessage,
@@ -513,61 +422,76 @@ We follow the Chicago convention of using "et al." if there are more than three 
                     彁 "header", null,
                         彁 Shared.IDCard,
                             account: @props.author
-                        彁 ReactIntl.FormattedRelative, {value: Date.parse(@props.datetime)},
+                        彁 ReactIntl.FormattedRelative, {value: Date.parse @props.datetime},
                             (formattedDate) => 彁 "time", {dateTime: @props.datetime, title: @props.datetime}, formattedDate
                     彁 "div",
-                        className: "laboratory-statusContent"
+                        className: "labcoat-statusContent"
                         dangerouslySetInnerHTML:
                             __html: @props.content
-                    彁 "footer", null,
-                        彁 Shared.Button,
-                            className: "laboratory-button--minimal"
-                            containerClass: "laboratory-replybutton"
-                            icon: "reply"
-                            label: 彁 ReactIntl.FormattedMessage,
-                                id: "status.reply"
-                                defaultMessage: "Reply"
-                        if @props.isFavourited
-                            彁 Shared.Button,
-                                className: "laboratory-button--minimal"
-                                containerClass: "laboratory-unhighlightbutton"
-                                icon: "eraser"
+                    if @props.type is Laboratory.Post.Type.STATUS or @props.author.relationship isnt Laboratory.Profile.Relationship.SELF
+                        彁 "footer", null,
+                            彁 Shared.Action,
+                                className: "labcoat-reply"
+                                icon: "icon.reply"
                                 label: 彁 ReactIntl.FormattedMessage,
-                                    id: "status.unhighlight"
-                                    defaultMessage: "Unhighlight"
-                        else
-                            彁 Shared.Button,
-                                className: "laboratory-button--minimal"
-                                containerClass: "laboratory-highlightbutton"
-                                icon: "pencil"
-                                label: 彁 ReactIntl.FormattedMessage,
-                                    id: "status.highlight"
-                                    defaultMessage: "Highlight"
-                        if @props.isReblogged
-                            彁 Shared.Button,
-                                className: "laboratory-button--minimal"
-                                containerClass: "laboratory-unboostbutton"
-                                icon: "minus-square"
-                                label: 彁 ReactIntl.FormattedMessage,
-                                    id: "status.unboost"
-                                    defaultMessage: "Unboost"
-                        else if @props.visibility isnt "private"
-                            彁 Shared.Button,
-                                className: "laboratory-button--minimal"
-                                containerClass: "laboratory-boostbutton"
-                                icon: "plus-square"
-                                label: 彁 ReactIntl.FormattedMessage,
-                                    id: "status.boost"
-                                    defaultMessage: "Boost"
-                        else
-                            彁 Shared.Button,
-                                className: "laboratory-button--minimal"
-                                containerClass: "laboratory-noboostbutton"
-                                icon: "square-o"
-                                disabled: true
-                                label: 彁 ReactIntl.FormattedMessage,
-                                    id: "status.noboost"
-                                    defaultMessage: "Private"
+                                    id: "status.reply"
+                                    defaultMessage: "Reply"
+                                action: =>
+                                    @context.router.push "/compose?text=" + (if @props.author.relationship isnt Laboratory.Profile.Relationship.SELF then "@" + @props.author.localAccount else "") + "&inReplyTo=" + @props.id
+                            if @props.isFavourited
+                                彁 Shared.Action,
+                                    active: yes
+                                    className: "labcoat-unfavourite"
+                                    icon: "icon.unfavourite"
+                                    label: 彁 ReactIntl.FormattedMessage,
+                                        id: "status.unfavourite"
+                                        defaultMessage: "Unhighlight"
+                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
+                                        id: @props.id
+                                        value: off
+                            else
+                                彁 Shared.Action,
+                                    active: no
+                                    className: "labcoat-favourite"
+                                    icon: "icon.favourite"
+                                    label: 彁 ReactIntl.FormattedMessage,
+                                        id: "status.favourite"
+                                        defaultMessage: "Highlight"
+                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
+                                        id: @props.id
+                                        value: on
+                            if @props.isReblogged
+                                彁 Shared.Action,
+                                    active: yes
+                                    className: "labcoat-unreblog"
+                                    icon: "icon.unreblog"
+                                    label: 彁 ReactIntl.FormattedMessage,
+                                        id: "status.unreblog"
+                                        defaultMessage: "Unboost"
+                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
+                                        id: @props.id
+                                        value: off
+                            else if @props.visibility & Laboratory.Post.Visibility.REBLOGGABLE
+                                彁 Shared.Action,
+                                    active: no
+                                    className: "labcoat-reblog"
+                                    icon: "icon.reblog"
+                                    label: 彁 ReactIntl.FormattedMessage,
+                                        id: "status.reblog"
+                                        defaultMessage: "Boost"
+                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
+                                        id: @props.id
+                                        value: on
+                            else
+                                彁 Shared.Action,
+                                    active: no
+                                    className: "labcoat-noreblog"
+                                    icon: "icon.noreblog"
+                                    disabled: yes
+                                    label: 彁 ReactIntl.FormattedMessage,
+                                        id: "status.noreblog"
+                                        defaultMessage: "Private"
+                    else null
 
 
 #  `Columns.Empty`  #
@@ -583,7 +507,7 @@ We follow the Chicago convention of using "et al." if there are more than three 
 
 The `Empty` component is just a simple functional React component, which loads an empty `Column`.
 
-    Columns.Empty = -> 彁 Columns.Column, {id: "laboratory-empty"}, 彁 Columns.Heading
+    Columns.Empty = -> 彁 Columns.Column, {id: "labcoat-empty"}, 彁 Columns.Heading
 
 
 #  `Columns.Go`  #
@@ -607,25 +531,25 @@ The `Empty` component is just a simple functional React component, which loads a
 The `Go` component is just a simple functional React component, which loads a `Column` with helpful links.
 
     Columns.Go = (props) ->
-        彁 Columns.Column, {id: "laboratory-go"},
-            彁 Columns.Heading, {icon: "arrow-right"},
+        彁 Columns.Column, {id: "labcoat-go"},
+            彁 Columns.Heading, {icon: "icon.go"},
                 彁 ReactIntl.FormattedMessage,
                     id: "go.heading"
                     defaultMessage: "let's GO!"
-            彁 "nav", {className: "laboratory-columnnav"},
-                彁 Columns.GoLink, {to: "/user/" + props.myID, icon: "list-alt"},
+            彁 "nav", {className: "labcoat-columnnav"},
+                彁 Columns.GoLink, {to: "/user/" + props.myID, icon: "icon.profile"},
                     彁 ReactIntl.FormattedMessage,
                         id: 'go.profile'
                         defaultMessage: "Profile"
-                彁 Columns.GoLink, {to: "/community", icon: "users"},
+                彁 Columns.GoLink, {to: "/community", icon: "icon.community"},
                     彁 ReactIntl.FormattedMessage,
                         id: 'go.community'
                         defaultMessage: "Community"
-                彁 Columns.GoLink, {to: "/global", icon: "link"},
+                彁 Columns.GoLink, {to: "/global", icon: "icon.global"},
                     彁 ReactIntl.FormattedMessage,
                         id: 'go.global'
                         defaultMessage: "Global"
-            彁 "footer", {className: "laboratory-columnfooter"},
+            彁 "footer", {className: "labcoat-columnfooter"},
                 彁 "nav", null,
                     (彁 "a", {href: value, target: "_self"}, key for key, value of (if props.footerLinks? then props.footerLinks else {}))...
 
@@ -648,71 +572,14 @@ The `Go` component is just a simple functional React component, which loads a `C
 The `NotFound` component is just a simple functional React component, which loads a `Column` and remarks that the page could not be found.
 
     Columns.NotFound = ->
-        彁 Columns.Column, {id: "laboratory-notfound"},
-            彁 Columns.Heading, {icon: "exclamation-triangle"},
+        彁 Columns.Column, {id: "labcoat-notfound"},
+            彁 Columns.Heading, {icon: "icon.notfound"},
                 彁 ReactIntl.FormattedMessage,
-                    id: 'notfound.not_found'
+                    id: 'notfound.notfound'
                     defaultMessage: "Not found"
             彁 ReactIntl.FormattedMessage,
-                id: 'notfound.not_found'
+                id: 'notfound.notfound'
                 defaultMessage: "Not found"
-
-
-#  `Columns.Notifications`  #
-
-##  Usage  ##
-
->   ```jsx
->       <Notifications />
->   ```
->   Creates a `Notifications` component, which contains a column of notifications.
-
-##  The Component  ##
-
-Our `Notifications` component doesn't take any properties, as it is only used for displaying notifications.
-
-    Columns.Notifications = React.createClass
-
-        mixins: [ReactPureRenderMixin]
-
-        getInitialState: ->
-            posts: {}
-            postOrder: []
-
-###  Handling the event callback:
-
-When we receive a response from Laboratory, we have to handle it with respect to our state.
-
-        handleResponse: (timeline) -> @setState timeline
-
-###  Loading:
-
-When our component first loads, we should request its data.
-
-        componentWillMount: ->
-            Laboratory.Timeline.Requested.dispatch
-                name: "notifications"
-                callback: @handleResponse
-
-###  Unloading:
-
-When our component unloads, we should signal that we no longer need its data.
-
-        componentWillUnmount: ->
-            Laboratory.Timeline.Removed.dispatch
-                name: "notifications"
-                callback: @handleResponse
-
-###  Rendering:
-
-        render: ->
-            彁 Columns.Column, {id: "laboratory-notifications"},
-                彁 Columns.Heading, {icon: "star-half-o"},
-                    彁 ReactIntl.FormattedMessage,
-                        id: "notifications.notifications"
-                        defaultMessage: "Notifications"
-                彁 "div", {className: "laboratory-posts"},
-                    (彁 Columns.Status, @state.posts[id] for id in @state.postOrder)...
 
 
 #  `Columns.Timeline`  #
@@ -740,69 +607,95 @@ Our Timeline only has one property, a string specifying the `name` of the timeli
             name: React.PropTypes.string.isRequired
 
         getInitialState: ->
-            posts: {}
-            postOrder: []
+            timeline: null
 
 ###  Handling the event callback:
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (timeline) -> @setState timeline
+        handleResponse: (event) ->
+            params = do @getParams
+            timeline = event.detail
+            @setState {timeline} if timeline.type is params.type and timeline.query is params.query
+
+###  Getting the timeline parameters:
+
+The timeline parameters can be derived from `name` using the following function:
+
+        getParams: (name = @props.name) -> switch
+            when name is "home"
+                type: Laboratory.Timeline.Type.HOME
+                query: ""
+            when name is "community"
+                type: Laboratory.Timeline.Type.LOCAL
+                query: ""
+            when name is "global"
+                type: Laboratory.Timeline.Type.GLOBAL
+                query: ""
+            when (name.substr 0, 8) is "hashtag/"
+                type: Laboratory.Timeline.Type.HASHTAG
+                query: name.substr 8
+            when (name.substr 0, 5) is "user/"
+                type: Laboratory.Timeline.Type.USER
+                query: name.substr 5
+            when name is "notifications"
+                type: Laboratory.Timeline.Type.NOTIFICATIONS
+                query: ""
+            when name is "highlights"
+                type: Laboratory.Timeline.Type.FAVOURITES
+                query: ""
+            else
+                type: Laboratory.Timeline.Type.UNDEFINED
+                query: ""
 
 ###  Getting the heading icon:
 
 The heading icon can be derived from `name` using the following function:
 
-        getIcon: -> switch
-            when @props.name is "home" then "home"
-            when @props.name is "community" then "users"
-            when @props.name is "global" then "link"
-            when @props.name.substr(0, 8) is "hashtag/" then "hashtag"
-            when @props.name.substr(0, 5) is "user/" then "at"
-            else "question-circle"
+        getIcon: -> switch (do @getParams).type
+            when Laboratory.Timeline.Type.HOME then "icon.home"
+            when Laboratory.Timeline.Type.LOCAL then "icon.community"
+            when Laboratory.Timeline.Type.GLOBAL then "icon.global"
+            when Laboratory.Timeline.Type.HASHTAG is "hashtag/" then "icon.hashtag"
+            when Laboratory.Timeline.Type.USER is "user/" then "icon.user"
+            when Laboratory.Timeline.Type.NOTIFICATIONS then "icon.notifications"
+            when Laboratory.Timeline.Type.FAVOURITES then "icon.favourite"
+            else "icon.mystery"
 
 ###  Property change:
 
 If our `name` property changes then we need to request the new data.
-Essentially we remove our old request and send a new one.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.name isnt nextProps.name
-            Laboratory.Timeline.Removed.dispatch
-                name: @props.name
-                callback: @handleResponse
-            Laboratory.Timeline.Requested.dispatch
-                name: nextProps.name
-                callback: @handleResponse
+            Laboratory.dispatch "LaboratoryTimelineRequested", @getParams nextProps.name
 
 ###  Loading:
 
 When our timeline first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.Timeline.Requested.dispatch
-                name: @props.name
-                callback: @handleResponse
+            Laboratory.listen "LaboratoryTimelineReceived", @handleResponse
+            Laboratory.dispatch "LaboratoryTimelineRequested", do @getParams
 
 ###  Unloading:
 
-When our timeline unloads, we should signal that we no longer need its data.
+When our timeline unloads, we should forget our listener.
 
         componentWillUnmount: ->
-            Laboratory.Timeline.Removed.dispatch
-                name: @props.name
-                callback: @handleResponse
+            Laboratory.forget "LaboratoryTimelineReceived", @handleResponse
 
 ###  Rendering:
 
         render: ->
-            彁 Columns.Column, null,
-                彁 Columns.Heading, {icon: @getIcon()},
+            彁 Columns.Column, (if @props.name is "notifications" then {id: "labcoat-notifications"} else null),
+                彁 Columns.Heading, {icon: do @getIcon},
                     彁 ReactIntl.FormattedMessage,
                         id: "timeline." + @props.name
-                        defaultMessage: @props.name.charAt(0).toLocaleUpperCase() + @props.name.slice(1)
-                彁 "div", {className: "laboratory-posts"},
-                    (彁 Columns.Status, @state.posts[id] for id in @state.postOrder)...
+                        defaultMessage: do (@props.name.charAt 0).toLocaleUpperCase + @props.name.slice 1
+                if @state.timeline? then 彁 "div", {className: "labcoat-posts"},
+                    (彁 Columns.Status, post for post in @state.timeline.posts)...
+                else null
 
 
 #  MODULES  #
@@ -862,7 +755,7 @@ When our component receives new props, we run our `close()` function if the `clo
 
         componentWillReceiveProps: (nextProps) ->
             return unless nextProps.close and not @state.shouldClose
-            @close()
+            do @close
 
 ###  Closing:
 
@@ -872,15 +765,15 @@ We do this on a `.5s` timeout to give our closing animation time to run.
 
         close: ->
             @setState {shouldClose: true}
-            window.setTimeout (=> if @props.closeTo or window.history?.length <= 1 then @context.router.push(@props.closeTo or "/") else @context.router.goBack()), 500
+            window.setTimeout (=> if @props.closeTo or window.history?.length <= 1 then @context.router.push @props.closeTo or "/" else do @context.router.goBack), 500
 
 ###  Rendering:
 
 The `render()` function displays our module: just a `<div>` curtain behind our `<main>` element, with children stuck inside.
 
         render: ->
-            彁 "div", (if @state.shouldClose then {id: "laboratory-module", "data-laboratory-dismiss": ""} else {id: "laboratory-module"}),
-                彁 "div", {id: "laboratory-curtain", onClick: @close}
+            彁 "div", (if @state.shouldClose then {id: "labcoat-module", "data-labcoat-dismiss": ""} else {id: "labcoat-module"}),
+                彁 "div", {id: "labcoat-curtain", onClick: @close}
                 彁 "main", (if @props.attributes? then @props.attributes else null),
                 @props.children
 
@@ -920,7 +813,9 @@ Our Account only has one property, a number specifying the `id` of the timeline.
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (account) -> @setState {account}
+        handleResponse: (event) ->
+            account = event.detail
+            @setState {account} if account.id is @props.id
 
 ###  Property change:
 
@@ -929,30 +824,22 @@ Essentially we remove our old request and send a new one.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.id isnt nextProps.id
-            Laboratory.Account.Removed.dispatch
-                id: @props.id
-                callback: @handleResponse
-            Laboratory.Account.Requested.dispatch
-                id: nextProps.id
-                callback: @handleResponse
+            Laboratory.dispatch "LaboratoryProfileRequested", {id: nextProps.id}
 
 ###  Loading:
 
 When our account first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.Account.Requested.dispatch
-                id: @props.id
-                callback: @handleResponse
+            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
+            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.id}
 
 ###  Unloading:
 
 When our account unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.Account.Removed.dispatch
-                id: @props.id
-                callback: @handleResponse
+            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
 
 ###  Rendering:
 
@@ -964,45 +851,45 @@ Otherwise, we will let the old data stay until our new information is loaded.
 
         render: ->
             return null unless @state.account?
-            彁 Modules.Module, {attributes: {id: "laboratory-account"}},
+            彁 Modules.Module, {attributes: {id: "labcoat-account"}},
                 彁 "header", {style: {backgroundImage: "url(#{@state.account.header})"}},
                     彁 "a", {src: @state.account.header, target: "_blank"}
                 彁 Shared.IDCard, {account: @state.account, externalLinks: true}
                 switch
-                    when @state.account.relationship & Laboratory.Relationship.SELF then null
-                    when @state.account.relationship & Laboratory.Relationship.FOLLOWING
+                    when @state.account.relationship & Laboratory.Profile.Relationship.SELF then null
+                    when @state.account.relationship & Laboratory.Profile.Relationship.FOLLOWING
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
                                 id: "account.unfollow"
                                 defaultMessage: "Unfollow"
-                            icon: "user-times"
-                    when @state.account.relationship & Laboratory.Relationship.BLOCKING
+                            icon: "icon.unfollow"
+                    when @state.account.relationship & Laboratory.Profile.Relationship.BLOCKING
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
                                 id: "account.blocked"
                                 defaultMessage: "Blocked"
-                            icon: "ban"
+                            icon: "icon.blocked"
                             disabled: true
-                    when @state.account.relationship & Laboratory.Relationship.REQUESTED
+                    when @state.account.relationship & Laboratory.Profile.Relationship.REQUESTED
                         彁 Shared.Button,
                             label: 彁 ReactIntl.FormattedMessage,
-                                id: "account.requestsent"
+                                id: "account.requested"
                                 defaultMessage: "Request Sent"
-                            icon: "share-square"
+                            icon: "icon.requested"
                             disabled: true
                     else
                         if @state.account.locked
                             彁 Shared.Button,
                                 label: 彁 ReactIntl.FormattedMessage,
-                                    id: "account.requestfollow"
+                                    id: "account.request"
                                     defaultMessage: "Request Follow"
-                                icon: "user-secret"
+                                icon: "icon.request"
                         else
                             彁 Shared.Button,
                                 label: 彁 ReactIntl.FormattedMessage,
                                     id: "account.follow"
                                     defaultMessage: "Follow"
-                                icon: "user-plus"
+                                icon: "icon.follow"
                 彁 "p",
                     dangerouslySetInnerHTML:
                         __html: @state.account.bio
@@ -1037,6 +924,8 @@ Otherwise, we will let the old data stay until our new information is loaded.
 >           myID=React.PropTypes.number.isRequired
 >           visible=React.PropTypes.boolean
 >           defaultPrivacy=React.PropTypes.string
+>           text=React.PropTypes.string
+>           inReplyTo=React.PropTypes.number
 >       />
 >   ```
 >   Creates a `Composer` component, which allows a user to compose a post. The accepted properties are:
@@ -1048,6 +937,10 @@ Otherwise, we will let the old data stay until our new information is loaded.
 >       Whether or not to show the composer
 >   -   **`defaultPrivacy` [OPTIONAL `string`] :**
 >       Should be one of {`"public"`, `"private"`, `"unlisted"`}, and effectively defaults to `"unlisted"` if not provided.
+>   -   **`text` [OPTIONAL `string`] :**
+>       The initial text for the composer.
+>   -   **`inReplyTo` [OPTIONAL `number`] :**
+>       The post ID which this post is replying to.
 
 ##  The Component  ##
 
@@ -1062,6 +955,12 @@ The `Composer` class creates our post composition module, which is a surprisingl
             myID: React.PropTypes.number.isRequired
             defaultPrivacy: React.PropTypes.string
             visible: React.PropTypes.bool
+            text: React.PropTypes.string
+            inReplyTo: React.PropTypes.number
+
+        getDefaultProps: ->
+            text: ""
+            inReplyTo: undefined
 
 ###  Our state:
 
@@ -1070,7 +969,9 @@ You will note that `text` is initialized to `\n`—in order to function properly
 
         getInitialState: ->
             account: null
-            text: "\n"
+            replyStatus: null
+            text: @props.text + "\n"
+            inReplyTo: if isFinite @props.inReplyTo then Number @props.inReplyTo else undefined
             message: ""
             charsLeft: @props.maxChars
             makePublic: @props.defaultPrivacy isnt "private"
@@ -1091,25 +992,32 @@ We will also need `intl` from the React context in order to access the composer 
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (account) -> @setState {account}
+        handleResponse: (event) ->
+            response = event.detail
+            switch
+                when response instanceof Laboratory.Profile then @setState {account: response}
+                when response instanceof Laboratory.Post and response.id is @props.inReplyTo then @setState {replyStatus: response}
+            return
 
 ###  Loading:
 
 When our compose module first loads, we should request the account data for the currently signed-in user.
+We'll also request the status the post is replying to, if applicable.
 
         componentWillMount: ->
-            Laboratory.Account.Requested.dispatch
-                id: @props.myID
-                callback: @handleResponse
+            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
+            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.myID}
+            if isFinite @props.inReplyTo
+                Laboratory.listen "LaboratoryPostReceived", @handleResponse
+                Laboratory.dispatch "LaboratoryPostRequested", {id: @props.inReplyTo}
 
 ###  Unloading:
 
 When our compose module unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.Account.Removed.dispatch
-                id: @props.myID
-                callback: @handleResponse
+            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
+            Laboratory.forget "LaboratoryPostReceived", @handleResponse
 
 ###  Our inputs:
 
@@ -1124,20 +1032,32 @@ We store our inputs in a instance variable, and you'll see in `render()` that we
             useMessage: null
             post: null
 
-###  Resets `shouldClose`:
+###  Updating:
 
 The `shouldClose` state variable is used to register the fact that a post has been sent, and the composer module should now close.
 However, we don't want this variable to *keep* signalling this fact if we then open the composer a second time.
 If our `visible` property switches from `false` to `true` then we reset `shouldClose` before proceeding.
 
         componentWillReceiveProps: (nextProps) ->
+
             @setState {shouldClose: false} if not @props.visible and nextProps.visible
+
+If our props are about to change so we are replying to a different status, we need to request it.
+
+            if (isFinite nextProps.inReplyTo) and nextProps.inReplyTo isnt @props.inReplyTo
+                Laboratory.listen "LaboratoryPostReceived", @handleResponse
+                Laboratory.dispatch "LaboratoryPostRequested", {id: nextProps.inReplyTo}
+
+If our props update, we should update the store to reflect the new data.
+
+            @setState {text: nextProps.text + "\n"} if nextProps.text isnt @props.text
+            @setState {inReplyTo: Number nextProps.inReplyTo} if (isFinite nextProps.inReplyTo) and nextProps.inReplyTo isnt @props.inReplyTo
 
 ###  Finding out how many characters are left:
 
 This code quickly replaces all surrogate pairs with a single underscore to achieve an accurate character count.
 
-        getCharsLeft: -> @charsLeft = @props.maxChars - (@input.textbox.value + @input.message.value).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "_").length + 1
+        getCharsLeft: -> @charsLeft = @props.maxChars - ((@input.textbox.value + @input.message.value).replace /[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "_").length + 1
 
 ###  Formatting our text:
 
@@ -1149,11 +1069,11 @@ We use `<br>`s to represent line-breaks because these have the best browser supp
 Again, in order for everything to function smoothly we need to ensure that the last node in this result is a `<br>` element.
 
         format: (text) ->
-            result = document.createElement("div")
-            lines = text.split("\n")
+            result = document.createElement "div"
+            lines = text.split "\n"
             for i in [0..lines.length-1]
-                result.appendChild(document.createTextNode(lines[i])) if lines[i]
-                result.appendChild(document.createElement("br")) if i isnt lines.length - 1 or lines[i]
+                result.appendChild document.createTextNode lines[i] if lines[i]
+                result.appendChild document.createElement "br" if i isnt lines.length - 1 or lines[i]
             return result.innerHTML
 
 ###  Event handling:
@@ -1167,7 +1087,7 @@ We also do checks regarding public/private and listed/unlisted to make sure you 
                     switch event.target
                         when @input.message then @setState
                             message: @input.message.value
-                            charsLeft: @getCharsLeft()
+                            charsLeft: do @getCharsLeft
                         when @input.makePublic then @setState
                             makePublic: @input.makePublic.checked
                             makeListed: @input.makeListed.checked and @input.makePublic.checked
@@ -1182,16 +1102,19 @@ When a user clicks the "Post" button, we fire off a `Composer.Post` event with o
 Public/private and listed/unlisted settings are maintained for the next post.
 
                 when "click"
-                    if event.target is @input.post and @getCharsLeft() >= 0
-                        Laboratory.Composer.Post.dispatch
-                            text: @text
+                    if event.target is @input.post and do @getCharsLeft >= 0
+                        Laboratory.dispatch "LaboratoryPostComposed",
+                            text: @state.text
                             message: if @state.useMessage then @state.message else null
                             makePublic: @state.makePublic
                             makeListed: @state.makeListed
                             makeNSFW: @state.makeNSFW
+                            inReplyTo: @state.inReplyTo
                         @setState
-                            text: ""
+                            replyStatus: null
+                            text: "\n"
                             message: ""
+                            inReplyTo: undefined
                             charsLeft: @props.maxChars
                             useMessage: false
                             makeNSFW: false
@@ -1217,28 +1140,28 @@ Some things to note:
 With those things in mind, here's the function:
 
         render: ->
-            return null unless @props.visible
-            彁 Modules.Module, {attributes: {id: "laboratory-composer"}, close: @state.shouldClose},
+            return null unless @props.visible and (not @state.inReplyTo or @state.replyStatus?.id is @state.inReplyTo)
+            彁 Modules.Module, {attributes: {id: "labcoat-composer"}, close: @state.shouldClose},
                 彁 "header", null,
                     if @state.account then 彁 Shared.IDCard, {account: @state.account} else null
                 彁 Shared.Textbox,
-                    id: "laboratory-composertextbox"
+                    id: "labcoat-composertextbox"
                     "aria-label": @context.intl.messages["composer.placeholder"]
-                    onChange: ((text) => @setState {text, charsLeft: @getCharsLeft()})
-                    value: @format(@state.text)
+                    onChange: ((text) => @setState {text, charsLeft: do @getCharsLeft})
+                    value: @format @state.text
                     ref: ((ref) => @input.textbox = ref)
                 彁 "footer", null,
-                    彁 "span", {id: "laboratory-count"}, if isNaN(@state.charsLeft) then "" else @state.charsLeft
+                    彁 "span", {id: "labcoat-count"}, if isNaN @state.charsLeft then "" else @state.charsLeft
                     彁 Shared.Button,
                         onClick: @handleEvent
                         getRef: ((ref) => @input.post = ref)
                         disabled: @state.charsLeft < 0
-                        icon: "paper-plane-o"
                         label: 彁 ReactIntl.FormattedMessage,
                             id: "composer.post"
                             defaultMessage: "Post"
-                彁 "aside", {id: "laboratory-composeroptions"},
-                    彁 "div", {id: "laboratory-postoptions"},
+                        icon: "icon.post"
+                彁 "aside", {id: "labcoat-composeroptions"},
+                    彁 "div", {id: "labcoat-postoptions"},
                         彁 Shared.Toggle,
                             getRef: (ref) => @input.makePublic = ref
                             checked: @state.makePublic
@@ -1246,8 +1169,8 @@ With those things in mind, here's the function:
                             inactiveText: 彁 ReactIntl.FormattedMessage,
                                 id: "composer.private"
                                 defaultMessage: "Private"
-                            inactiveIcon: "microphone-slash"
-                            activeIcon: "rss"
+                            inactiveIcon: "icon.private"
+                            activeIcon: "icon.public"
                             activeText: 彁 ReactIntl.FormattedMessage,
                                 id: "composer.public"
                                 defaultMessage: "Public"
@@ -1258,8 +1181,8 @@ With those things in mind, here's the function:
                             inactiveText: 彁 ReactIntl.FormattedMessage,
                                 id: "composer.unlisted"
                                 defaultMessage: "Unlisted"
-                            inactiveIcon: "envelope-o"
-                            activeIcon: "newspaper-o"
+                            inactiveIcon: "icon.unlisted"
+                            activeIcon: "icon.listed"
                             activeText: 彁 ReactIntl.FormattedMessage,
                                 id: "composer.listed"
                                 defaultMessage: "Listed"
@@ -1269,27 +1192,27 @@ With those things in mind, here's the function:
                             onChange: @handleEvent
                             disabled: @state.forceNSFW
                             inactiveText: 彁 ReactIntl.FormattedMessage,
-                                id: "composer.safe"
+                                id: "composer.sfw"
                                 defaultMessage: "Safe"
-                            inactiveIcon: "picture-o"
-                            activeIcon: "exclamation"
+                            inactiveIcon: "icon.sfw"
+                            activeIcon: "icon.nsfw"
                             activeText: 彁 ReactIntl.FormattedMessage,
-                                id: "composer.sensitive"
+                                id: "composer.nsfw"
                                 defaultMessage: "Sensitive"
-                    彁 "div", {id: "laboratory-hideoptions"},
+                    彁 "div", {id: "labcoat-hideoptions"},
                         彁 Shared.Toggle,
                             getRef: (ref) => @input.useMessage = ref
                             checked: @state.useMessage
                             onChange: @handleEvent
                             inactiveText: ""
-                            inactiveIcon: "ellipsis-h"
-                            activeIcon: "question-circle-o"
+                            inactiveIcon: "icon.nomessage"
+                            activeIcon: "icon.message"
                             activeText: 彁 ReactIntl.FormattedMessage,
-                                id: "composer.hidewithmessage"
+                                id: "composer.message"
                                 defaultMessage: "Hide behind message"
                         彁 "input",
                             type: "text"
-                            placeholder: "…… ……"
+                            placeholder: @context.intl.messages["composer.nomessage"]
                             value: @state.message
                             ref: (ref) => @input.message = ref
                             onChange: @handleEvent
@@ -1304,6 +1227,74 @@ With those things in mind, here's the function:
 ##  Implementation  ##
 
     Shared = {}
+
+
+#  `Shared.Action`  #
+
+##  Usage  ##
+
+>   ```jsx
+>       <Action
+>           active=React.PropTypes.boolean
+>           icon=React.PropTypes.string.isRequired
+>           label=React.PropTypes.element||React.PropTypes.string
+>           getRef=React.PropTypes.func
+>           className=React.PropTypes.string
+>       />
+>   ```
+>   Creates an `Action` component, which renders a labelled button for use with particular actions. Some of the accepted properties are:
+>   -   **`active` [OPTIONAL `boolean`] :**
+>       The action's icon.
+>   -   **`icon` [REQUIRED `string`] :**
+>       The action's icon.
+>   -   **`label` [OPTIONAL `element` or `string`] :**
+>       The action's label, rendered beside it.
+>   -   **`getRef` [OPTIONAL `function`] :**
+>       A callback which receives a reference to the action's `<button>` element.
+>   -   **`className` [OPTIONAL `string`] :**
+>       A class name to apply to the action container.
+>   -   **`action` [OPTIONAL `function`] :**
+>       A callback to call when the element is clicked.
+
+##  The Component  ##
+
+The `Action` component is just a simple React component which displays a button for causing an action.
+It passes its properties to the `<button>` element it creates.
+
+    Shared.Action = React.createClass
+
+        mixins: [ReactPureRenderMixin]
+
+        propTypes:
+            active: React.PropTypes.bool
+            icon: React.PropTypes.string.isRequired
+            label: React.PropTypes.oneOfType [
+                React.PropTypes.element
+                React.PropTypes.string
+            ]
+            getRef: React.PropTypes.func
+            className: React.PropTypes.string
+            action: React.PropTypes.func
+
+        getDefaultProps: ->
+            active: false
+            label: ""
+            action: ->
+
+        action: null
+
+        componentDidMount: -> @props.getRef @action if @props.getRef
+
+        render: ->
+            output_props =
+                className: "labcoat-action"
+                ref: (ref) => @action = ref
+            for own key, val of @props
+                output_props[key] = val if (["className", "getRef", "ref", "label", "icon", "containerClass"].indexOf key) is -1
+            彁 "label", {className: "labcoat-actioncontainer" + (if @props.className then " " + @props.className else "") + (if @props.disabled then " labcoat-actioncontainer--disabled" else "") + (if @props.active then " labcoat-actioncontainer--active" else ""), onClick: @props.action},
+                @props.label
+                彁 "button", output_props,
+                    彁 Shared.Icon, {name: @props.icon}
 
 
 #  `Shared.Button`  #
@@ -1349,16 +1340,18 @@ It passes its properties to the `<button>` element it creates.
         getDefaultProps: ->
             label: ""
 
-        componentDidMount: -> @props.getRef(@button) if @props.getRef
+        button: null
+
+        componentDidMount: -> @props.getRef @button if @props.getRef
 
         render: ->
             output_props =
-                className: "laboratory-button"
+                className: "labcoat-button"
                 ref: (ref) => @button = ref
             for own key, val of @props
                 if key is "className" then output_props[key] += " " + val
-                else if ["getRef", "ref", "label", "icon", "containerClass"].indexOf(key) is -1 then output_props[key] = val
-            彁 "label", {className: "laboratory-buttoncontainer" + (if @props.containerClass then " " + @props.containerClass else "") + (if @props.disabled then " laboratory-buttoncontainer--disabled" else "")},
+                else if (["getRef", "ref", "label", "icon", "containerClass"].indexOf key) is -1 then output_props[key] = val
+            彁 "label", {className: "labcoat-buttoncontainer" + (if @props.containerClass then " " + @props.containerClass else "") + (if @props.disabled then " labcoat-buttoncontainer--disabled" else "")},
                 @props.label
                 彁 "button", output_props,
                     彁 Shared.Icon, {name: @props.icon}
@@ -1373,19 +1366,30 @@ It passes its properties to the `<button>` element it creates.
 >           name=React.PropTypes.string.isRequired
 >       />
 >   ```
->   Creates an `Icon` component, which provides a fontawesome icon.
+>   Creates an `Icon` component, which provides a fontawesome icon. The accepted properties are:
+>   -   **`name` [REQUIRED `string`] :**
+>       The message used to acquire the icon.
 
 ##  The Component  ##
 
-The `Icon` is just a simple functional React component.
+The `Icon` is just a simple React component.
 
-    Shared.Icon = (props) ->
-        彁 'i',
-            className: "fa fa-fw fa-" + props.name
-            "aria-hidden": true
+    Shared.Icon = React.createClass
 
-    Shared.Icon.propTypes =
-        name: React.PropTypes.string.isRequired
+        mixins: [ReactPureRenderMixin]
+
+        propTypes:
+            name: React.PropTypes.string.isRequired
+
+We will need `intl` from the React context in order to access the composer placeholder text.
+
+        contextTypes:
+            intl: React.PropTypes.object.isRequired
+
+        render: ->
+            彁 'i',
+                className: "fa fa-fw fa-" + (@context.intl.messages[@props.name] || @props.name)
+                "aria-hidden": true
 
 
 #  `Shared.IDCard`  #
@@ -1410,12 +1414,12 @@ The `IDCard` is just a simple functional React component.
 
     Shared.IDCard = (props) ->
         return null unless props.account instanceof Object
-        彁 'div', {className: "laboratory-idcard"},
-            彁 'a', {href: props.account.avatar, target: "_blank"},
-                彁 'img', {className: "laboratory-avatar", src: props.account.avatar, alt: props.account.displayName}
+        彁 'div', {className: "labcoat-idcard"},
+            彁 (if props.externalLinks then ["a", {href: props.account.avatar, target: "_blank"}] else [ReactRouter.Link, {to: "user/" + props.account.id, title: props.account.displayName}])...,
+                彁 'img', {className: "labcoat-avatar", src: props.account.avatar, alt: props.account.displayName}
             彁 (if props.externalLinks then ["a", {href: props.account.href, title: props.account.displayName, target: "_blank"}] else [ReactRouter.Link, {to: "user/" + props.account.id, title: props.account.displayName}])...,
-                彁 'b', {className: "laboratory-displayname"}, props.account.displayName
-                彁 'code', {className: "laboratory-username"}, props.account.localAccount
+                彁 'b', {className: "labcoat-displayname"}, props.account.displayName
+                彁 'code', {className: "labcoat-username"}, props.account.localAccount
 
     Shared.IDCard.propTypes =
         account: React.PropTypes.object.isRequired
@@ -1467,8 +1471,8 @@ Similarly, the `value` property passed down contains HTML-formatted content with
             value: "<br>"
 
         componentDidMount: ->
-            @props.getRef(@input) if @props.getRef?
-            @value = @getContents()
+            @props.getRef @input if @props.getRef?
+            @value = do @getContents
 
         caret: 0
         value: "\n"
@@ -1482,18 +1486,18 @@ However, if the user types "enter" then we need to ensure that the result is jus
             return unless (event.type is "input" or event.type is "blur" or event.type is "keypress") and event.target is @input
             if event.type is "keypress"
                 if event.key is "Enter" or event.code is "Enter" or event.keyCode is 0x0D
-                    event.preventDefault()
-                    sel = window.getSelection()
+                    do event.preventDefault
+                    sel = do window.getSelection
                     rng = sel.getRangeAt 0
-                    rng.deleteContents()
-                    rng.insertNode(br = document.createElement "br")
+                    do rng.deleteContents
+                    rng.insertNode br = document.createElement "br"
                     rng.setEndAfter br
                     rng.collapse false
-                    sel.removeAllRanges()
+                    do sel.removeAllRanges
                     sel.addRange rng
                 else return
-            @value = @getContents()
-            @props.onChange(@value) if @props.onChange
+            @value = do @getContents
+            @props.onChange @value if @props.onChange
 
 ###  Retrieving textbox contents:
 
@@ -1505,11 +1509,11 @@ So, this is a `<br>`-aware `Element.textContent`.
             wkr = document.createTreeWalker @input
             nde = null
             out = ""
-            while wkr.nextNode()?
+            while (do wkr.nextNode)?
                 nde = wkr.currentNode
                 if nde.nodeType is Node.TEXT_NODE then out += nde.textContent
-                else if nde.nodeType is Node.ELEMENT_NODE and nde.tagName.toUpperCase() is "BR" then out += "\n"
-            out += "\n" if out.length and out.slice(-1) isnt "\n"
+                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase() is "BR" then out += "\n"
+            out += "\n" if out.length and (out.slice -1) isnt "\n"
             return out
 
 ###  Updating the DOM only when necessary:
@@ -1529,38 +1533,38 @@ This script gets our current caret position, so we can put it back after we inse
 
 We store the current selection with `sel` and the current range of the selection with `rng`.
 
-            sel = window.getSelection()
+            sel = do window.getSelection
             rng = sel.getRangeAt 0
 
 `pre` is a range consisting of everything leading up to the end of `rng`.
 First we select our entire text area, and then we set the endpoint of the range to be the endpoint of our current selection.
 
-            pre = rng.cloneRange()
+            pre = do rng.cloneRange
             pre.selectNodeContents @input
             pre.setEnd rng.endContainer, rng.endOffset
 
 This next line tells us how many line breaks were in the selected range.
 This is a somewhat expensive operation as it involves cloning DOM nodes, but there isn't any faster way.
 
-            brs = pre.cloneContents().querySelectorAll("br").length
+            brs = ((do pre.cloneContents).querySelectorAll "br").length
 
 We can now find the length of the selection by adding the text content to the number of line breaks.
 
-            @caret = pre.toString().length + brs
-            pre.detach()
+            @caret = (do pre.toString).length + brs
+            do pre.detach
             return
 
 ###  Mangaing caret position before and after updating:
 
 We use `componentWillUpdate` to grab the caret position right before updating, and `componentDidUpdate` to set it right after.
 
-        componentWillUpdate: -> @updateCaretPos()
+        componentWillUpdate: -> do @updateCaretPos
 
 We're going to use a `TreeWalker` to walk the contents of our textbox until we find the correct position to stick our caret.
 
         componentDidUpdate: ->
-            sel = window.getSelection()
-            rng = document.createRange()
+            sel = do window.getSelection
+            rng = do document.createRange
             wkr = document.createTreeWalker @input
             idx = 0
             nde = null
@@ -1574,14 +1578,14 @@ This loop breaks when either we run out of nodes, or we find the text node that 
 It will also break if we wind up in-between two `<br>`s, as that is a possibility.
 
             loop
-                break unless wkr.nextNode()?
+                break unless (do wkr.nextNode)?
                 nde = wkr.currentNode
                 if nde.nodeType is Node.TEXT_NODE
                     if idx <= @caret <= idx + nde.textContent.length
                         success = true
                         break
                     else idx += nde.textContent.length
-                else if nde.nodeType is Node.ELEMENT_NODE and nde.tagName.toUpperCase() is "BR"
+                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase is "BR"
                     if idx++ is @caret
                         success = true
                         break
@@ -1596,7 +1600,7 @@ Either way, we collapse the range to its endpoint and move the caret there.
             else if @input.lastChild?.nodeName.toUpperCase is "BR" then rng.setEnd @input, @input.childNodes.length - 1
             else rng.selectNodeContents @input
             rng.collapse false
-            sel.removeAllRanges()
+            do sel.removeAllRanges
             sel.addRange rng
 
 ###  Rendering
@@ -1606,7 +1610,7 @@ We set it's contents through `dangerouslySetInnerHTML`, which would normally be 
 
         render: ->
             output_props =
-                className: "laboratory-textbox" + (if @props.value.toLowerCase() is "<br>" or @props.value is "\n" or @props.value is "" then " laboratory-textbox--empty" else "") + (if @props.className? then " " + @props.className else "")
+                className: "labcoat-textbox" + (if do @props.value.toLowerCase is "<br>" or @props.value is "\n" or @props.value is "" then " labcoat-textbox--empty" else "") + (if @props.className? then " " + @props.className else "")
                 contentEditable: true
                 onKeyPress: @handleEvent
                 onInput: @handleEvent
@@ -1614,7 +1618,7 @@ We set it's contents through `dangerouslySetInnerHTML`, which would normally be 
                 ref: (ref) => @input = ref
                 dangerouslySetInnerHTML:
                     __html: @props.value
-            output_props[key] = value for own key, value of @props when ["className", "contentEditable", "value", "getRef", "onChange", "onInput", "onBlur", "dangerouslySetInnerHTML", "ref"].indexOf(key) is -1
+            output_props[key] = value for own key, value of @props when (["className", "contentEditable", "value", "getRef", "onChange", "onInput", "onBlur", "dangerouslySetInnerHTML", "ref"].indexOf key) is -1
             彁 "div", output_props
 
 
@@ -1682,8 +1686,8 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
             inactiveText: 彁 ReactIntl.FormattedMessage,
                 id: "toggle.off"
                 defaultMessage: "Off"
-            activeIcon: "check-circle-o"
-            inactiveIcon: "times"
+            activeIcon: "icon.on"
+            inactiveIcon: "icon.off"
 
         getInitialState: ->
             checked: !!@props.checked
@@ -1701,9 +1705,9 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
             switch event.type
                 when "click"
                     unless event.target is @input
-                        event.preventDefault()
-                        @input.focus()
-                        @input.click()
+                        do event.preventDefault
+                        do @input.focus
+                        do @input.click
                     @setState {checked: @input.checked}
                 when "onFocus"
                     @setState {hasFocus: true}
@@ -1713,18 +1717,18 @@ The `Toggle` component is a minimal re-implimentation of [`react-toggle`](https:
                     @props.onBlur event if @props.onBlur
 
         render: ->
-            output_props = {className: "laboratory-toggle-screenreader-only", type: "checkbox", onFocus: @handleEvent, onBlur: @handleEvent, ref: (ref) => @input = ref}
-            output_props[key] = value for own key, value of @props when ["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf(key) is -1
-            彁 "label", {className: "laboratory-toggle" + (if @state.checked then " laboratory-toggle--checked" else "") + (if @state.disabled then " laboratory-toggle--disabled" else "") + (if @state.hasFocus then " laboratory-toggle--focus" else "") + (if @props.className then " " + @props.className else ""), onClick: @handleEvent},
-                彁 "span", {className: "laboratory-toggle-label laboratory-toggle-label-off"}, @props.inactiveText
-                彁 "div", {className: "laboratory-toggle-track"},
-                    彁 "div", {className: "laboratory-toggle-track-check"},
+            output_props = {className: "labcoat-toggle-screenreader-only", type: "checkbox", onFocus: @handleEvent, onBlur: @handleEvent, ref: (ref) => @input = ref}
+            output_props[key] = value for own key, value of @props when (["className", "activeText", "activeIcon", "inactiveText", "inactiveIcon", "getRef", "ref", "type", "onFocus", "onBlur"].indexOf key) is -1
+            彁 "label", {className: "labcoat-toggle" + (if @state.checked then " labcoat-toggle--checked" else "") + (if @state.disabled then " labcoat-toggle--disabled" else "") + (if @state.hasFocus then " labcoat-toggle--focus" else "") + (if @props.className then " " + @props.className else ""), onClick: @handleEvent},
+                彁 "span", {className: "labcoat-toggle-label labcoat-toggle-label-off"}, @props.inactiveText
+                彁 "div", {className: "labcoat-toggle-track"},
+                    彁 "div", {className: "labcoat-toggle-track-check"},
                         彁 Shared.Icon, {name: @props.activeIcon}
-                    彁 "div", {className: "laboratory-toggle-track-x"},
+                    彁 "div", {className: "labcoat-toggle-track-x"},
                         彁 Shared.Icon, {name: @props.inactiveIcon}
-                    彁 "div", {className: "laboratory-toggle-thumb"}
+                    彁 "div", {className: "labcoat-toggle-thumb"}
                     彁 "input", output_props
-                彁 "span", {className: "laboratory-toggle-label laboratory-toggle-label-on"}, @props.activeText
+                彁 "span", {className: "labcoat-toggle-label labcoat-toggle-label-on"}, @props.activeText
 
 
 #  `Shared.InstanceQuery`  #
@@ -1769,10 +1773,11 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
             if event.type is "change" and event.target is @input then @setState {value: @input.value}
             else if event.type is "keypress" and event.target is @input and (event.key is "Enter" or event.code is "Enter" or event.keyCode is 0x0D) and @input.value.length and @input.validity.valid
                 window.open "about:blank", "LaboratoryOAuth"
-                Laboratory.Authorization.Requested.dispatch
+                Laboratory.dispatch "LaboratoryAuthorizationRequested",
+                    name: @props.title
                     url: "https://" + @input.value
                     redirect: @props.basename
-                    name: @props.title
+                    scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
                 @setState {value: ""}
             return
 
@@ -1783,12 +1788,12 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
 …And here's what we render:
 
             return 彁 ReactIntl.IntlProvider, {locale: @props.locale, messages: Locales[@props.locale]},
-                彁 "div", {id: "laboratory-instancequery"},
+                彁 "div", {id: "labcoat-instancequery"},
                     彁 ReactIntl.FormattedMessage,
                         id: "instancequery.queryinstance"
                         defaultMessage: "What's your instance?"
-                    彁 "div", {id: "laboratory-instancequeryinput"},
-                        彁 "code", {className: "laboratory-username"}, "username@"
+                    彁 "div", {id: "labcoat-instancequeryinput"},
+                        彁 "code", {className: "labcoat-username"}, "username@"
                         彁 "input",
                             type: "text"
                             pattern: "[0-9A-Za-z\-\.]+(\:[0-9]{1,4})?"
@@ -1868,7 +1873,8 @@ Here we define the initial properties, as above.
 
         getInitialState: ->
             thirdColumn: 彁 Columns.Empty
-            showComposer: false
+            showComposer: no
+            composerQuery: null
 
 ###  Third column processing:
 
@@ -1879,6 +1885,18 @@ The function `setThirdColumn` allows us to manage this ourselves.
 
         getThirdColumn: -> @state.thirdColumn
 
+###  Composer processing:
+
+        showComposer: (nextState) ->
+            @setState
+                showComposer: yes
+                composerQuery: nextState.location.query || null
+
+        hideComposer: ->
+            @setState
+                showComposer: no
+                composerQuery: null
+
 ###  Loading:
 
 `componentWillMount` tells React what to do once our engine is about to load.
@@ -1887,7 +1905,7 @@ The function `setThirdColumn` allows us to manage this ourselves.
 
 This starts tracking our browser history for our router:
 
-            @history = (if @props.useBrowserHistory then ReactRouter.useRouterHistory(History.createHistory) else ReactRouter.useRouterHistory(History.createHashHistory))({basename: @props.basename})
+            @history = (if @props.useBrowserHistory then ReactRouter.useRouterHistory History.createHistory else ReactRouter.useRouterHistory History.createHashHistory) {basename: @props.basename}
 
 ####  Pre-caluclating routes.
 
@@ -1895,7 +1913,7 @@ The React router will issue a warning in the console if you try modifying its ro
 This is a problem because every time our state changes, `render()` will re-create our arrow functions and React will interpret this as an attempted change.
 By calculating our routes ahead of time, we avoid this problem.
 
-            @routes = 彁 Route, {path: '/', component: (props) => 彁 UI.UI, {title: @props.title, maxChars: @props.maxChars, defaultPrivacy: @props.defaultPrivacy, thirdColumn: @getThirdColumn(), myID: @props.myID, showComposer: @state.showComposer}, props.children},
+            @routes = 彁 Route, {path: '/', component: (props) => 彁 UI.UI, {title: @props.title, maxChars: @props.maxChars, defaultPrivacy: @props.defaultPrivacy, thirdColumn: do @getThirdColumn, myID: @props.myID, showComposer: @state.showComposer, composerQuery: @state.composerQuery}, props.children},
 
                 #  Go:
 
@@ -1910,10 +1928,11 @@ By calculating our routes ahead of time, we avoid this problem.
                 彁 Route, {path: 'global', onEnter: => @setThirdColumn Columns.Timeline, {name: 'global'}}
                 彁 Route, {path: 'community', onEnter: => @setThirdColumn Columns.Timeline, {name: 'community'}}
                 彁 Route, {path: 'hashtag/:id', onEnter: (nextState) => @setThirdColumn Columns.Timeline, {name: 'hashtag/' + nextState.params.id}}
+                彁 Route, {path: 'favourites', onEnter: => @setThirdColumn Columns.Timeline, {name: 'favourites'}}
 
                 #  Statuses:
 
-                彁 Route, {path: 'compose', onEnter: (=> @setState(showComposer: true)), onLeave: (=> @setState(showComposer: false))}
+                彁 Route, {path: 'compose(?**)', onEnter: ((nextState) => @showComposer nextState), onLeave: => @hideComposer()}
                 彁 Route, {path: 'post/:id', component: Modules.Post}
 
                 #  Accounts:
@@ -1934,7 +1953,7 @@ All we really care about is closing our stream.
 
         componentWillUnmount: ->
             if @subscription?
-                @subscription.close()
+                do @subscription.close
                 @subscription = undefined
             return
 
@@ -1977,12 +1996,12 @@ Let's go!
 The `Header` is just a simple functional React component.
 
     UI.Header = (props) ->
-        彁 'header', {id: "laboratory-header"},
+        彁 'header', {id: "labcoat-header"},
             彁 UI.Title, null,
                 props.title
             彁 ReactRouter.Link, {to: "/compose"},
                 彁 Shared.Button,
-                    icon: "pencil-square-o"
+                    icon: "icon.compose"
                     label: 彁 ReactIntl.FormattedMessage,
                         id: "composer.compose"
                         defaultMessage: "Compose"
@@ -2024,6 +2043,7 @@ The `Title` is just a simple functional React component.
 >           defaultPrivacy=React.PropTypes.string
 >           thirdColumn=React.PropTypes.element.isRequired
 >           showComposer=React.PropTypes.bool
+>           composerQuery=React.PropTypes.object
 >       >
 >           {/* content */}
 >       </UI>
@@ -2041,6 +2061,8 @@ The `Title` is just a simple functional React component.
 >       The component to display in the third column.
 >   -   **`showComposer` [OPTIONAL `boolean`] :**
 >       Whether or not to show the composer.
+>   -   **`composerQuery` [OPTIONAL `object`] :**
+>       Query parameters to initialize the composer.
 
 ##  The Component  ##
 
@@ -2056,6 +2078,7 @@ Our UI doesn't have any properties except for its `title` and children.
             myID: React.PropTypes.number.isRequired
             thirdColumn: React.PropTypes.element.isRequired
             showComposer: React.PropTypes.bool
+            composerQuery: React.PropTypes.object
 
 ###  Event handling:
 
@@ -2068,14 +2091,14 @@ Here we will handle events related to the UI:
 
 This handles our drag-and-drop events:
 
-                when "dragenter" then document.getElementById("laboratory-ui").setAttribute "data-laboratory-dragging", ""
+                when "dragenter" then (document.getElementById "labcoat-ui").setAttribute "data-laboratory-dragging", ""
                 when "dragover"
-                    e.preventDefault()
+                    do e.preventDefault
                     e.dataTransfer.dropEffect = "copy"
-                when "dragleave" then document.getElementById("laboratory-ui").removeAttribute "data-laboratory-dragging" unless e.relatedTarget?
+                when "dragleave" then (document.getElementById "labcoat-ui").removeAttribute "data-laboratory-dragging" unless e.relatedTarget?
                 when "drop"
-                    e.preventDefault()
-                    document.getElementById("laboratory-ui").removeAttribute "data-laboratory-dragging"
+                    do e.preventDefault
+                    (document.getElementById "labcoat-ui").removeAttribute "data-laboratory-dragging"
                     # Laboratory.Composer.UploadRequested.dispatch {file: e.dataTransfer.files.item 1} if e.dataTransfer and e.dataTransfer.files.length is 1
 
 
@@ -2102,10 +2125,10 @@ We can remove our event listeners if we're unloading our UI.
 ###  Rendering:
 
         render: ->
-            彁 'div', {id: "laboratory-ui"},
+            彁 'div', {id: "labcoat-ui"},
                 彁 UI.Header, {title: @props.title}
                 彁 Columns.Timeline, {name: "home"}
-                彁 Columns.Notifications
+                彁 Columns.Timeline, {name: "notifications"}
                 @props.thirdColumn
                 @props.children
                 彁 Modules.Composer,
@@ -2113,6 +2136,8 @@ We can remove our event listeners if we're unloading our UI.
                     myID: @props.myID
                     maxChars: @props.maxChars
                     visible: @props.showComposer
+                    text: @props.composerQuery?.text
+                    inReplyTo: if isFinite @props.composerQuery?.inReplyTo then Number @props.composerQuery.inReplyTo else undefined
 
 
 #  LOCALES  #
@@ -2122,97 +2147,12 @@ We can remove our event listeners if we're unloading our UI.
     Locales = {}
 
 
-    Locales.de = Object.freeze
+    Locales.en =
 
         "timeline.home": "Home"
-        "notifications.notifications": "Mitteilungen"
-        "composer.compose": "Schreiben"
-        "notfound.not_found": "Nicht gefunden"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Zurück"
-        "lightbox.close": "Schließen"
-        "loading_indicator.label": "Lade..."
-        "status.mention": "Erwähnen"
-        "status.delete": "Löschen"
-        "status.reply": "Antworten"
-        "status.reblog": "Teilen"
-        "status.favourite": "Favorisieren"
-        "status.reblogged_by": "{name} teilte"
-        "status.sensitive_warning": "Sensible Inhalte"
-        "status.sensitive_toggle": "Klicken um zu zeigen"
-        "status.open": "Öffnen"
-        "video_player.toggle_sound": "Ton umschalten"
-        "account.mention": "Erwähnen"
-        "account.edit_profile": "Profil bearbeiten"
-        "account.unblock": "Entblocken"
-        "account.unfollow": "Entfolgen"
-        "account.block": "Blocken"
-        "account.follow": "Folgen"
-        "account.posts": "Beiträge"
-        "account.follows": "Folgt"
-        "account.followers": "Folger"
-        "account.follows_you": "Folgt dir"
-        "account.requested": "Warte auf Erlaubnis"
-        "getting_started.heading": "Erste Schritte"
-        "getting_started.about_addressing": "Du kannst Leuten folgen falls du ihren Nutzernamen und ihre Domain kennst in dem du eine e-mail-artige Addresse in das Suchfeld oben an der Seite eingibst."
-        "getting_started.about_shortcuts": "Falls der Zielnutzer an derselben Domain ist wie du funktioniert der Nutzername auch alleine. Das gilt auch für Erwähnungen in Beiträgen."
-        "getting_started.about_developer": "Der Entwickler des Projekts kann unter Gargron@mastodon.social gefunden werden"
-        "getting_started.open_source_notice": "Mastodon ist quelloffene Software. Du kannst auf {github} dazu beitragen oder Probleme melden."
-        "column.home": "Home"
-        "column.mentions": "Erwähnungen"
-        "column.public": "Gesamtes Bekanntes Netz"
-        "column.notifications": "Mitteilungen"
-        "column.follow_requests": "Folgeanfragen"
-        "tabs_bar.compose": "Schreiben"
-        "tabs_bar.home": "Home"
-        "tabs_bar.mentions": "Erwähnungen"
-        "tabs_bar.public": "Gesamtes Netz"
-        "tabs_bar.notifications": "Mitteilungen"
-        "compose_form.placeholder": "Worüber möchstest du schreiben?"
-        "compose_form.publish": "Veröffentlichen"
-        "compose_form.sensitive": "Medien als sensitiv markieren"
-        "compose_form.unlisted": "Öffentlich nicht auflisten"
-        "compose_form.private": "Als privat markieren"
-        "navigation_bar.edit_profile": "Profil bearbeiten"
-        "navigation_bar.preferences": "Einstellungen"
-        "navigation_bar.public_timeline": "Öffentlich"
-        "navigation_bar.logout": "Abmelden"
-        "navigation_bar.follow_requests": "Folgeanfragen"
-        "reply_indicator.cancel": "Abbrechen"
-        "search.placeholder": "Suche"
-        "search.account": "Konto"
-        "search.hashtag": "Hashtag"
-        "upload_button.label": "Media-Datei anfügen"
-        "upload_form.undo": "Entfernen"
-        "notification.follow": "{name} folgt dir"
-        "notification.favourite": "{name} favorisierte deinen Status"
-        "notification.reblog": "{name} teilte deinen Status"
-        "notification.mention": "{name} erwähnte dich"
-        "notifications.column_settings.alert": "Desktop-Benachrichtigunen"
-        "notifications.column_settings.show": "In der Spalte anzeigen"
-        "notifications.column_settings.follow": "Neue Folger:"
-        "notifications.column_settings.favourite": "Favorisierungen:"
-        "notifications.column_settings.mention": "Erwähnungen:"
-        "notifications.column_settings.reblog": "Geteilte Beiträge:"
-        "follow_request.authorize": "Erlauben"
-        "follow_request.reject": "Ablehnen"
-        "home.column_settings.basic": "Einfach"
-        "home.column_settings.advanced": "Fortgeschritten"
-        "home.column_settings.show_reblogs": "Geteilte Beiträge anzeigen"
-        "home.column_settings.show_replies": "Antworten anzeigen"
-        "home.column_settings.filter_regex": "Filter durch reguläre Ausdrücke"
-        "missing_indicator.label": "Nicht gefunden"
-
-
-    Locales.en = Object.freeze
-
-        "timeline.home": "Home"
-        "notifications.notifications": "Notifications"
+        "timeline.community": "Community"
+        "timeline.global": "Global"
+        "timeline.notifications": "Notifications"
 
         "composer.compose": "Compose"
         "composer.post": "Post"
@@ -2220,440 +2160,85 @@ We can remove our event listeners if we're unloading our UI.
         "composer.public": "Public"
         "composer.unlisted": "Unlisted"
         "composer.listed": "Listed"
-        "composer.safe": "Safe"
-        "composer.sensitive": "Sensitive"
-        "composer.hidewithmessage": "Hide behind message"
+        "composer.sfw": "Safe"
+        "composer.nsfw": "Sensitive"
+        "composer.nomessage": "…… ……"
+        "composer.message": "Hide behind message"
         "composer.placeholder": "What's going on?"
 
         "account.follow": "Follow"
         "account.unfollow": "Unfollow"
         "account.blocking": "Blocking"
-        "account.requestfollow": "Request Follow"
-        "account.requestsent": "Request Sent"
+        "account.request": "Request Follow"
+        "account.requested": "Request Sent"
         "account.statuses": "Posts"
         "account.following": "Follows"
         "account.followers": "Followers"
 
-        "status.and": " and "
-        "status.etal": " et al."
-        "status.followedyou": " followed you!"
-        "status.boostedthisreplyto": " boosted this reply to "
-        "status.boostedthisreply": " boosted this reply"
-        "status.boostedthispost": " boosted this post"
-        "status.highlightedthisreplyto": " highlighted this reply to "
-        "status.highlightedthisreply": " highlighted this reply"
-        "status.highlightedthispost": " highlighted this post"
-        "status.inreplyto": "In reply to "
+        "status.and": "and"
+        "status.etal": "et al."
+        "status.reblog": "Boost"
+        "status.unreblog": "Unboost"
+        "status.noreblog": "Private"
+        "status.favourite": "Highlight"
+        "status.unfavourite": "Unhighlight"
+        "status.reply": "Reply"
+        "status.followedyou": "followed you!"
+        "status.rebloggedthisreplyto": "boosted this reply to"
+        "status.rebloggedthisreply": "boosted this reply"
+        "status.rebloggedthisstatus": "boosted this post"
+        "status.favouritedthisreplyto": "highlighted this reply to"
+        "status.favouritedthisreply": "highlighted this reply"
+        "status.favouritedthisstatus": "highlighted this post"
+        "status.inreplyto": "In reply to"
         "status.inreplytoself": "In reply to themselves"
 
         "go.heading": "let's GO!"
+        "go.profile": "Profile"
         "go.community": "Community"
         "go.global": "Global"
+
+        "notfound.notfound": "Not found"
 
         "toggle.off": "Off"
         "toggle.on": "On"
 
-        "notfound.not_found": "Not found"
+        "icon.home": "home"
+        "icon.community": "users"
+        "icon.global": "link"
+        "icon.hashtag": "hashtag"
+        "icon.user": "at"
+        "icon.notifications": "star-half-o"
+        "icon.mystery": "question-circle"
+        "icon.notfound": "exclamation-triangle"
+        "icon.go": "arrow-right"
+        "icon.profile": "list-alt"
+        "icon.reblog": "plus-square"
+        "icon.unreblog": "minus-square"
+        "icon.noreblog": "square-o"
+        "icon.favourite": "pencil"
+        "icon.unfavourite": "eraser"
+        "icon.reply": "reply"
+        "icon.follow": "user-plus"
+        "icon.unfollow": "user-times"
+        "icon.blocked": "ban"
+        "icon.request": "user-secret"
+        "icon.requested": "share-square"
+        "icon.post": "paper-plane-o"
+        "icon.private": "microphone-slash"
+        "icon.public": "rss"
+        "icon.unlisted": "envelope-o"
+        "icon.listed": "newspaper-o"
+        "icon.sfw": "picture-o"
+        "icon.nsfw": "exclamation"
+        "icon.nomessage": "ellipsis-h"
+        "icon.message": "question-circle-o"
+        "icon.on": "check-circle-o"
+        "icon.off": "times"
+        "icon.compose": "pencil-square-o"
 
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Back"
-        "lightbox.close": "Close"
-        "loading_indicator.label": "Loading..."
-        "status.mention": "Mention"
-        "status.delete": "Delete"
-        "status.reply": "Reply"
-        "status.reblog": "Boost"
-        "status.favourite": "Favourite"
-        "status.reblogged_by": "{name} boosted"
-        "status.sensitive_warning": "Sensitive content"
-        "status.sensitive_toggle": "Click to view"
-        "video_player.toggle_sound": "Toggle sound"
-        "account.mention": "Mention"
-        "account.edit_profile": "Edit profile"
-        "account.unblock": "Unblock"
-        "account.unfollow": "Unfollow"
-        "account.block": "Block"
-        "account.follow": "Follow"
-        "account.posts": "Posts"
-        "account.follows": "Follows"
-        "account.followers": "Followers"
-        "account.follows_you": "Follows you"
-        "account.requested": "Awaiting approval"
-        "getting_started.heading": "Getting started"
-        "getting_started.about_addressing": "You can follow people if you know their username and the domain they are on by entering an e-mail-esque address into the search form."
-        "getting_started.about_shortcuts": "If the target user is on the same domain as you just the username will work. The same rule applies to mentioning people in statuses."
-        "getting_started.about_developer": "The developer of this project can be followed as Gargron@mastodon.social"
-        "getting_started.open_source_notice": "Mastodon is open source software. You can contribute or report issues on github at {github}."
-        "column.home": "Home"
-        "column.mentions": "Mentions"
-        "column.public": "Public"
-        "column.notifications": "Notifications"
-        "tabs_bar.compose": "Compose"
-        "tabs_bar.home": "Home"
-        "tabs_bar.mentions": "Mentions"
-        "tabs_bar.public": "Public"
-        "tabs_bar.notifications": "Notifications"
-        "compose_form.placeholder": "What is on your mind?"
-        "compose_form.publish": "Toot"
-        "compose_form.sensitive": "Mark media as sensitive"
-        "compose_form.spoiler": "Hide text behind warning"
-        "compose_form.private": "Mark as private"
-        "compose_form.privacy_disclaimer": "Your private status will be delivered to mentioned users on {domains}. Do you trust {domainsCount plural one {that server} other {those servers}} to not leak your status?"
-        "compose_form.unlisted": "Do not display in public timeline"
-        "navigation_bar.edit_profile": "Edit profile"
-        "navigation_bar.preferences": "Preferences"
-        "navigation_bar.public_timeline": "Public timeline"
-        "navigation_bar.logout": "Logout"
-        "reply_indicator.cancel": "Cancel"
-        "search.placeholder": "Search"
-        "search.account": "Account"
-        "search.hashtag": "Hashtag"
-        "upload_button.label": "Add media"
-        "upload_form.undo": "Undo"
-        "notification.follow": "{name} followed you"
-        "notification.favourite": "{name} favourited your status"
-        "notification.reblog": "{name} boosted your status"
-        "notification.mention": "{name} mentioned you"
-        "notifications.column_settings.alert": "Desktop notifications"
-        "notifications.column_settings.show": "Show in column"
-        "notifications.column_settings.follow": "New followers:"
-        "notifications.column_settings.favourite": "Favourites:"
-        "notifications.column_settings.mention": "Mentions:"
-        "notifications.column_settings.reblog": "Boosts:"
-        "missing_indicator.label": "Not found"
-
-
-    Locales.es = Object.freeze
-
-        "timeline.home": "Inicio"
-        "notifications.notifications": "Notificaciones"
-        "composer.compose": "Redactar"
-        "notfound.not_found": "No encontrada"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Atrás"
-        "lightbox.close": "Cerrar"
-        "loading_indicator.label": "Cargando..."
-        "status.mention": "Mencionar"
-        "status.delete": "Borrar"
-        "status.reply": "Responder"
-        "status.reblog": "Republicar"
-        "status.favourite": "Favorito"
-        "status.reblogged_by": "{name} republicado"
-        "video_player.toggle_sound": "Act/Desac. sonido"
-        "account.mention": "Mención"
-        "account.edit_profile": "Editar perfil"
-        "account.unblock": "Desbloquear"
-        "account.unfollow": "Dejar de seguir"
-        "account.block": "Bloquear"
-        "account.follow": "Seguir"
-        "account.block": "Bloquear"
-        "account.posts": "Publicaciones"
-        "account.follows": "Seguir"
-        "account.followers": "Seguidores"
-        "account.follows_you": "Te sigue"
-        "getting_started.heading": "Primeros pasos"
-        "getting_started.about_addressing": "Puedes seguir a gente si conoces su nombre de usuario y el dominio en el que están registrados introduciendo algo similar a una dirección de correo electrónico en el formulario en la parte superior de la barra lateral."
-        "getting_started.about_shortcuts": "Si el usuario que buscas está en el mismo dominio que tú simplemente funcionará introduciendo el nombre de usuario. La misma regla se aplica para mencionar a usuarios."
-        "getting_started.about_developer": "Puedes seguir al desarrollador de este proyecto en Gargron@mastodon.social"
-        "column.home": "Inicio"
-        "column.mentions": "Menciones"
-        "column.public": "Historia pública"
-        "column.notifications": "Notificaciones"
-        "tabs_bar.compose": "Redactar"
-        "tabs_bar.home": "Inicio"
-        "tabs_bar.mentions": "Menciones"
-        "tabs_bar.public": "Público"
-        "tabs_bar.notifications": "Notificaciones"
-        "compose_form.placeholder": "¿En qué estás pensando?"
-        "compose_form.publish": "Publicar"
-        "compose_form.sensitive": "Marcar el contenido como sensible"
-        "compose_form.unlisted": "Privado"
-        "navigation_bar.edit_profile": "Editar perfil"
-        "navigation_bar.preferences": "Preferencias"
-        "navigation_bar.public_timeline": "Público"
-        "navigation_bar.logout": "Cerrar sesión"
-        "reply_indicator.cancel": "Cancelar"
-        "search.placeholder": "Buscar"
-        "search.account": "Cuenta"
-        "search.hashtag": "Etiqueta"
-        "upload_button.label": "Añadir medio"
-        "upload_form.undo": "Deshacer"
-        "notification.follow": "{name} le esta ahora siguiendo"
-        "notification.favourite": "{name} marcó como favorito su estado"
-        "notification.reblog": "{name} volvió a publicar su estado"
-        "notification.mention": "Fue mencionado por {name}"
-
-
-    Locales.fr = Object.freeze
-
-        "timeline.home": "Accueil"
-        "notifications.notifications": "Notifications"
-        "composer.compose": "Composer"
-        "notfound.not_found": "Pas trouvé"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Retour"
-        "lightbox.close": "Fermer"
-        "loading_indicator.label": "Chargement…"
-        "status.mention": "Mentionner"
-        "status.delete": "Effacer"
-        "status.reply": "Répondre"
-        "status.reblog": "Partager"
-        "status.favourite": "Ajouter aux favoris"
-        "status.reblogged_by": "{name} a partagé :"
-        "status.sensitive_warning": "Contenu délicat"
-        "status.sensitive_toggle": "Cliquer pour dévoiler"
-        "video_player.toggle_sound": "Mettre/Couper le son"
-        "account.mention": "Mentionner"
-        "account.edit_profile": "Modifier le profil"
-        "account.unblock": "Débloquer"
-        "account.unfollow": "Ne plus suivre"
-        "account.block": "Bloquer"
-        "account.follow": "Suivre"
-        "account.posts": "Statuts"
-        "account.follows": "Abonnements"
-        "account.followers": "Abonnés"
-        "account.follows_you": "Vous suit"
-        "getting_started.heading": "Pour commencer"
-        "getting_started.about_addressing": "Vous pouvez vous suivre les statuts de quelqu’un en entrant dans le champs de recherche leur identifiant et le domaine de leur instance séparés par un @ à la manière d’une adresse courriel."
-        "getting_started.about_shortcuts": "Si cette personne utilise la même instance que vous l’identifiant suffit. C’est le même principe pour mentionner quelqu’un dans vos statuts."
-        "getting_started.about_developer": "Pour suivre le développeur de ce projet c’est Gargron@mastodon.social"
-        "column.home": "Accueil"
-        "column.mentions": "Mentions"
-        "column.public": "Fil public"
-        "column.notifications": "Notifications"
-        "tabs_bar.compose": "Composer"
-        "tabs_bar.home": "Accueil"
-        "tabs_bar.mentions": "Mentions"
-        "tabs_bar.public": "Public"
-        "tabs_bar.notifications": "Notifications"
-        "compose_form.placeholder": "Qu’avez-vous en tête ?"
-        "compose_form.publish": "Pouet"
-        "compose_form.sensitive": "Marquer le contenu comme délicat"
-        "compose_form.unlisted": "Ne pas apparaître dans le fil public"
-        "navigation_bar.edit_profile": "Modifier le profil"
-        "navigation_bar.preferences": "Préférences"
-        "navigation_bar.public_timeline": "Public"
-        "navigation_bar.logout": "Déconnexion"
-        "reply_indicator.cancel": "Annuler"
-        "search.placeholder": "Chercher"
-        "search.account": "Compte"
-        "search.hashtag": "Mot-clé"
-        "upload_button.label": "Joindre un média"
-        "upload_form.undo": "Annuler"
-        "notification.follow": "{name} vous suit."
-        "notification.favourite": "{name} a ajouté à ses favoris :"
-        "notification.reblog": "{name} a partagé votre statut :"
-        "notification.mention": "{name} vous a mentionné⋅e :"
-
-
-    Locales.hu = Object.freeze
-
-        "timeline.home": "Kezdőlap"
-        "notifications.notifications": "Értesítések"
-        "composer.compose": "Összeállítás"
-        "notfound.not_found": "Nem található"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Vissza"
-        "lightbox.close": "Bezárás"
-        "loading_indicator.label": "Betöltés..."
-        "status.mention": "Említés"
-        "status.delete": "Törlés"
-        "status.reply": "Válasz"
-        "status.reblog": "Reblog"
-        "status.favourite": "Kedvenc"
-        "status.reblogged_by": "{name} reblogolta"
-        "status.sensitive_warning": "Érzékeny tartalom"
-        "status.sensitive_toggle": "Katt a megtekintéshez"
-        "video_player.toggle_sound": "Hang kapcsolása"
-        "account.mention": "Említés"
-        "account.edit_profile": "Profil szerkesztése"
-        "account.unblock": "Blokkolás levétele"
-        "account.unfollow": "Követés abbahagyása"
-        "account.block": "Blokkolás"
-        "account.follow": "Követés"
-        "account.posts": "Posts"
-        "account.follows": "Követők"
-        "account.followers": "Követők"
-        "account.follows_you": "Követnek téged"
-        "getting_started.heading": "Első lépések"
-        "getting_started.about_addressing": "Követhetsz embereket felhasználónevük és a doménjük ismeretében amennyiben megadod ezt az e-mail-szerű címet az oldalsáv tetején lévő rubrikában."
-        "getting_started.about_shortcuts": "Ha a célzott személy azonos doménen tartózkodik a felhasználónév elegendő. Ugyanez érvényes mikor személyeket említesz az állapotokban."
-        "getting_started.about_developer": "A projekt fejlesztője követhető mint Gargron@mastodon.social"
-        "column.home": "Kezdőlap"
-        "column.mentions": "Említések"
-        "column.public": "Nyilvános"
-        "column.notifications": "Értesítések"
-        "tabs_bar.compose": "Összeállítás"
-        "tabs_bar.home": "Kezdőlap"
-        "tabs_bar.mentions": "Említések"
-        "tabs_bar.public": "Nyilvános"
-        "tabs_bar.notifications": "Notifications"
-        "compose_form.placeholder": "Mire gondolsz?"
-        "compose_form.publish": "Tülk!"
-        "compose_form.sensitive": "Tartalom érzékenynek jelölése"
-        "compose_form.unlisted": "Listázatlan mód"
-        "navigation_bar.edit_profile": "Profil szerkesztése"
-        "navigation_bar.preferences": "Beállítások"
-        "navigation_bar.public_timeline": "Nyilvános időfolyam"
-        "navigation_bar.logout": "Kijelentkezés"
-        "reply_indicator.cancel": "Mégsem"
-        "search.placeholder": "Keresés"
-        "search.account": "Fiók"
-        "search.hashtag": "Hashtag"
-        "upload_button.label": "Média hozzáadása"
-        "upload_form.undo": "Mégsem"
-        "notification.follow": "{name} követ téged"
-        "notification.favourite": "{name} kedvencnek jelölte az állapotod"
-        "notification.reblog": "{name} reblogolta az állapotod"
-        "notification.mention": "{name} megemlített"
-
-
-    Locales.pt = Object.freeze
-
-        "timeline.home": "Home"
-        "notifications.notifications": "Notificações"
-        "composer.compose": "Compôr"
-        "notfound.not_found": "Não encontrada"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Voltar"
-        "lightbox.close": "Fechar"
-        "loading_indicator.label": "Carregando..."
-        "status.mention": "Menção"
-        "status.delete": "Deletar"
-        "status.reply": "Responder"
-        "status.reblog": "Reblogar"
-        "status.favourite": "Favoritar"
-        "status.reblogged_by": "{name} reblogou"
-        "video_player.toggle_sound": "Alterar som"
-        "account.mention": "Menção"
-        "account.edit_profile": "Editar perfil"
-        "account.unblock": "Desbloquear"
-        "account.unfollow": "Unfollow"
-        "account.block": "Bloquear"
-        "account.follow": "Seguir"
-        "account.block": "Bloquear"
-        "account.posts": "Posts"
-        "account.follows": "Segue"
-        "account.followers": "Seguidores"
-        "account.follows_you": "Segue você"
-        "getting_started.heading": "Primeiros passos"
-        "getting_started.about_addressing": "Podes seguir pessoas se sabes o nome de usuário deles e o domínio em que estão entrando um endereço similar a e-mail no campo no topo da barra lateral."
-        "getting_started.about_shortcuts": "Se o usuário alvo está no mesmo domínio só o nome funcionará. A mesma regra se aplica a mencionar pessoas nas postagens."
-        "getting_started.about_developer": "O desenvolvedor desse projeto pode ser seguido em Gargron@mastodon.social"
-        "column.home": "Home"
-        "column.mentions": "Menções"
-        "column.public": "Público"
-        "tabs_bar.compose": "Compôr"
-        "tabs_bar.home": "Home"
-        "tabs_bar.mentions": "Menções"
-        "tabs_bar.public": "Público"
-        "tabs_bar.notifications": "Notificações"
-        "compose_form.placeholder": "Que estás pensando?"
-        "compose_form.publish": "Publicar"
-        "compose_form.sensitive": "Marcar conteúdo como sensível"
-        "compose_form.unlisted": "Modo não-listado"
-        "navigation_bar.edit_profile": "Editar perfil"
-        "navigation_bar.preferences": "Preferências"
-        "navigation_bar.public_timeline": "Timeline Pública"
-        "navigation_bar.logout": "Logout"
-        "reply_indicator.cancel": "Cancelar"
-        "search.placeholder": "Busca"
-        "search.account": "Conta"
-        "search.hashtag": "Hashtag"
-        "upload_button.label": "Adicionar media"
-        "upload_form.undo": "Desfazer"
-        "notification.follow": "{name} seguiu você"
-        "notification.favourite": "{name} favoritou  seu post"
-        "notification.reblog": "{name} reblogou o seu post"
-        "notification.mention": "{name} mecionou você"
-
-
-    Locales.uk = Object.freeze
-
-        "timeline.home": "Головна"
-        "notifications.notifications": "Сповіщення"
-        "composer.compose": "Написати"
-        "notfound.not_found": "Не знайдено"
-        # "go.heading":
-        # "go.community":
-        # "go.global":
-
-        #  Unused codes from Mastodon:
-
-        "column_back_button.label": "Назад"
-        "lightbox.close": "Закрити"
-        "loading_indicator.label": "Завантаження..."
-        "status.mention": "Згадати"
-        "status.delete": "Видалити"
-        "status.reply": "Відповісти"
-        "status.reblog": "Передмухнути"
-        "status.favourite": "Подобається"
-        "status.reblogged_by": "{name} передмухнув(-ла)"
-        "status.sensitive_warning": "Непристойний зміст"
-        "status.sensitive_toggle": "Натисніть щоб подивитися"
-        "video_player.toggle_sound": "Увімкнути/вимкнути звук"
-        "account.mention": "Згадати"
-        "account.edit_profile": "Налаштування профілю"
-        "account.unblock": "Розблокувати"
-        "account.unfollow": "Відписатися"
-        "account.block": "Заблокувати"
-        "account.follow": "Підписатися"
-        "account.posts": "Пости"
-        "account.follows": "Підписки"
-        "account.followers": "Підписники"
-        "account.follows_you": "Підписаний"
-        "getting_started.heading": "Ласкаво просимо"
-        "getting_started.about_addressing": "Ви можете підписуватись на людей якщо ви знаєте їх ім'я користувача чи домен шляхом введення email-подібної адреси у верхньому рядку бокової панелі."
-        "getting_started.about_shortcuts": "Якщо користувач якого ви шукаєте знаходиться на тому ж домені що й ви можна просто ввести ім'я користувача. Це правило стосується й згадування людей у статусах."
-        "getting_started.about_developer": "Розробник проекту знаходиться за адресою Gargron@mastodon.social"
-        "column.home": "Головна"
-        "column.mentions": "Згадування"
-        "column.public": "Стіна"
-        "column.notifications": "Сповіщення"
-        "tabs_bar.compose": "Написати"
-        "tabs_bar.home": "Головна"
-        "tabs_bar.mentions": "Згадування"
-        "tabs_bar.public": "Стіна"
-        "tabs_bar.notifications": "Сповіщення"
-        "compose_form.placeholder": "Що у Вас на думці?"
-        "compose_form.publish": "Дмухнути"
-        "compose_form.sensitive": "Непристойний зміст"
-        "compose_form.unlisted": "Таємний режим"
-        "navigation_bar.edit_profile": "Редагувати профіль"
-        "navigation_bar.preferences": "Налаштування"
-        "navigation_bar.public_timeline": "Публічна стіна"
-        "navigation_bar.logout": "Вийти"
-        "reply_indicator.cancel": "Відмінити"
-        "search.placeholder": "Пошук"
-        "search.account": "Аккаунт"
-        "search.hashtag": "Хештеґ"
-        "upload_button.label": "Додати медіа"
-        "upload_form.undo": "Відмінити"
-        "notification.follow": "{name} підписався(-лась) на Вас"
-        "notification.favourite": "{name} сподобався ваш допис"
-        "notification.reblog": "{name} передмухнув(-ла) Ваш статус"
-        "notification.mention": "{name} згадав(-ла) Вас"
+        "character.space": " "
+        "character.comma": ", "
 
 
 #  INSTALLING  #
@@ -2718,7 +2303,7 @@ The recommended procedure for installing Labcoat on a Mastodon server is as foll
 ##  Configuration  ##
 
 There are two ways which you can configure Labcoat beyond the initial installation.
-The first, recommended method is by including a JSON configuration object in the `data-labcoat-config` attribute on the root element.
+The first, recommended method is by including a JSON configuration object in a `<script id="labcoat-config" type="application/json">` element somewhere in the document.
 The second method is by including a script which provides configuration details to `window.INITIAL_STATE`.
 **Use of `window.INITIAL_STATE` is strongly discouraged for "unhosted" installs and is only supported to minimize the amount of configuration necessary for installations on a Mastodon server.**
 
@@ -2729,12 +2314,13 @@ The configuration options supported by Labcoat are as follows:
 | Property | INITIAL_STATE equivalent | Description |
 | -------- | ------------------------ | :---------- |
 | `title` | `meta.title` | The title for the frontend. If you are hosting this on a Mastodon server, you might want to set this to the name of the server. Otherwise, it will default to "Labcoat" |
-| `display` | *Not available* | Display modes (see below). |
+| `display` | *Not supported* | Display modes (see below). |
 | `basename` | `meta.router_basename` | The base pathname for the frontend. For example, a Labcoat frontend hosted at `http://example.org/gateway` would use the basename `/gateway`. This defaults to `/web` for compatibility reasons. |
 | `useBrowserHistory` | `meta.use_history` | Use a more modern browser history instead of a hash-based history. For compatibility reasons, this defaults to `true`, so be sure to set this to `false` if your server isn't properly configured to handle it. |
 | `locale` | `meta.locale` | The locale for the frontend. |
 | `root` | `meta.react_root` | The id of the root element to draw the frontend into. Will default to `frontend`, if available, or the `<body>` element, if not. |
 | `defaultPrivacy` | `compose.default_privacy` | The initial privacy setting to use for posts. This will default to `"unlisted"` if it isn't set. |
+| `locales` | *Not supported* | Custom localization information—see [Locales](./Locales/). |
 
 ###  Single-user mode:
 
@@ -2760,6 +2346,85 @@ You can modify the appearance of Labcoat through the `display` configuration pro
 The implementation of these display modes is largely handled by the Labcoat stylesheets.
 There is not presently a means of setting display modes through `window.INITIAL_STATE`.
 
+##  Styling  ##
+
+If you are installing Labcoat on a Mastodon server, then you can easily configure its appearance by setting a number of variables in the `variables.scss` file in `app/assets/stylesheets`.
+The recognized variables are as follows:
+
+###  Fonts:
+
+Labcoat won't load any fonts for you, so you should set these to fonts loaded elsewhere by your server or else ones which users might reasonably be expected to have.
+
+| Variable | Default Value | Description |
+| -------- | ------------- | :---------- |
+| `$labcoat-sans` | `"Lato", "Helvetica Neue", "Helvetica", sans-serif` | The sans-serif font used by the frontend |
+| `$labcoat-mono` | `"Inconsolata", "Courier Prime", monospace` | The monospace font used by the frontend |
+
+###  Simple colours:
+
+In order to make customizing Labcoat easier, the colour scheme has been reduced to these fourteen colours.
+The default values for these colours use the "Print + Pastels" theme located in [`palettes.scss`](../styling/palettes.scss).
+For more precision when customizing, look to the advanced colours further on.
+
+| Variable | Default Value | Description |
+| -------- | ------------- | :---------- |
+| `$labcoat-rearColor` | `$print_dim` | The background colour for the frontend |
+| `$labcoat-rearAccentColor` | `$print_black` | The accented background colour |
+| `$labcoat-rearMinorColor` | `$print_dark` | The background colour of minor frontend elements |
+| `$labcoat-frontColor` | `$print_bright` | The foreground (text) colour for the frontend |
+| `$labcoat-frontAccentColor` | `$print_white` | The accented foreground colour |
+| `$labcoat-frontMinorColor` | `$print_light` | The colour of minor foreground elements |
+| `$labcoat-invertedRearColor` | `$print_bright` | An alternate background colour for elements like modules and cards |
+| `$labcoat-invertedRearAccentColor` | `$print_white` | The accented alternate background colour |
+| `$labcoat-invertedRearMinorColor` | `$print_light` | The alternate background colour of minor frontend elements |
+| `$labcoat-invertedFrontColor` | `$print_black` | The foreground (text) colour for cards and modules |
+| `$labcoat-invertedFrontAccentColor` | `$print_dark` | The accented alternate foreground colour |
+| `$labcoat-invertedFrontMinorColor` | `$print_dim` | The alternate colour of minor foreground elements |
+| `$labcoat-invertedFrontVeryMinorColor` | `$print_medium` | The alternate colour of *very* minor foreground elements |
+| `$labcoat-invertedMidColor` | `$print` | A midrange colour for use with cards and modules, for borders and the like |
+
+###  Opacities:
+
+These are the various opacity levels for certain Labcoat elements.
+
+| Variable | Default Value | Description |
+| -------- | ------------- | :---------- |
+| `$labcoat-headerBackgroundOpacity` | `.95` | The opacity of the site header's background |
+| `$labcoat-columnBackgroundOpacity` | `.95` | The opacity of the left and right columns' backgrounds |
+| `$labcoat-notificationBackgroundOpacity` | `.4` | The opacity of the notifications column's background |
+| `$labcoat-notificationForegroundOpacity` | `.85` | The opacity of the notifications column's foreground |
+| `$labcoat-curtainOpacity` | `.35` | The opacity of the curtain which appears behind modules when they are visible |
+| `$labcoat-toggleInactiveOpacity` | `.4` | The opacity of toggle labels which are inactive |
+| `$labcoat-leadingCommAtOpacity` | `.65` | The opacity of the leading `@` character in usernames |
+
+###  Backgrounds:
+
+These should take the form of the CSS `background` property.
+
+| Variable | Default Value | Description |
+| -------- | ------------- | :---------- |
+| `$labcoat-queryBackground` | `linear-gradient(to top, $labcoat-rearAccentColor 20%, $labcoat-rearColor 80%)` | The background used for the instance query page |
+| `$labcoat-background` | `$labcoat-rearColor` | The background used by the main frontend |
+
+###  Advanced Colours:
+
+The colour scheme actually deployed by Labcoat allows for far more nuance than the 14 basic colours outlined above.
+As a matter of fact, virtually every class of component can be styled independently.
+Setting the variables below allows you to develop a much more involved and/or nuanced theme, or to correct problems which arise during basic colour reconfiguration.
+
+| Variable | Default Value | Description |
+| -------- | ------------- | :---------- |
+| `$labcoat-backgroundColor` | `$labcoat-rearColor` | The main background colour for the frontend |
+| `$labcoat-queryTextColor` | `$labcoat-frontColor` | The main background colour for the frontend |
+| `$labcoat-queryTextMinor` | `$labcoat-frontMinorColor` | The main background colour for the frontend |
+| `$labcoat-queryTextMajor` | `$labcoat-frontAccentColor` | The main background colour for the frontend |
+| `$labcoat-queryMarkColor` | `$labcoat-rearAccentColor` | The main background colour for the frontend |
+| `$labcoat-columnColor` | `$labcoat-rearAccentColor` | The main background colour for the frontend |
+| `$labcoat-columnTextColor` | `$labcoat-frontColor` | The main background colour for the frontend |
+| `$labcoat-columnAccentTextColor` | `$labcoat-frontAccentColor` | The main background colour for the frontend |
+| `$labcoat-columnHeadingColor` | `$labcoat-invertedRearAccentColor` | The main background colour for the frontend |
+| `$labcoat-columnHeadingTextColor` | `$labcoat-invertedFrontMinorColor` | The main background colour for the frontend |
+
 ##  Implementation  ##
 
 This script loads and runs the Labcoat frontend.
@@ -2772,24 +2437,10 @@ Labcoat follows semantic versioning, which translates into `Nº` as follows: `Ma
 Labcoat thus assures that minor and patch numbers will never exceed `99` (indeed this would be quite excessive!).
 
     Object.defineProperty window, "Labcoat",
-        value: Object.freeze
-            ℹ: """
-
-                ............... LABCOAT ................
-
-                 A client-side frontend for Mastodon, a
-                free & open-source social network server
-                           - - by Kibigo! - -
-
-                    Licensed under the MIT License.
-                       Source code available at:
-                  https://github.com/marrus-sh/labcoat
-
-                            Version 0.1.0
-
-                """
-            Nº: 1.0
-        enumerable: yes
+        value : Object.freeze
+            "ℹ"  : "https://github.com/marrus-sh/labcoat"
+            "Nº" : 2.0
+        enumerable : yes
 
 ###  Handling locale data:
 
@@ -2799,45 +2450,63 @@ This adds locale data so that our router can handle it:
 
 ###  Configuration:
 
+We'll wait for our `window` to load before reading our configuration and starting Labcoat.
+
+    window.addEventListener "load", ->
+
 The `config` object will store our configuration properties.
 This won't be transparent to the `window`.
-If `data-labcoat-config` is set on the root element, we can go ahead and pull our configuration from there.
+If `labcoat-config` is the id of a `<script>` element, we can go ahead and pull our configuration from there.
 
-    config = if document.documentElement.hasAttribute "data-labcoat-config" then JSON.parse document.documentElement.getAttribute "data-labcoat-config" else {}
+        config = JSON.parse elt.text if (elt = document.getElementById "labcoat-config") and do elt.tagName.toUpperCase is "SCRIPT"
+        config ?= {}
 
 We can now pull configuration properties from `window.INITIAL_STATE`, if present—but we won't overwrite the configuration we already have.
 
-    INITIAL_STATE = {meta: {}} unless INITIAL_STATE?.meta?
-    config[prop] = {
-        title: INITIAL_STATE.meta.title || "Labcoat"
-        basename: if INITIAL_STATE.meta.router_basename? then INITIAL_STATE.meta.router_basename else "/web"
-        useBrowserHistory: INITIAL_STATE.meta.use_history or not INITIAL_STATE.meta.use_history?
-        locale: INITIAL_STATE.meta.locale
-        root: INITIAL_STATE.meta.react_root
-        defaultPrivacy: INITIAL_STATE.composer?.default_privacy || "unlisted"
-        accessToken: INITIAL_STATE.meta.accessToken
-        origin: INITIAL_STATE.meta.origin || "/"
-    }[prop] for prop in ["title", "basename", "useBrowserHistory", "locale", "root", "defaultPrivacy", "accessToken", "origin"] when not config[prop]?
+        INITIAL_STATE = {meta: {}} unless INITIAL_STATE?.meta?
+        config[prop] = {
+            title: INITIAL_STATE.meta.title || "Labcoat"
+            basename: if INITIAL_STATE.meta.router_basename? then INITIAL_STATE.meta.router_basename else "/web"
+            useBrowserHistory: INITIAL_STATE.meta.use_history or not INITIAL_STATE.meta.use_history?
+            locale: INITIAL_STATE.meta.locale
+            root: INITIAL_STATE.meta.react_root
+            defaultPrivacy: INITIAL_STATE.composer?.default_privacy || "unlisted"
+            accessToken: INITIAL_STATE.meta.accessToken
+            origin: INITIAL_STATE.meta.origin || "/"
+        }[prop] for prop in ["title", "basename", "useBrowserHistory", "locale", "root", "defaultPrivacy", "accessToken", "origin"] when not config[prop]?
 
 ####  Setting display modes:
 
 Display modes are stored using `data-*` attributes on the root element.
 We can set these now.
 
-    if config.display?
-        if "simple" in config.display then document.documentElement.setAttribute "data-labcoat-simple" else document.documentElement.removeAttribute "data-labcoat-simple"
-        if "no-transparency" in config.display then document.documentElement.setAttribute "data-labcoat-no-transparency" else document.documentElement.removeAttribute "data-labcoat-no-transparency"
-        if "reduce-motion" in config.display then document.documentElement.setAttribute "data-labcoat-reduce-motion" else document.documentElement.removeAttribute "data-labcoat-reduce-motion"
+        if config.display?
+            if "simple" in config.display then document.documentElement.setAttribute "data-labcoat-simple" else document.documentElement.removeAttribute "data-labcoat-simple"
+            if "no-transparency" in config.display then document.documentElement.setAttribute "data-labcoat-no-transparency" else document.documentElement.removeAttribute "data-labcoat-no-transparency"
+            if "reduce-motion" in config.display then document.documentElement.setAttribute "data-labcoat-reduce-motion" else document.documentElement.removeAttribute "data-labcoat-reduce-motion"
+
+###  Loading our localization information:
+
+This copies the information in `config.locales` into our `Locale` object, overwriting any existing messages.
+
+        for locale, data of config.locales
+            Locales[locale] = {} unless Locales[locale] instanceof Object
+            Locales[locale][message] = value for message, value of data
+
+We also set the language of the root element to our currently-selected locale.
+
+        document.documentElement.setAttribute "lang", config.locale
+
 
 ###  Loading our frontend:
 
-    run = ->
+        run = ->
 
 ####  Setting the title.
 
 We go ahead and set the title of the current `document` to the title given by our configuration.
 
-        document.title = config.title
+            document.title = config.title
 
 ####  Getting the react root.
 
@@ -2853,11 +2522,11 @@ This is a fallback for Mastodon.
 
 4.  Otherwise, `document.body` is used as the React root.
 
-        config.root = switch
-            when config.root and (elt = document.getElementById String config.root) then elt
-            when (elt = document.getElementById "frontend") then elt
-            when (elt = document.getElementsByClassName("app-body").item 0) then elt
-            else document.body
+            config.root = switch
+                when config.root and (elt = document.getElementById String config.root) then elt
+                when (elt = document.getElementById "frontend") then elt
+                when (elt = (document.getElementsByClassName "app-body").item 0) then elt
+                else document.body
 
 ####  Rendering into the root.
 
@@ -2868,38 +2537,42 @@ The second is the frontend itself.
 If we're running in single-user mode, we need to give Laboratory our authorization information.
 Basically, we just spoof a server response.
 
-        if config.accessToken then Laboratory.Initialization.Received.dispatch
-            data:
-                access_token: config.accessToken
+            if config.accessToken then Laboratory.dispatch "LaboratoryAuthorizationGranted",
+                accessToken: config.accessToken
+                origin: config.origin
+                scope: Authorization.Scope.READWRITEFOLLOW
 
 Otherwise, we can go ahead and load our instance query now.
 
-        else ReactDOM.render 彁(Shared.InstanceQuery, {
-            title: config.title
-            locale: config.locale
-            basename: config.basename
-        }), config.root
+            else ReactDOM.render (
+                彁 Shared.InstanceQuery,
+                    title: config.title
+                    locale: config.locale
+                    basename: config.basename
+            ), config.root
 
-Finally, we add an event listener for `LaboratoryAccountReceived`.
+Finally, we add an event listener for `LaboratoryAuthorizationReceived`.
 We're not actually interested in the data for this event, but it signals that our authorization worked and that the current user has been found.
 Our callback for this event will load our *actual* frontend into our react root.
 
-        callback = ->
-            ReactDOM.unmountComponentAtNode config.root
-            ReactDOM.render 彁(Shared.Frontend, {
-                title: config.title
-                locale: config.locale
-                myID: Laboratory.user
-                useBrowserHistory: config.useBrowserHistory
-                basename: config.basename
-                defaultPrivacy: config.defaultPrivacy
-            }), config.root
-            document.removeEventListener "LaboratoryAccountReceived", callback
+            callback = ->
+                ReactDOM.unmountComponentAtNode config.root
+                ReactDOM.render (
+                    彁 Shared.Frontend,
+                        title: config.title
+                        locale: config.locale
+                        myID: Laboratory.auth.me
+                        useBrowserHistory: config.useBrowserHistory
+                        basename: config.basename
+                        defaultPrivacy: config.defaultPrivacy
+                ), config.root
+                Laboratory.forget "LaboratoryAuthorizationReceived", callback
 
-        document.addEventListener "LaboratoryAccountReceived", callback
+            Laboratory.listen "LaboratoryAuthorizationReceived", callback
+            Laboratory.forget "LaboratoryInitializationReady", callback
 
 ###  Running asynchronously:
 
 We need to wait for Laboratory before we can load our frontend.
 
-    if Laboratory?.ready then run() else document.addEventListener "LaboratoryInitializationReady", run
+        if Laboratory?.ready then do run else Laboratory.listen "LaboratoryInitializationReady", run

@@ -40,10 +40,11 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
             if event.type is "change" and event.target is @input then @setState {value: @input.value}
             else if event.type is "keypress" and event.target is @input and (event.key is "Enter" or event.code is "Enter" or event.keyCode is 0x0D) and @input.value.length and @input.validity.valid
                 window.open "about:blank", "LaboratoryOAuth"
-                Laboratory.Authorization.Requested.dispatch
+                Laboratory.dispatch "LaboratoryAuthorizationRequested",
+                    name: @props.title
                     url: "https://" + @input.value
                     redirect: @props.basename
-                    name: @props.title
+                    scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
                 @setState {value: ""}
             return
 
@@ -54,12 +55,12 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
 …And here's what we render:
 
             return 彁 ReactIntl.IntlProvider, {locale: @props.locale, messages: Locales[@props.locale]},
-                彁 "div", {id: "laboratory-instancequery"},
+                彁 "div", {id: "labcoat-instancequery"},
                     彁 ReactIntl.FormattedMessage,
                         id: "instancequery.queryinstance"
                         defaultMessage: "What's your instance?"
-                    彁 "div", {id: "laboratory-instancequeryinput"},
-                        彁 "code", {className: "laboratory-username"}, "username@"
+                    彁 "div", {id: "labcoat-instancequeryinput"},
+                        彁 "code", {className: "labcoat-username"}, "username@"
                         彁 "input",
                             type: "text"
                             pattern: "[0-9A-Za-z\-\.]+(\:[0-9]{1,4})?"

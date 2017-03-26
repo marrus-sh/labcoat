@@ -16,12 +16,12 @@
 The `Header` is just a simple functional React component.
 
     UI.Header = (props) ->
-        彁 'header', {id: "laboratory-header"},
+        彁 'header', {id: "labcoat-header"},
             彁 UI.Title, null,
                 props.title
             彁 ReactRouter.Link, {to: "/compose"},
                 彁 Shared.Button,
-                    icon: "pencil-square-o"
+                    icon: "icon.compose"
                     label: 彁 ReactIntl.FormattedMessage,
                         id: "composer.compose"
                         defaultMessage: "Compose"

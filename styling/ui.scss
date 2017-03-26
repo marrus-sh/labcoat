@@ -8,35 +8,34 @@ html, body {
   display: block;
   margin: 0;
   padding: 0;
-  background-color: $laboratory-backgroundColor;
-  font-family: $laboratory-sans;
-  font-size: 15pt;
+  background-color: $labcoat-backgroundColor;
+  font-family: $labcoat-sans;
   font-style: normal;
   font-weight: normal;
   font-synthesis: none;
   line-height: 1.4;
 }
 
-#laboratory-ui {
+#labcoat-ui {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
   position: relative;
   margin: 0;
-  padding: 42pt 0 0;
+  padding: 2.8rem 0 0;
   width: 100%;
-  height: calc(100vh - 42pt);
+  height: calc(100vh - 2.8rem);
   overflow: auto;
-  background: $laboratory-background;
-  font-family: $laboratory-sans;
-  font-size: 15pt;
+  background: $labcoat-background;
+  font-family: $labcoat-sans;
+  font-size: 1rem;
   font-style: normal;
   font-weight: normal;
   font-synthesis: none;
   line-height: 1.4;
 
-  @media (max-width: 480px) {
+  @media (max-width: 32rem) {
     -ms-scroll-snap-type: mandatory;
     -webkit-scroll-snap-type: mandatory;
     scroll-snap-type: mandatory;
@@ -50,7 +49,7 @@ html, body {
 
   &::before, &::after {  //  Used for centering
     display: block;
-    width: calc(50% - 510pt);  //  1020pt = 3 * width of column
+    width: calc(50% - 34.5rem);  //  69rem = 3 * width of column
     min-width: 1px;  //  Ensures that the element renders
     content: "";
   }
@@ -68,13 +67,13 @@ html, body {
     text-decoration: none;
     transition: color .35s;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
   code, pre {
-    font-family: $laboratory-mono;
+    font-family: $labcoat-mono;
   }
 
   label {
@@ -88,13 +87,13 @@ html, body {
       overflow: hidden;
       text-overflow: ellipsis;
 
-      *[data-laboratory-simple] &, &:empty {
+      *[data-labcoat-simple] &, &:empty {
         display: none;
       }
     }
   }
 
-  *.laboratory-idcard {
+  *.labcoat-idcard {
     display: inline-flex;
     flex-direction: row;
     justify-content: space-between;
@@ -114,7 +113,7 @@ html, body {
       }
     }
 
-    *.laboratory-avatar {
+    *.labcoat-avatar {
       display: block;
       margin: 0 .2em 0;
       border-radius: .1em;
@@ -122,7 +121,7 @@ html, body {
       width: 1em;
     }
 
-    *.laboratory-displayname {
+    *.labcoat-displayname {
       display: block;
       font-size: .4em;
       line-height: 1.2;
@@ -136,14 +135,14 @@ html, body {
       }
     }
 
-    *.laboratory-username {
+    *.labcoat-username {
       display: block;
       font-size: .4em;
       line-height: 1;
     }
   }
 
-  *.laboratory-displayname {
+  *.labcoat-displayname {
     font-weight: 700;
 
     &:empty::after {
@@ -151,33 +150,33 @@ html, body {
     }
   }
 
-  *.laboratory-username {
-    font-family: $laboratory-mono;
+  *.labcoat-username {
+    font-family: $labcoat-mono;
     font-weight: 400;
 
     &::before {
-      opacity: $laboratory-leadingCommAtOpacity;
+      opacity: $labcoat-leadingCommAtOpacity;
       content: "@";
     }
   }
 
-  *.laboratory-buttoncontainer {
+  *.labcoat-buttoncontainer {
     cursor: pointer;
 
-    &.laboratory-buttoncontainer--disabled {
+    &.labcoat-buttoncontainer--disabled {
       cursor: not-allowed;
     }
   }
 
-  *.laboratory-button {
+  *.labcoat-button {
     display: inline-block;
     flex: none;
     margin: 0 .4em;
     border: none;
     border-radius: .125em;
     padding: .2em .25em;
-    color: $laboratory-buttonTextColor;
-    background-color: $laboratory-buttonColor;
+    color: $labcoat-buttonTextColor;
+    background-color: $labcoat-buttonColor;
     font-size: 1.2em;
     font-weight: 400;
     line-height: 1;
@@ -185,52 +184,94 @@ html, body {
     transition: color .5s, background-color .5s;
 
     &:hover {
-      color: $laboratory-buttonHoverTextColor;
-      background-color: $laboratory-buttonHoverColor;
+      color: $labcoat-buttonHoverTextColor;
+      background-color: $labcoat-buttonHoverColor;
     }
 
     &[disabled], &[disabled]:hover {
       margin: -1px calc(.4em - 1px);
-      border: 1px $laboratory-buttonColor solid;
+      border: 1px $labcoat-buttonColor solid;
       color: inherit;
       background-color: transparent;
       cursor: not-allowed;
     }
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
-    }
-
-    &.laboratory-button--minimal {
-      margin: 0 -.375em 0 .25em;
-      padding: .1em 0;
-      color: inherit;
-      background-color: transparent;
-
-      &[disabled] {
-        margin: 0 .2em;
-        border: none;
-        cursor: not-allowed;
-      }
-
-      [data-laboratory-simple] & {
-        margin: 0 .25em;
-      }
     }
   }
 
-  *.laboratory-textbox {
+  *.labcoat-actioncontainer {
+    flex: auto;
+    margin: 0;
+    padding: .35em .5em;
+    color: $labcoat-actionTextColor;
+    background-color: $labcoat-actionColor;
+    transition: color .5s, background-color .5s;
+    cursor: pointer;
+
+    &:hover {
+      color: $labcoat-actionHoverTextColor;
+      background-color: $labcoat-actionHoverColor;
+    }
+
+    &.labcoat-actioncontainer--active {
+      color: $labcoat-actionActiveTextColor;
+      background-color: $labcoat-actionActiveColor;
+
+      &:hover {
+        color: $labcoat-actionActiveHoverTextColor;
+        background-color: $labcoat-actionActiveHoverColor;
+      }
+    }
+
+    &.labcoat-actioncontainer--disabled {
+      color: inherit;
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+
+    *[data-labcoat-reduce_motion] & {
+      transition: none;
+    }
+
+    & + .labcoat-actioncontainer {
+      border-left: thin $labcoat-actionBorderColor solid;
+    }
+  }
+
+  *.labcoat-action {
+    display: inline-block;
+    margin: 0 -.375em 0 .25em;
+    border: none;
+    padding: .1em 0;
+    color: inherit;
+    background-color: transparent;
+    transition: color .5s, background-color .5s;
+
+    &[disabled], &[disabled]:hover {
+      color: inherit;
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+
+    [data-labcoat-simple] & {
+      margin: 0 .25em;
+    }
+  }
+
+  *.labcoat-textbox {
     position: relative;
     margin: 0;
-    border: thin $laboratory-textboxBorderColor solid;
-    border-radius: 7pt;
-    padding: 12.15pt 18pt;
+    border: thin $labcoat-textboxBorderColor solid;
+    border-radius: .4em;
+    padding: .675em 1em;
     outline: none;
     box-shadow: none;
     overflow: auto;
     resize: none;
-    color: $laboratory-textboxTextColor;
-    background-color: $laboratory-textboxColor;
+    color: $labcoat-textboxTextColor;
+    background-color: $labcoat-textboxColor;
     font-family: inherit;
     font-size: inherit;
     font-weight: 400;
@@ -239,7 +280,7 @@ html, body {
     appearance: none;
   }
 
-  *.laboratory-textbox[aria-label]::before {
+  *.labcoat-textbox[aria-label]::before {
     display: block;
     position: absolute;
     top: 40%;
@@ -248,7 +289,7 @@ html, body {
     margin: auto;
     width: 50%;
     opacity: 0;
-    color: $laboratory-textboxPlaceholderColor;
+    color: $labcoat-textboxPlaceholderColor;
     font-weight: 300;
     text-align: center;
     user-select: none;
@@ -257,11 +298,11 @@ html, body {
     content: attr(aria-label);
   }
 
-  *.laboratory-textbox[aria-label].laboratory-textbox--empty:not(:focus)::before {
+  *.labcoat-textbox[aria-label].labcoat-textbox--empty:not(:focus)::before {
     opacity: 1;
   }
 
-  *.laboratory-toggle {
+  *.labcoat-toggle {
     margin: 0 .5em;
     border: 0;
     padding: 0;
@@ -270,56 +311,56 @@ html, body {
     cursor: pointer;
   }
 
-  *.laboratory-toggle-label {
+  *.labcoat-toggle-label {
     flex: auto;
     margin: 0 .5em;
     width: calc(50% - 2em);
     font-variant: small-caps;
     transition: opacity .25s;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
-  *.laboratory-toggle-label-off {
+  *.labcoat-toggle-label-off {
     text-align: right;
     opacity: 1;
   }
 
-  *.laboratory-toggle-label-on {
+  *.labcoat-toggle-label-on {
     text-align: left;
-    opacity: $laboratory-toggleInactiveOpacity;
+    opacity: $labcoat-toggleInactiveOpacity;
   }
 
-  *.laboratory-toggle--checked {
-    *.laboratory-toggle-label-off {
-      opacity: $laboratory-toggleInactiveOpacity;
+  *.labcoat-toggle--checked {
+    *.labcoat-toggle-label-off {
+      opacity: $labcoat-toggleInactiveOpacity;
     }
 
-    *.laboratory-toggle-label-on {
+    *.labcoat-toggle-label-on {
       opacity: 1;
     }
   }
 
-  *.laboratory-toggle--disabled, *.laboratory-toggle--checked.laboratory-toggle--disabled {
+  *.labcoat-toggle--disabled, *.labcoat-toggle--checked.labcoat-toggle--disabled {
     cursor: not-allowed;
 
-    *.laboratory-toggle-label {
-      opacity: $laboratory-toggleInactiveOpacity;
+    *.labcoat-toggle-label {
+      opacity: $labcoat-toggleInactiveOpacity;
     }
 
-    *.laboratory-toggle-track, *.laboratory-toggle-thumb {
+    *.labcoat-toggle-track, *.labcoat-toggle-thumb {
       background: transparent;
       transition: background-color 0.25s;
 
-      *[data-laboratory-reduce_motion] & {
+      *[data-labcoat-reduce_motion] & {
         transition: none;
       }
     }
   }
 
-  .laboratory-toggle-screenreader-only {
+  .labcoat-toggle-screenreader-only {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -330,7 +371,7 @@ html, body {
     width: 1px;
   }
 
-  *.laboratory-toggle-track {
+  *.labcoat-toggle-track {
     display: inline-block;
     flex: none;
     position: relative;
@@ -338,43 +379,43 @@ html, body {
     width: 2em;
     height: 1em;
     padding: 0;
-    border: 1px $laboratory-toggleOffColor solid;
+    border: 1px $labcoat-toggleOffColor solid;
     border-radius: .5em;
-    color: $laboratory-toggleForegroundOffColor;
-    background-color: $laboratory-toggleOffColor;
+    color: $labcoat-toggleForegroundOffColor;
+    background-color: $labcoat-toggleOffColor;
     font-size: 1.2em;
     line-height: 1;
     user-select: none;
     transition: all 0.25s ease;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
-  *.laboratory-toggle:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, *.laboratory-toggle.laboratory-toggle--focus *.laboratory-toggle-track {
-    background-color: $laboratory-toggleHoverOffColor;
+  *.labcoat-toggle:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, *.labcoat-toggle.labcoat-toggle--focus *.labcoat-toggle-track {
+    background-color: $labcoat-toggleHoverOffColor;
 
-    *[data-laboratory-reduce_motion] & {
-      background-color: $laboratory-toggleOffColor;
+    *[data-labcoat-reduce_motion] & {
+      background-color: $labcoat-toggleOffColor;
     }
   }
 
-  *.laboratory-toggle--checked *.laboratory-toggle-track {
-    border-color: $laboratory-toggleOnColor;
-    color: $laboratory-toggleForegroundOnColor;
-    background-color: $laboratory-toggleOnColor;
+  *.labcoat-toggle--checked *.labcoat-toggle-track {
+    border-color: $labcoat-toggleOnColor;
+    color: $labcoat-toggleForegroundOnColor;
+    background-color: $labcoat-toggleOnColor;
   }
 
-  *.laboratory-toggle.laboratory-toggle--checked:hover:not(.laboratory-toggle--disabled) *.laboratory-toggle-track, *.laboratory-toggle.laboratory-toggle--checked.laboratory-toggle--focus *.laboratory-toggle-track {
-    background-color: $laboratory-toggleHoverOnColor;
+  *.labcoat-toggle.labcoat-toggle--checked:hover:not(.labcoat-toggle--disabled) *.labcoat-toggle-track, *.labcoat-toggle.labcoat-toggle--checked.labcoat-toggle--focus *.labcoat-toggle-track {
+    background-color: $labcoat-toggleHoverOnColor;
 
-    *[data-laboratory-reduce_motion] & {
-      background-color: $laboratory-toggleOnColor;
+    *[data-labcoat-reduce_motion] & {
+      background-color: $labcoat-toggleOnColor;
     }
   }
 
-  *.laboratory-toggle-track-check {
+  *.labcoat-toggle-track-check {
     position: absolute;
     height: 1em;
     top: 0;
@@ -386,16 +427,16 @@ html, body {
     opacity: 0;
     transition: opacity 0.25s ease;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
-  *.laboratory-toggle--checked *.laboratory-toggle-track-check {
+  *.labcoat-toggle--checked *.labcoat-toggle-track-check {
     opacity: 1;
   }
 
-  *.laboratory-toggle-track-x {
+  *.labcoat-toggle-track-x {
     position: absolute;
     height: 1em;
     top: 0;
@@ -407,16 +448,16 @@ html, body {
     opacity: 1;
     transition: opacity 0.25s ease;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
-  *.laboratory-toggle--checked *.laboratory-toggle-track-x {
+  *.labcoat-toggle--checked *.labcoat-toggle-track-x {
     opacity: 0;
   }
 
-  *.laboratory-toggle-thumb {
+  *.labcoat-toggle-thumb {
     position: absolute;
     top: 0;
     left: 0;
@@ -425,17 +466,17 @@ html, body {
     border: thin solid;
     border-color: inherit;
     border-radius: .5em;
-    background-color: $laboratory-toggleForegroundOffColor;
+    background-color: $labcoat-toggleForegroundOffColor;
     box-sizing: border-box;
     transition: all 0.25s ease;
 
-    *[data-laboratory-reduce_motion] & {
+    *[data-labcoat-reduce_motion] & {
       transition: none;
     }
   }
 
-  *.laboratory-toggle--checked *.laboratory-toggle-thumb {
+  *.labcoat-toggle--checked *.labcoat-toggle-thumb {
     left: 1em;
-    background-color: $laboratory-toggleForegroundOnColor;
+    background-color: $labcoat-toggleForegroundOnColor;
   }
 }

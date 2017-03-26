@@ -1,66 +1,66 @@
-#laboratory-ui {
-  *.laboratory-column {
+#labcoat-ui {
+  *.labcoat-column {
     display: block;
     position: relative;
-    flex: 250pt 1 1;
-    margin: 21pt 10pt 42pt;
-    padding: 42pt 10pt 10.5pt;
-    max-width: 300pt;
-    min-width: 225pt;
-    color: $laboratory-columnTextColor;
-    background-color: transparentize($laboratory-columnColor, 1 - $laboratory-columnBackgroundOpacity);
+    flex: 18rem 1 1;
+    margin: 2.1rem .75rem;
+    padding: 2.8rem .75rem .7rem;
+    max-width: 20rem;
+    min-width: 15rem;
+    color: $labcoat-columnTextColor;
+    background-color: transparentize($labcoat-columnColor, 1 - $labcoat-columnBackgroundOpacity);
 
-    @media (max-width: 480px) {
+    @media (max-width: 32rem) {
       flex: none;
-      margin: 7pt 5pt;
-      padding-top: 52.5pt;
-      width: calc(100vw - 30pt);
+      margin: .5rem;
+      padding-top: 3.5rem;
+      width: calc(100vw - 2.5rem);
       max-width: none;
       min-width: 0;
     }
 
-    *[data-laboratory-simple] & {
-      padding-top: 10.5pt;
+    *[data-labcoat-simple] & {
+      padding-top: .7rem;
     }
 
     a[href] {
-      color: $laboratory-columnAccentTextColor;
+      color: $labcoat-columnAccentTextColor;
 
       &:hover {
-        color: $laboratory-columnTextColor;
+        color: $labcoat-columnTextColor;
       }
     }
   }
 
-  *.laboratory-heading {
+  *.labcoat-heading {
     display: block;
     position: absolute;
-    top: -10.5pt;
-    left: -10pt;
+    top: -.7rem;
+    left: -.625rem;
     margin: 0;
-    padding: 7pt 5pt 7pt;
-    width: calc(100% - 10pt);
-    height: 28pt;
+    padding: .5rem .375rem;
+    width: calc(100% - .75rem);
+    height: 2rem;
     overflow: hidden;
     white-space: nowrap;
-    color: $laboratory-columnHeadingTextColor;
-    background-color: $laboratory-columnHeadingColor;
-    font-size: 20pt;
+    color: $labcoat-columnHeadingTextColor;
+    background-color: $labcoat-columnHeadingColor;
+    font-size: 1.4rem;
     font-weight: 400;
     font-variant: small-caps;
-    line-height: 28pt;
+    line-height: 2rem;
     text-overflow: ellipsis;
 
-    @media (max-width: 480px) {
+    @media (max-width: 32rem) {
       top: 0;
       left: 0;
     }
 
-    *[data-laboratory-simple] & {
-      top: -20pt;
-      left: -20pt;
-      width: 32pt;
-      color: $laboratory-columnHeadingColor;
+    *[data-labcoat-simple] & {
+      top: -1.4rem;
+      left: -1.4rem;
+      width: 2.25rem;
+      color: $labcoat-columnHeadingColor;
       background: transparent;
 
       & *:not(:first-child) {
@@ -69,43 +69,55 @@
     }
 
     i.fa:first-child {
-      margin-right: 5pt;
-      width: 32pt;
+      margin-right: .375rem;
+      width: 2.25rem;
     }
   }
 
-  *.laboratory-posts {
-    height: calc(100vh - 157.5pt);  //  This *would* be `height: 100%;` but for some reason Safari refuses to respect that.
+  *.labcoat-posts {
+    height: calc(100vh - 10.5rem);  //  This *would* be `height: 100%;` but for some reason Safari refuses to respect that.
     overflow-x: hidden;
     overflow-y: auto;
+
+    @media (max-width: 32rem) {
+      height: calc(100vh - 8.05rem);
+
+      *[data-labcoat-simple] & {
+        height: calc(100vh - 5.25rem);
+      }
+    }
+
+    *[data-labcoat-simple] & {
+      height: calc(100vh - 8.4rem);
+    }
   }
 
-  *.laboratory-columnnav {
+  *.labcoat-columnnav {
     display: block;
-    padding: 21pt 0;
+    padding: 1.4rem 0;
 
     a[href] {
       display: block;
-      margin: 0 0 7pt;
-      padding: 7pt 5pt 7pt;
-      height: 28pt;
+      margin: 0 0 .5rem;
+      padding: .5rem .375rem;
+      height: 2rem;
       overflow: hidden;
       white-space: nowrap;
-      color: $laboratory-cardTextColor;
-      background-color: $laboratory-cardColor;
-      font-size: 20pt;
+      color: $labcoat-cardTextColor;
+      background-color: $labcoat-cardColor;
+      font-size: 1.4rem;
       font-weight: 400;
-      line-height: 28pt;
+      line-height: 2rem;
       text-overflow: ellipsis;
       transition: margin .35s ease-in-out, color .35s, background-color .35s;
 
       &:hover {
-        margin-left: 5pt;
-        margin-right: -5pt;
-        color: $laboratory-cardHighlightTextColor;
-        background-color: $laboratory-cardHighlightColor;
+        margin-left: .375rem;
+        margin-right: -.375rem;
+        color: $labcoat-cardHighlightTextColor;
+        background-color: $labcoat-cardHighlightColor;
 
-        *[data-laboratory-reduce_motion] & {
+        *[data-labcoat-reduce_motion] & {
           margin-left: 0;
           margin-right: 0;
           transition: none;
@@ -113,55 +125,55 @@
       }
 
       i.fa:first-child {
-        margin-right: 5pt;
-        width: 32pt;
+        margin-right: .375rem;
+        width: 2.25rem;
       }
     }
   }
 
-  *.laboratory-columnfooter {
+  *.labcoat-columnfooter {
     display: block;
-    font-size: 12pt;
+    font-size: .75rem;
     text-align: center;
 
     nav a[href] {
       display: inline-block;
-      margin: 0 .5em;
+      margin: 0 .375em;
     }
   }
 
-  #laboratory-notifications {
-    background-color: transparentize($laboratory-columnColor, 1 - $laboratory-notificationBackgroundOpacity);
+  #labcoat-notifications {
+    background-color: transparentize($labcoat-columnColor, 1 - $labcoat-notificationBackgroundOpacity);
 
-    *[data-laboratory-no_transparency] & {
-      background-color: $laboratory-columnColor;
+    *[data-labcoat-no_transparency] & {
+      background-color: $labcoat-columnColor;
     }
 
-    *.laboratory-heading, *.laboratory-posts {
-      opacity: $laboratory-notificationForegroundOpacity;
+    *.labcoat-heading, *.labcoat-posts {
+      opacity: $labcoat-notificationForegroundOpacity;
 
-      *[data-laboratory-no_transparency] & {
+      *[data-labcoat-no_transparency] & {
         opacity: 1;
       }
     }
   }
 
-  *.laboratory-status {
+  *.labcoat-status {
     display: block;
-    margin: 0 0 7pt;
-    padding: 7pt 5pt 7pt;
+    margin: 0 0 .5rem;
+    padding: .5rem .375rem;
     overflow: hidden;
-    color: $laboratory-cardTextColor;
-    background-color: $laboratory-cardColor;
+    color: $labcoat-cardTextColor;
+    background-color: $labcoat-cardColor;
     text-overflow: ellipsis;
     transition: color .5s, background-color .5s;
 
-    &.laboratory-status--highlighted {
-      color: $laboratory-cardHighlightTextColor;
-      background-color: $laboratory-cardHighlightColor;
+    &.labcoat-status--highlighted {
+      color: $labcoat-cardHighlightTextColor;
+      background-color: $labcoat-cardHighlightColor;
 
       a[href] {
-        color: $laboratory-cardHighlightAccentTextColor;
+        color: $labcoat-cardHighlightAccentTextColor;
 
         &:hover {
           color: inherit;
@@ -170,7 +182,7 @@
     }
 
     a[href] {
-      color: $laboratory-cardAccentTextColor;
+      color: $labcoat-cardAccentTextColor;
 
       &:hover {
         color: inherit;
@@ -178,11 +190,11 @@
     }
 
     aside {
-      margin: -7pt -5pt 7pt;
-      padding: 7pt 10pt;
-      color: $laboratory-cardAsideTextColor;
-      background-color: $laboratory-cardAsideColor;
-      font-size: 12pt;
+      margin: -.5rem -.375rem .5rem;
+      padding: .5rem .75rem;
+      color: $labcoat-cardAsideTextColor;
+      background-color: $labcoat-cardAsideColor;
+      font-size: .75rem;
       font-weight: 300;
 
       &::after {
@@ -190,7 +202,7 @@
       }
 
       a[href] {
-        color: $laboratory-cardAsideAccentTextColor;
+        color: $labcoat-cardAsideAccentTextColor;
 
         &:hover {
           color: inherit;
@@ -198,12 +210,12 @@
       }
     }
 
-    &.laboratory-status--highlighted aside {
-      color: $laboratory-cardAsideTextColor;
-      background-color: $laboratory-cardAsideColor;
+    &.labcoat-status--highlighted aside {
+      color: $labcoat-cardAsideTextColor;
+      background-color: $labcoat-cardAsideColor;
 
       a[href] {
-        color: $laboratory-cardAsideAccentTextColor;
+        color: $labcoat-cardAsideAccentTextColor;
 
         &:hover {
           color: inherit;
@@ -212,17 +224,17 @@
     }
 
     header {
-      margin: 0 0 7pt;
+      margin: 0 0 .5rem;
 
       time {
         float: right;
-        font-size: 12pt;
+        font-size: .75rem;
         font-weight: 300;
       }
     }
 
-    *.laboratory-idcard {
-      font-size: 30pt;
+    *.labcoat-idcard {
+      font-size: 2rem;
       margin: 0 .2em 0 0;
     }
 
@@ -231,69 +243,30 @@
       flex-direction: row;
       justify-content: flex-start;
       align-items: stretch;
-      margin: 7pt -5pt -7pt;
-      border-top: thin $laboratory-cardButtonBorderColor solid;
+      margin: .5rem -.375rem -.5rem;
+      border-top: thin $labcoat-actionBorderColor solid;
       padding: 0;
       overflow-x: auto;
       overflow-y: hidden;
       text-transform: uppercase;
-      font-size: 11pt;
-
-      *.laboratory-buttoncontainer {
-        flex: auto;
-        margin: 0;
-        padding: 7pt 5pt;
-        color: $laboratory-cardButtonTextColor;
-        background-color: $laboratory-cardButtonColor;
-        transition: color .5s, background-color .5s;
-
-        *[data-reduce_motion] & {
-          transition: none;
-        }
-
-        &:hover {
-          color: $laboratory-cardButtonHoverTextColor;
-          background-color: $laboratory-cardButtonHoverColor;
-        }
-
-        & + .laboratory-buttoncontainer {
-          border-left: thin $laboratory-cardButtonBorderColor solid;
-        }
-      }
-
-      *.laboratory-unboostbutton, *.laboratory-unhighlightbutton {
-        color: $laboratory-cardButtonActiveTextColor;
-        background-color: $laboratory-cardButtonActiveColor;
-
-        &:hover {
-          color: $laboratory-cardButtonActiveHoverTextColor;
-          background-color: $laboratory-cardButtonActiveHoverColor;
-        }
-      }
-
-      *.laboratory-noboostbutton, *.laboratory-noboostbutton:hover {
-        color: inherit;
-        background-color: transparent;
-      }
+      font-size: .75rem;
     }
   }
 
-  *.laboratory-statusContent {
+  *.labcoat-statusContent {
     p {
       margin: 0;
-      padding: 0 10pt;
+      padding: 0 .625em;
       text-align: left;
       white-space: pre-wrap;
       hyphens: auto;
 
       & + p {
-        text-indent: 15pt;
+        margin-top: 1.05em;
       }
 
       a[href] {
         hyphens: none;
-        text-decoration: underline;
-        text-decoration-style: dashed;
       }
     }
   }

@@ -10,6 +10,7 @@
 >           defaultPrivacy=React.PropTypes.string
 >           thirdColumn=React.PropTypes.element.isRequired
 >           showComposer=React.PropTypes.bool
+>           composerQuery=React.PropTypes.object
 >       >
 >           {/* content */}
 >       </UI>
@@ -27,6 +28,8 @@
 >       The component to display in the third column.
 >   -   **`showComposer` [OPTIONAL `boolean`] :**
 >       Whether or not to show the composer.
+>   -   **`composerQuery` [OPTIONAL `object`] :**
+>       Query parameters to initialize the composer.
 
 ##  The Component  ##
 
@@ -42,6 +45,7 @@ Our UI doesn't have any properties except for its `title` and children.
             myID: React.PropTypes.number.isRequired
             thirdColumn: React.PropTypes.element.isRequired
             showComposer: React.PropTypes.bool
+            composerQuery: React.PropTypes.object
 
 ###  Event handling:
 
@@ -54,14 +58,14 @@ Here we will handle events related to the UI:
 
 This handles our drag-and-drop events:
 
-                when "dragenter" then document.getElementById("laboratory-ui").setAttribute "data-laboratory-dragging", ""
+                when "dragenter" then (document.getElementById "labcoat-ui").setAttribute "data-laboratory-dragging", ""
                 when "dragover"
-                    e.preventDefault()
+                    do e.preventDefault
                     e.dataTransfer.dropEffect = "copy"
-                when "dragleave" then document.getElementById("laboratory-ui").removeAttribute "data-laboratory-dragging" unless e.relatedTarget?
+                when "dragleave" then (document.getElementById "labcoat-ui").removeAttribute "data-laboratory-dragging" unless e.relatedTarget?
                 when "drop"
-                    e.preventDefault()
-                    document.getElementById("laboratory-ui").removeAttribute "data-laboratory-dragging"
+                    do e.preventDefault
+                    (document.getElementById "labcoat-ui").removeAttribute "data-laboratory-dragging"
                     # Laboratory.Composer.UploadRequested.dispatch {file: e.dataTransfer.files.item 1} if e.dataTransfer and e.dataTransfer.files.length is 1
 
 
@@ -88,10 +92,10 @@ We can remove our event listeners if we're unloading our UI.
 ###  Rendering:
 
         render: ->
-            彁 'div', {id: "laboratory-ui"},
+            彁 'div', {id: "labcoat-ui"},
                 彁 UI.Header, {title: @props.title}
                 彁 Columns.Timeline, {name: "home"}
-                彁 Columns.Notifications
+                彁 Columns.Timeline, {name: "notifications"}
                 @props.thirdColumn
                 @props.children
                 彁 Modules.Composer,
@@ -99,3 +103,5 @@ We can remove our event listeners if we're unloading our UI.
                     myID: @props.myID
                     maxChars: @props.maxChars
                     visible: @props.showComposer
+                    text: @props.composerQuery?.text
+                    inReplyTo: if isFinite @props.composerQuery?.inReplyTo then Number @props.composerQuery.inReplyTo else undefined
