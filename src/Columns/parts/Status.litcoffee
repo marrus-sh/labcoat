@@ -270,9 +270,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.unfavourite"
                                         defaultMessage: "Unhighlight"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
-                                        id: @props.id
-                                        value: off
+                                    action: (
+                                        new Laboratory.Post.SetFavourite
+                                            id: @props.id
+                                            value: off
+                                    ).start
                             else
                                 彁 Shared.Action,
                                     active: no
@@ -281,9 +283,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.favourite"
                                         defaultMessage: "Highlight"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
-                                        id: @props.id
-                                        value: on
+                                    action: (
+                                        new Laboratory.Post.SetFavourite
+                                            id: @props.id
+                                            value: on
+                                    ).start
                             if @props.isReblogged
                                 彁 Shared.Action,
                                     active: yes
@@ -292,9 +296,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.unreblog"
                                         defaultMessage: "Unboost"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
-                                        id: @props.id
-                                        value: off
+                                    action: (
+                                        new Laboratory.Post.SetBoost
+                                            id: @props.id
+                                            value: off
+                                    ).start
                             else if @props.visibility & Laboratory.Post.Visibility.REBLOGGABLE
                                 彁 Shared.Action,
                                     active: no
@@ -303,9 +309,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.reblog"
                                         defaultMessage: "Boost"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
-                                        id: @props.id
-                                        value: on
+                                    action: (
+                                        new Laboratory.Post.SetBoost
+                                            id: @props.id
+                                            value: on
+                                    ).start
                             else
                                 彁 Shared.Action,
                                     active: no

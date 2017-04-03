@@ -308,14 +308,10 @@
             id: "status.unfavourite",
             defaultMessage: "Unhighlight"
           }),
-          action: (function(_this) {
-            return function() {
-              return Laboratory.dispatch("LaboratoryPostSetFavourite", {
-                id: _this.props.id,
-                value: false
-              });
-            };
-          })(this)
+          action: (new Laboratory.Post.SetFavourite({
+            id: this.props.id,
+            value: false
+          })).start
         }) : 彁(Shared.Action, {
           active: false,
           className: "labcoat-favourite",
@@ -324,14 +320,10 @@
             id: "status.favourite",
             defaultMessage: "Highlight"
           }),
-          action: (function(_this) {
-            return function() {
-              return Laboratory.dispatch("LaboratoryPostSetFavourite", {
-                id: _this.props.id,
-                value: true
-              });
-            };
-          })(this)
+          action: (new Laboratory.Post.SetFavourite({
+            id: this.props.id,
+            value: true
+          })).start
         }), this.props.isReblogged ? 彁(Shared.Action, {
           active: true,
           className: "labcoat-unreblog",
@@ -340,14 +332,10 @@
             id: "status.unreblog",
             defaultMessage: "Unboost"
           }),
-          action: (function(_this) {
-            return function() {
-              return Laboratory.dispatch("LaboratoryPostSetReblog", {
-                id: _this.props.id,
-                value: false
-              });
-            };
-          })(this)
+          action: (new Laboratory.Post.SetBoost({
+            id: this.props.id,
+            value: false
+          })).start
         }) : this.props.visibility & Laboratory.Post.Visibility.REBLOGGABLE ? 彁(Shared.Action, {
           active: false,
           className: "labcoat-reblog",
@@ -356,14 +344,10 @@
             id: "status.reblog",
             defaultMessage: "Boost"
           }),
-          action: (function(_this) {
-            return function() {
-              return Laboratory.dispatch("LaboratoryPostSetReblog", {
-                id: _this.props.id,
-                value: true
-              });
-            };
-          })(this)
+          action: (new Laboratory.Post.SetBoost({
+            id: this.props.id,
+            value: true
+          })).start
         }) : 彁(Shared.Action, {
           active: false,
           className: "labcoat-noreblog",
@@ -459,15 +443,11 @@
         timeline: null
       };
     },
+    request: null,
     handleResponse: function(event) {
-      var params, timeline;
-      params = this.getParams();
-      timeline = event.detail;
-      if (timeline.type === params.type && timeline.query === params.query) {
-        return this.setState({
-          timeline: timeline
-        });
-      }
+      return this.setState({
+        timeline: event.detail.response
+      });
     },
     getParams: function(name) {
       if (name == null) {
@@ -477,60 +457,68 @@
         case name !== "home":
           return {
             type: Laboratory.Timeline.Type.HOME,
-            query: ""
+            query: "",
+            isLocal: false
           };
         case name !== "community":
           return {
-            type: Laboratory.Timeline.Type.LOCAL,
-            query: ""
+            type: Laboratory.Timeline.Type.PUBLIC,
+            query: "",
+            isLocal: true
           };
         case name !== "global":
           return {
-            type: Laboratory.Timeline.Type.GLOBAL,
-            query: ""
+            type: Laboratory.Timeline.Type.PUBLIC,
+            query: "",
+            isLocal: false
           };
         case (name.substr(0, 8)) !== "hashtag/":
           return {
             type: Laboratory.Timeline.Type.HASHTAG,
-            query: name.substr(8)
+            query: name.substr(8),
+            isLocal: false
           };
         case (name.substr(0, 5)) !== "user/":
           return {
-            type: Laboratory.Timeline.Type.USER,
-            query: name.substr(5)
+            type: Laboratory.Timeline.Type.ACCOUNT,
+            query: name.substr(5),
+            isLocal: false
           };
         case name !== "notifications":
           return {
             type: Laboratory.Timeline.Type.NOTIFICATIONS,
-            query: ""
+            query: "",
+            isLocal: false
           };
         case name !== "highlights":
           return {
             type: Laboratory.Timeline.Type.FAVOURITES,
-            query: ""
+            query: "",
+            isLocal: false
           };
         default:
           return {
             type: Laboratory.Timeline.Type.UNDEFINED,
-            query: ""
+            query: "",
+            isLocal: false
           };
       }
     },
     getIcon: function() {
-      switch ((this.getParams()).type) {
-        case Laboratory.Timeline.Type.HOME:
+      switch (name) {
+        case "home":
           return "icon.home";
-        case Laboratory.Timeline.Type.LOCAL:
+        case "community":
           return "icon.community";
-        case Laboratory.Timeline.Type.GLOBAL:
+        case "global":
           return "icon.global";
-        case Laboratory.Timeline.Type.HASHTAG === "hashtag/":
+        case (name.substr(0, 8)) === "hashtag/":
           return "icon.hashtag";
-        case Laboratory.Timeline.Type.USER === "user/":
+        case (name.substr(0, 5)) === "user/":
           return "icon.user";
-        case Laboratory.Timeline.Type.NOTIFICATIONS:
+        case "notifications":
           return "icon.notifications";
-        case Laboratory.Timeline.Type.FAVOURITES:
+        case "highlights":
           return "icon.favourite";
         default:
           return "icon.mystery";
@@ -540,14 +528,20 @@
       if (this.props.name === nextProps.name) {
         return;
       }
-      return Laboratory.dispatch("LaboratoryTimelineRequested", this.getParams(nextProps.name));
+      this.request.stop();
+      this.request.removeEventListener("response", this.handleResponse);
+      this.request = new Laboratory.Timeline.Request(this.getParams(nextProps.name));
+      this.request.addEventListener("response", this.handleResponse);
+      return this.request.start();
     },
     componentWillMount: function() {
-      Laboratory.listen("LaboratoryTimelineReceived", this.handleResponse);
-      return Laboratory.dispatch("LaboratoryTimelineRequested", this.getParams());
+      this.request = new Laboratory.Timeline.Request(this.getParams());
+      this.request.addEventListener("response", this.handleResponse);
+      return this.request.start();
     },
     componentWillUnmount: function() {
-      return Laboratory.forget("LaboratoryTimelineReceived", this.handleResponse);
+      this.request.stop();
+      return this.request.removeEventListener("response", this.handleResponse);
     },
     render: function() {
       var post;
@@ -635,31 +629,34 @@
         account: null
       };
     },
+    request: null,
     handleResponse: function(event) {
-      var account;
-      account = event.detail;
-      if (account.id === this.props.id) {
-        return this.setState({
-          account: account
-        });
-      }
+      return this.setState({
+        account: event.detail.response
+      });
     },
     componentWillReceiveProps: function(nextProps) {
       if (this.props.id === nextProps.id) {
         return;
       }
-      return Laboratory.dispatch("LaboratoryProfileRequested", {
+      this.request.stop();
+      this.request.removeEventListener("response", this.handleResponse);
+      this.request = new Laboratory.Profile.Request({
         id: nextProps.id
       });
+      this.request.addEventListener("response", this.handleResponse);
+      return this.request.start();
     },
     componentWillMount: function() {
-      Laboratory.listen("LaboratoryProfileReceived", this.handleResponse);
-      return Laboratory.dispatch("LaboratoryProfileRequested", {
+      this.request = new Laboratory.Profile.Request({
         id: this.props.id
       });
+      this.request.addEventListener("response", this.handleResponse);
+      return this.request.start();
     },
     componentWillUnmount: function() {
-      return Laboratory.forget("LaboratoryProfileReceived", this.handleResponse);
+      this.request.stop();
+      return this.request.removeEventListener("response", this.handleResponse);
     },
     render: function() {
       if (this.state.account == null) {
@@ -761,6 +758,8 @@
         inReplyTo: void 0
       };
     },
+    profileRequest: null,
+    postRequest: null,
     getInitialState: function() {
       return {
         account: null,
@@ -782,34 +781,47 @@
     },
     handleResponse: function(event) {
       var response;
-      response = event.detail;
+      response = event.detail.response;
       switch (false) {
         case !(response instanceof Laboratory.Profile):
           this.setState({
             account: response
           });
           break;
-        case !(response instanceof Laboratory.Post && response.id === this.props.inReplyTo):
+        case !(response instanceof Laboratory.Post):
           this.setState({
             replyStatus: response
           });
       }
     },
     componentWillMount: function() {
-      Laboratory.listen("LaboratoryProfileReceived", this.handleResponse);
-      Laboratory.dispatch("LaboratoryProfileRequested", {
+      this.profileRequest = new Laboratory.Profile.Request({
         id: this.props.myID
       });
+      this.profileRequest.addEventListener("response", this.handleResponse);
+      this.profileRequest.start();
       if (isFinite(this.props.inReplyTo)) {
-        Laboratory.listen("LaboratoryPostReceived", this.handleResponse);
-        return Laboratory.dispatch("LaboratoryPostRequested", {
-          id: this.props.inReplyTo
+        this.postRequest = new Laboratory.Post.Request({
+          id: this.props.inReplyTo,
+          type: Laboratory.Post.Type.STATUS
         });
+        this.postRequest.addEventListener("response", this.handleResponse);
+        return this.postRequest.start();
       }
     },
     componentWillUnmount: function() {
-      Laboratory.forget("LaboratoryProfileReceived", this.handleResponse);
-      return Laboratory.forget("LaboratoryPostReceived", this.handleResponse);
+      var j, len, ref1, request, results;
+      ref1 = [this.profileRequest, this.postRequest];
+      results = [];
+      for (j = 0, len = ref1.length; j < len; j++) {
+        request = ref1[j];
+        if (!(request)) {
+          continue;
+        }
+        request.stop();
+        results.push(request.removeEventListener("response", this.handleResponse));
+      }
+      return results;
     },
     input: {
       textbox: null,
@@ -826,11 +838,20 @@
           shouldClose: false
         });
       }
-      if ((isFinite(nextProps.inReplyTo)) && nextProps.inReplyTo !== this.props.inReplyTo) {
-        Laboratory.listen("LaboratoryPostReceived", this.handleResponse);
-        Laboratory.dispatch("LaboratoryPostRequested", {
-          id: nextProps.inReplyTo
-        });
+      if (nextProps.inReplyTo !== this.props.inReplyTo) {
+        if (this.postRequest != null) {
+          this.postRequest.stop();
+          this.postRequest.removeEventListener("response", this.handleResponse);
+          this.postRequest = void 0;
+        }
+        if (isFinite(nextProps.inReplyTo)) {
+          this.postRequest = new Laboratory.Post.Request({
+            id: nextProps.inReplyTo,
+            type: Laboratory.Post.Type.STATUS
+          });
+          this.postRequest.addEventListener("response", this.handleResponse);
+          this.postRequest.start();
+        }
       }
       if (nextProps.text !== this.props.text) {
         this.setState({
@@ -892,14 +913,22 @@
           break;
         case "click":
           if (event.target === this.input.post && this.getCharsLeft() >= 0) {
-            Laboratory.dispatch("LaboratoryPostComposed", {
+            (new Laboratory.Post.Create({
               text: this.state.text,
               message: this.state.useMessage ? this.state.message : null,
-              makePublic: this.state.makePublic,
-              makeListed: this.state.makeListed,
+              visibility: (function() {
+                switch (false) {
+                  case !this.state.makeListed:
+                    return Laboratory.Post.Visibility.PUBLIC;
+                  case !this.state.makePublic:
+                    return Laboratory.Post.Visibility.UNLISTED;
+                  default:
+                    return Laboratory.Post.Visibility.IN_HOME;
+                }
+              }).call(this),
               makeNSFW: this.state.makeNSFW,
               inReplyTo: this.state.inReplyTo
-            });
+            })).start();
             return this.setState({
               replyStatus: null,
               text: "\n",
@@ -1262,7 +1291,7 @@
         nde = wkr.currentNode;
         if (nde.nodeType === Node.TEXT_NODE) {
           out += nde.textContent;
-        } else if (nde.nodeType === Node.ELEMENT_NODE && nde.tagName.toUpperCase()() === "BR") {
+        } else if (nde.nodeType === Node.ELEMENT_NODE && nde.tagName.toUpperCase() === "BR") {
           out += "\n";
         }
       }
@@ -1518,13 +1547,12 @@
           value: this.input.value
         });
       } else if (event.type === "keypress" && event.target === this.input && (event.key === "Enter" || event.code === "Enter" || event.keyCode === 0x0D) && this.input.value.length && this.input.validity.valid) {
-        window.open("about:blank", "LaboratoryOAuth");
-        Laboratory.dispatch("LaboratoryAuthorizationRequested", {
+        (new Laboratory.Authorization.Request({
           name: this.props.title,
-          url: "https://" + this.input.value,
+          origin: "https://" + this.input.value,
           redirect: this.props.basename,
           scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
-        });
+        })).start(window.open("about:blank", "LaboratoryOAuth"));
         this.setState({
           value: ""
         });
@@ -1996,11 +2024,11 @@
         }
       })();
       if (config.accessToken) {
-        Laboratory.dispatch("LaboratoryAuthorizationGranted", {
+        (new Laboratory.Authorization.Requested({
           accessToken: config.accessToken,
           origin: config.origin,
           scope: Authorization.Scope.READWRITEFOLLOW
-        });
+        })).start();
       } else {
         ReactDOM.render(彁(Shared.InstanceQuery, {
           title: config.title,
@@ -2018,15 +2046,15 @@
           basename: config.basename,
           defaultPrivacy: config.defaultPrivacy
         }), config.root);
-        return Laboratory.forget("LaboratoryAuthorizationReceived", callback);
+        return document.removeEventListener("LaboratoryAuthorizationReceived", callback);
       };
-      Laboratory.listen("LaboratoryAuthorizationReceived", callback);
-      return Laboratory.forget("LaboratoryInitializationReady", callback);
+      document.addEventListener("LaboratoryAuthorizationReceived", callback);
+      return document.removeEventListener("LaboratoryInitializationReady", run);
     };
     if (typeof Laboratory !== "undefined" && Laboratory !== null ? Laboratory.ready : void 0) {
       return run();
     } else {
-      return Laboratory.listen("LaboratoryInitializationReady", run);
+      return document.addEventListener("LaboratoryInitializationReady", run);
     }
   });
 

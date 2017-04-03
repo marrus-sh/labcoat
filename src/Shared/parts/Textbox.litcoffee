@@ -84,7 +84,7 @@ So, this is a `<br>`-aware `Element.textContent`.
             while (do wkr.nextNode)?
                 nde = wkr.currentNode
                 if nde.nodeType is Node.TEXT_NODE then out += nde.textContent
-                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase() is "BR" then out += "\n"
+                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase is "BR" then out += "\n"
             out += "\n" if out.length and (out.slice -1) isnt "\n"
             return out
 

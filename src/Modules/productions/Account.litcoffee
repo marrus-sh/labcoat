@@ -28,14 +28,14 @@ Our Account only has one property, a number specifying the `id` of the timeline.
 
         getInitialState: ->
             account: null
+            
+        request: null
 
 ###  Handling the event callback:
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (event) ->
-            account = event.detail
-            @setState {account} if account.id is @props.id
+        handleResponse: (event) -> @setState {account: event.detail.response}
 
 ###  Property change:
 
@@ -44,22 +44,28 @@ Essentially we remove our old request and send a new one.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.id isnt nextProps.id
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: nextProps.id}
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
+            @request = new Laboratory.Profile.Request {id: nextProps.id}
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Loading:
 
 When our account first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.id}
+            @request = new Laboratory.Profile.Request {id: @props.id}
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Unloading:
 
 When our account unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
 
 ###  Rendering:
 

@@ -25,14 +25,13 @@ Our Timeline only has one property, a string specifying the `name` of the timeli
         getInitialState: ->
             timeline: null
 
+        request: null
+
 ###  Handling the event callback:
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (event) ->
-            params = do @getParams
-            timeline = event.detail
-            @setState {timeline} if timeline.type is params.type and timeline.query is params.query
+        handleResponse: (event) -> @setState {timeline: event.detail.response}
 
 ###  Getting the timeline parameters:
 
@@ -42,40 +41,48 @@ The timeline parameters can be derived from `name` using the following function:
             when name is "home"
                 type: Laboratory.Timeline.Type.HOME
                 query: ""
+                isLocal: no
             when name is "community"
-                type: Laboratory.Timeline.Type.LOCAL
+                type: Laboratory.Timeline.Type.PUBLIC
                 query: ""
+                isLocal: yes
             when name is "global"
-                type: Laboratory.Timeline.Type.GLOBAL
+                type: Laboratory.Timeline.Type.PUBLIC
                 query: ""
+                isLocal: no
             when (name.substr 0, 8) is "hashtag/"
                 type: Laboratory.Timeline.Type.HASHTAG
                 query: name.substr 8
+                isLocal: no
             when (name.substr 0, 5) is "user/"
-                type: Laboratory.Timeline.Type.USER
+                type: Laboratory.Timeline.Type.ACCOUNT
                 query: name.substr 5
+                isLocal: no
             when name is "notifications"
                 type: Laboratory.Timeline.Type.NOTIFICATIONS
                 query: ""
+                isLocal: no
             when name is "highlights"
                 type: Laboratory.Timeline.Type.FAVOURITES
                 query: ""
+                isLocal: no
             else
                 type: Laboratory.Timeline.Type.UNDEFINED
                 query: ""
+                isLocal: no
 
 ###  Getting the heading icon:
 
 The heading icon can be derived from `name` using the following function:
 
-        getIcon: -> switch (do @getParams).type
-            when Laboratory.Timeline.Type.HOME then "icon.home"
-            when Laboratory.Timeline.Type.LOCAL then "icon.community"
-            when Laboratory.Timeline.Type.GLOBAL then "icon.global"
-            when Laboratory.Timeline.Type.HASHTAG is "hashtag/" then "icon.hashtag"
-            when Laboratory.Timeline.Type.USER is "user/" then "icon.user"
-            when Laboratory.Timeline.Type.NOTIFICATIONS then "icon.notifications"
-            when Laboratory.Timeline.Type.FAVOURITES then "icon.favourite"
+        getIcon: -> switch name
+            when "home" then "icon.home"
+            when "community" then "icon.community"
+            when "global" then "icon.global"
+            when (name.substr 0, 8) is "hashtag/" then "icon.hashtag"
+            when (name.substr 0, 5) is "user/" then "icon.user"
+            when "notifications" then "icon.notifications"
+            when "highlights" then "icon.favourite"
             else "icon.mystery"
 
 ###  Property change:
@@ -84,22 +91,28 @@ If our `name` property changes then we need to request the new data.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.name isnt nextProps.name
-            Laboratory.dispatch "LaboratoryTimelineRequested", @getParams nextProps.name
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
+            @request = new Laboratory.Timeline.Request @getParams nextProps.name
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Loading:
 
 When our timeline first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryTimelineReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryTimelineRequested", do @getParams
+            @request = new Laboratory.Timeline.Request do @getParams
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Unloading:
 
 When our timeline unloads, we should forget our listener.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryTimelineReceived", @handleResponse
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
 
 ###  Rendering:
 

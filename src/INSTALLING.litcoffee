@@ -294,10 +294,12 @@ The second is the frontend itself.
 If we're running in single-user mode, we need to give Laboratory our authorization information.
 Basically, we just spoof a server response.
 
-            if config.accessToken then Laboratory.dispatch "LaboratoryAuthorizationGranted",
-                accessToken: config.accessToken
-                origin: config.origin
-                scope: Authorization.Scope.READWRITEFOLLOW
+            if config.accessToken then do (
+                new Laboratory.Authorization.Requested
+                    accessToken: config.accessToken
+                    origin: config.origin
+                    scope: Authorization.Scope.READWRITEFOLLOW
+            ).start
 
 Otherwise, we can go ahead and load our instance query now.
 
@@ -323,13 +325,13 @@ Our callback for this event will load our *actual* frontend into our react root.
                         basename: config.basename
                         defaultPrivacy: config.defaultPrivacy
                 ), config.root
-                Laboratory.forget "LaboratoryAuthorizationReceived", callback
+                document.removeEventListener "LaboratoryAuthorizationReceived", callback
 
-            Laboratory.listen "LaboratoryAuthorizationReceived", callback
-            Laboratory.forget "LaboratoryInitializationReady", callback
+            document.addEventListener "LaboratoryAuthorizationReceived", callback
+            document.removeEventListener "LaboratoryInitializationReady", run
 
 ###  Running asynchronously:
 
 We need to wait for Laboratory before we can load our frontend.
 
-        if Laboratory?.ready then do run else Laboratory.listen "LaboratoryInitializationReady", run
+        if Laboratory?.ready then do run else document.addEventListener "LaboratoryInitializationReady", run

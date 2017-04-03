@@ -4,6 +4,13 @@
 
 ###  0.2:
 
+####  0.2.1 – “Tudor”.
+
+#####  CHANGED
+
+* Now utilizes Laboratory 0.4
+* Bugfixes
+
 ####  0.2.0 – “Wonder”.
 
 #####  NEW

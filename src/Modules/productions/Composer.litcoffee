@@ -46,6 +46,9 @@ The `Composer` class creates our post composition module, which is a surprisingl
             text: ""
             inReplyTo: undefined
 
+        profileRequest: null
+        postRequest: null
+
 ###  Our state:
 
 Here you can see our initial state variables—we have quite a lot of them, as this component manages the extensive compose form.
@@ -77,10 +80,10 @@ We will also need `intl` from the React context in order to access the composer 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
         handleResponse: (event) ->
-            response = event.detail
+            response = event.detail.response
             switch
                 when response instanceof Laboratory.Profile then @setState {account: response}
-                when response instanceof Laboratory.Post and response.id is @props.inReplyTo then @setState {replyStatus: response}
+                when response instanceof Laboratory.Post then @setState {replyStatus: response}
             return
 
 ###  Loading:
@@ -89,19 +92,24 @@ When our compose module first loads, we should request the account data for the 
 We'll also request the status the post is replying to, if applicable.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.myID}
+            @profileRequest = new Laboratory.Profile.Request {id: @props.myID}
+            @profileRequest.addEventListener "response", @handleResponse
+            do @profileRequest.start
             if isFinite @props.inReplyTo
-                Laboratory.listen "LaboratoryPostReceived", @handleResponse
-                Laboratory.dispatch "LaboratoryPostRequested", {id: @props.inReplyTo}
+                @postRequest = new Laboratory.Post.Request
+                    id: @props.inReplyTo
+                    type: Laboratory.Post.Type.STATUS
+                @postRequest.addEventListener "response", @handleResponse
+                do @postRequest.start
 
 ###  Unloading:
 
 When our compose module unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
-            Laboratory.forget "LaboratoryPostReceived", @handleResponse
+            for request in [@profileRequest, @postRequest] when request
+                do request.stop
+                request.removeEventListener "response", @handleResponse
 
 ###  Our inputs:
 
@@ -128,9 +136,17 @@ If our `visible` property switches from `false` to `true` then we reset `shouldC
 
 If our props are about to change so we are replying to a different status, we need to request it.
 
-            if (isFinite nextProps.inReplyTo) and nextProps.inReplyTo isnt @props.inReplyTo
-                Laboratory.listen "LaboratoryPostReceived", @handleResponse
-                Laboratory.dispatch "LaboratoryPostRequested", {id: nextProps.inReplyTo}
+            if nextProps.inReplyTo isnt @props.inReplyTo
+                if @postRequest?
+                    do @postRequest.stop
+                    @postRequest.removeEventListener "response", @handleResponse
+                    @postRequest = undefined
+                if isFinite nextProps.inReplyTo
+                    @postRequest = new Laboratory.Post.Request
+                        id: nextProps.inReplyTo
+                        type: Laboratory.Post.Type.STATUS
+                    @postRequest.addEventListener "response", @handleResponse
+                    do @postRequest.start
 
 If our props update, we should update the store to reflect the new data.
 
@@ -187,13 +203,17 @@ Public/private and listed/unlisted settings are maintained for the next post.
 
                 when "click"
                     if event.target is @input.post and do @getCharsLeft >= 0
-                        Laboratory.dispatch "LaboratoryPostComposed",
-                            text: @state.text
-                            message: if @state.useMessage then @state.message else null
-                            makePublic: @state.makePublic
-                            makeListed: @state.makeListed
-                            makeNSFW: @state.makeNSFW
-                            inReplyTo: @state.inReplyTo
+                        do (
+                            new Laboratory.Post.Create
+                                text: @state.text
+                                message: if @state.useMessage then @state.message else null
+                                visibility: switch
+                                    when @state.makeListed then Laboratory.Post.Visibility.PUBLIC
+                                    when @state.makePublic then Laboratory.Post.Visibility.UNLISTED
+                                    else Laboratory.Post.Visibility.IN_HOME
+                                makeNSFW: @state.makeNSFW
+                                inReplyTo: @state.inReplyTo
+                        ).start
                         @setState
                             replyStatus: null
                             text: "\n"

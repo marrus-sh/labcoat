@@ -39,12 +39,13 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
         handleEvent: (event) ->
             if event.type is "change" and event.target is @input then @setState {value: @input.value}
             else if event.type is "keypress" and event.target is @input and (event.key is "Enter" or event.code is "Enter" or event.keyCode is 0x0D) and @input.value.length and @input.validity.valid
-                window.open "about:blank", "LaboratoryOAuth"
-                Laboratory.dispatch "LaboratoryAuthorizationRequested",
-                    name: @props.title
-                    url: "https://" + @input.value
-                    redirect: @props.basename
-                    scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
+                (
+                    new Laboratory.Authorization.Request
+                        name: @props.title
+                        origin: "https://" + @input.value
+                        redirect: @props.basename
+                        scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
+                ).start window.open "about:blank", "LaboratoryOAuth"
                 @setState {value: ""}
             return
 

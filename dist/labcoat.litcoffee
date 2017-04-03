@@ -446,9 +446,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.unfavourite"
                                         defaultMessage: "Unhighlight"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
-                                        id: @props.id
-                                        value: off
+                                    action: (
+                                        new Laboratory.Post.SetFavourite
+                                            id: @props.id
+                                            value: off
+                                    ).start
                             else
                                 彁 Shared.Action,
                                     active: no
@@ -457,9 +459,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.favourite"
                                         defaultMessage: "Highlight"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetFavourite",
-                                        id: @props.id
-                                        value: on
+                                    action: (
+                                        new Laboratory.Post.SetFavourite
+                                            id: @props.id
+                                            value: on
+                                    ).start
                             if @props.isReblogged
                                 彁 Shared.Action,
                                     active: yes
@@ -468,9 +472,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.unreblog"
                                         defaultMessage: "Unboost"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
-                                        id: @props.id
-                                        value: off
+                                    action: (
+                                        new Laboratory.Post.SetBoost
+                                            id: @props.id
+                                            value: off
+                                    ).start
                             else if @props.visibility & Laboratory.Post.Visibility.REBLOGGABLE
                                 彁 Shared.Action,
                                     active: no
@@ -479,9 +485,11 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                     label: 彁 ReactIntl.FormattedMessage,
                                         id: "status.reblog"
                                         defaultMessage: "Boost"
-                                    action: => Laboratory.dispatch "LaboratoryPostSetReblog",
-                                        id: @props.id
-                                        value: on
+                                    action: (
+                                        new Laboratory.Post.SetBoost
+                                            id: @props.id
+                                            value: on
+                                    ).start
                             else
                                 彁 Shared.Action,
                                     active: no
@@ -609,14 +617,13 @@ Our Timeline only has one property, a string specifying the `name` of the timeli
         getInitialState: ->
             timeline: null
 
+        request: null
+
 ###  Handling the event callback:
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (event) ->
-            params = do @getParams
-            timeline = event.detail
-            @setState {timeline} if timeline.type is params.type and timeline.query is params.query
+        handleResponse: (event) -> @setState {timeline: event.detail.response}
 
 ###  Getting the timeline parameters:
 
@@ -626,40 +633,48 @@ The timeline parameters can be derived from `name` using the following function:
             when name is "home"
                 type: Laboratory.Timeline.Type.HOME
                 query: ""
+                isLocal: no
             when name is "community"
-                type: Laboratory.Timeline.Type.LOCAL
+                type: Laboratory.Timeline.Type.PUBLIC
                 query: ""
+                isLocal: yes
             when name is "global"
-                type: Laboratory.Timeline.Type.GLOBAL
+                type: Laboratory.Timeline.Type.PUBLIC
                 query: ""
+                isLocal: no
             when (name.substr 0, 8) is "hashtag/"
                 type: Laboratory.Timeline.Type.HASHTAG
                 query: name.substr 8
+                isLocal: no
             when (name.substr 0, 5) is "user/"
-                type: Laboratory.Timeline.Type.USER
+                type: Laboratory.Timeline.Type.ACCOUNT
                 query: name.substr 5
+                isLocal: no
             when name is "notifications"
                 type: Laboratory.Timeline.Type.NOTIFICATIONS
                 query: ""
+                isLocal: no
             when name is "highlights"
                 type: Laboratory.Timeline.Type.FAVOURITES
                 query: ""
+                isLocal: no
             else
                 type: Laboratory.Timeline.Type.UNDEFINED
                 query: ""
+                isLocal: no
 
 ###  Getting the heading icon:
 
 The heading icon can be derived from `name` using the following function:
 
-        getIcon: -> switch (do @getParams).type
-            when Laboratory.Timeline.Type.HOME then "icon.home"
-            when Laboratory.Timeline.Type.LOCAL then "icon.community"
-            when Laboratory.Timeline.Type.GLOBAL then "icon.global"
-            when Laboratory.Timeline.Type.HASHTAG is "hashtag/" then "icon.hashtag"
-            when Laboratory.Timeline.Type.USER is "user/" then "icon.user"
-            when Laboratory.Timeline.Type.NOTIFICATIONS then "icon.notifications"
-            when Laboratory.Timeline.Type.FAVOURITES then "icon.favourite"
+        getIcon: -> switch name
+            when "home" then "icon.home"
+            when "community" then "icon.community"
+            when "global" then "icon.global"
+            when (name.substr 0, 8) is "hashtag/" then "icon.hashtag"
+            when (name.substr 0, 5) is "user/" then "icon.user"
+            when "notifications" then "icon.notifications"
+            when "highlights" then "icon.favourite"
             else "icon.mystery"
 
 ###  Property change:
@@ -668,22 +683,28 @@ If our `name` property changes then we need to request the new data.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.name isnt nextProps.name
-            Laboratory.dispatch "LaboratoryTimelineRequested", @getParams nextProps.name
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
+            @request = new Laboratory.Timeline.Request @getParams nextProps.name
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Loading:
 
 When our timeline first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryTimelineReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryTimelineRequested", do @getParams
+            @request = new Laboratory.Timeline.Request do @getParams
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Unloading:
 
 When our timeline unloads, we should forget our listener.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryTimelineReceived", @handleResponse
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
 
 ###  Rendering:
 
@@ -808,14 +829,14 @@ Our Account only has one property, a number specifying the `id` of the timeline.
 
         getInitialState: ->
             account: null
+            
+        request: null
 
 ###  Handling the event callback:
 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
-        handleResponse: (event) ->
-            account = event.detail
-            @setState {account} if account.id is @props.id
+        handleResponse: (event) -> @setState {account: event.detail.response}
 
 ###  Property change:
 
@@ -824,22 +845,28 @@ Essentially we remove our old request and send a new one.
 
         componentWillReceiveProps: (nextProps) ->
             return unless @props.id isnt nextProps.id
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: nextProps.id}
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
+            @request = new Laboratory.Profile.Request {id: nextProps.id}
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Loading:
 
 When our account first loads, we should request its data.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.id}
+            @request = new Laboratory.Profile.Request {id: @props.id}
+            @request.addEventListener "response", @handleResponse
+            do @request.start
 
 ###  Unloading:
 
 When our account unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
+            do @request.stop
+            @request.removeEventListener "response", @handleResponse
 
 ###  Rendering:
 
@@ -962,6 +989,9 @@ The `Composer` class creates our post composition module, which is a surprisingl
             text: ""
             inReplyTo: undefined
 
+        profileRequest: null
+        postRequest: null
+
 ###  Our state:
 
 Here you can see our initial state variables—we have quite a lot of them, as this component manages the extensive compose form.
@@ -993,10 +1023,10 @@ We will also need `intl` from the React context in order to access the composer 
 When we receive a response from Laboratory, we have to handle it with respect to our state.
 
         handleResponse: (event) ->
-            response = event.detail
+            response = event.detail.response
             switch
                 when response instanceof Laboratory.Profile then @setState {account: response}
-                when response instanceof Laboratory.Post and response.id is @props.inReplyTo then @setState {replyStatus: response}
+                when response instanceof Laboratory.Post then @setState {replyStatus: response}
             return
 
 ###  Loading:
@@ -1005,19 +1035,24 @@ When our compose module first loads, we should request the account data for the 
 We'll also request the status the post is replying to, if applicable.
 
         componentWillMount: ->
-            Laboratory.listen "LaboratoryProfileReceived", @handleResponse
-            Laboratory.dispatch "LaboratoryProfileRequested", {id: @props.myID}
+            @profileRequest = new Laboratory.Profile.Request {id: @props.myID}
+            @profileRequest.addEventListener "response", @handleResponse
+            do @profileRequest.start
             if isFinite @props.inReplyTo
-                Laboratory.listen "LaboratoryPostReceived", @handleResponse
-                Laboratory.dispatch "LaboratoryPostRequested", {id: @props.inReplyTo}
+                @postRequest = new Laboratory.Post.Request
+                    id: @props.inReplyTo
+                    type: Laboratory.Post.Type.STATUS
+                @postRequest.addEventListener "response", @handleResponse
+                do @postRequest.start
 
 ###  Unloading:
 
 When our compose module unloads, we should signal that we no longer need its data.
 
         componentWillUnmount: ->
-            Laboratory.forget "LaboratoryProfileReceived", @handleResponse
-            Laboratory.forget "LaboratoryPostReceived", @handleResponse
+            for request in [@profileRequest, @postRequest] when request
+                do request.stop
+                request.removeEventListener "response", @handleResponse
 
 ###  Our inputs:
 
@@ -1044,9 +1079,17 @@ If our `visible` property switches from `false` to `true` then we reset `shouldC
 
 If our props are about to change so we are replying to a different status, we need to request it.
 
-            if (isFinite nextProps.inReplyTo) and nextProps.inReplyTo isnt @props.inReplyTo
-                Laboratory.listen "LaboratoryPostReceived", @handleResponse
-                Laboratory.dispatch "LaboratoryPostRequested", {id: nextProps.inReplyTo}
+            if nextProps.inReplyTo isnt @props.inReplyTo
+                if @postRequest?
+                    do @postRequest.stop
+                    @postRequest.removeEventListener "response", @handleResponse
+                    @postRequest = undefined
+                if isFinite nextProps.inReplyTo
+                    @postRequest = new Laboratory.Post.Request
+                        id: nextProps.inReplyTo
+                        type: Laboratory.Post.Type.STATUS
+                    @postRequest.addEventListener "response", @handleResponse
+                    do @postRequest.start
 
 If our props update, we should update the store to reflect the new data.
 
@@ -1103,13 +1146,17 @@ Public/private and listed/unlisted settings are maintained for the next post.
 
                 when "click"
                     if event.target is @input.post and do @getCharsLeft >= 0
-                        Laboratory.dispatch "LaboratoryPostComposed",
-                            text: @state.text
-                            message: if @state.useMessage then @state.message else null
-                            makePublic: @state.makePublic
-                            makeListed: @state.makeListed
-                            makeNSFW: @state.makeNSFW
-                            inReplyTo: @state.inReplyTo
+                        do (
+                            new Laboratory.Post.Create
+                                text: @state.text
+                                message: if @state.useMessage then @state.message else null
+                                visibility: switch
+                                    when @state.makeListed then Laboratory.Post.Visibility.PUBLIC
+                                    when @state.makePublic then Laboratory.Post.Visibility.UNLISTED
+                                    else Laboratory.Post.Visibility.IN_HOME
+                                makeNSFW: @state.makeNSFW
+                                inReplyTo: @state.inReplyTo
+                        ).start
                         @setState
                             replyStatus: null
                             text: "\n"
@@ -1512,7 +1559,7 @@ So, this is a `<br>`-aware `Element.textContent`.
             while (do wkr.nextNode)?
                 nde = wkr.currentNode
                 if nde.nodeType is Node.TEXT_NODE then out += nde.textContent
-                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase() is "BR" then out += "\n"
+                else if nde.nodeType is Node.ELEMENT_NODE and do nde.tagName.toUpperCase is "BR" then out += "\n"
             out += "\n" if out.length and (out.slice -1) isnt "\n"
             return out
 
@@ -1772,12 +1819,13 @@ The only tricky bit is that when the user presses the enter key, we dispatch a `
         handleEvent: (event) ->
             if event.type is "change" and event.target is @input then @setState {value: @input.value}
             else if event.type is "keypress" and event.target is @input and (event.key is "Enter" or event.code is "Enter" or event.keyCode is 0x0D) and @input.value.length and @input.validity.valid
-                window.open "about:blank", "LaboratoryOAuth"
-                Laboratory.dispatch "LaboratoryAuthorizationRequested",
-                    name: @props.title
-                    url: "https://" + @input.value
-                    redirect: @props.basename
-                    scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
+                (
+                    new Laboratory.Authorization.Request
+                        name: @props.title
+                        origin: "https://" + @input.value
+                        redirect: @props.basename
+                        scope: Laboratory.Authorization.Scope.READWRITEFOLLOW
+                ).start window.open "about:blank", "LaboratoryOAuth"
                 @setState {value: ""}
             return
 
@@ -2537,10 +2585,12 @@ The second is the frontend itself.
 If we're running in single-user mode, we need to give Laboratory our authorization information.
 Basically, we just spoof a server response.
 
-            if config.accessToken then Laboratory.dispatch "LaboratoryAuthorizationGranted",
-                accessToken: config.accessToken
-                origin: config.origin
-                scope: Authorization.Scope.READWRITEFOLLOW
+            if config.accessToken then do (
+                new Laboratory.Authorization.Requested
+                    accessToken: config.accessToken
+                    origin: config.origin
+                    scope: Authorization.Scope.READWRITEFOLLOW
+            ).start
 
 Otherwise, we can go ahead and load our instance query now.
 
@@ -2566,13 +2616,13 @@ Our callback for this event will load our *actual* frontend into our react root.
                         basename: config.basename
                         defaultPrivacy: config.defaultPrivacy
                 ), config.root
-                Laboratory.forget "LaboratoryAuthorizationReceived", callback
+                document.removeEventListener "LaboratoryAuthorizationReceived", callback
 
-            Laboratory.listen "LaboratoryAuthorizationReceived", callback
-            Laboratory.forget "LaboratoryInitializationReady", callback
+            document.addEventListener "LaboratoryAuthorizationReceived", callback
+            document.removeEventListener "LaboratoryInitializationReady", run
 
 ###  Running asynchronously:
 
 We need to wait for Laboratory before we can load our frontend.
 
-        if Laboratory?.ready then do run else Laboratory.listen "LaboratoryInitializationReady", run
+        if Laboratory?.ready then do run else document.addEventListener "LaboratoryInitializationReady", run
