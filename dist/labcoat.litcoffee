@@ -62,7 +62,7 @@ This is the first file in our compiled source, so let's identify ourselves real 
                Source code available at:
           https://github.com/marrus-sh/labcoat
 
-                    Version 0.2.0
+                    Version 0.2.2
 
     ###
 
@@ -473,7 +473,7 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                         id: "status.unreblog"
                                         defaultMessage: "Unboost"
                                     action: (
-                                        new Laboratory.Post.SetBoost
+                                        new Laboratory.Post.SetReblog
                                             id: @props.id
                                             value: off
                                     ).start
@@ -486,7 +486,7 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                         id: "status.reblog"
                                         defaultMessage: "Boost"
                                     action: (
-                                        new Laboratory.Post.SetBoost
+                                        new Laboratory.Post.SetReblog
                                             id: @props.id
                                             value: on
                                     ).start
@@ -2487,7 +2487,7 @@ Labcoat thus assures that minor and patch numbers will never exceed `99` (indeed
     Object.defineProperty window, "Labcoat",
         value : Object.freeze
             "ℹ"  : "https://github.com/marrus-sh/labcoat"
-            "Nº" : 2.0
+            "Nº" : 2.2
         enumerable : yes
 
 ###  Handling locale data:

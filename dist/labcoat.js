@@ -12,7 +12,7 @@
            Source code available at:
       https://github.com/marrus-sh/labcoat
 
-                Version 0.2.0
+                Version 0.2.2
  */
 
 (function() {
@@ -332,7 +332,7 @@
             id: "status.unreblog",
             defaultMessage: "Unboost"
           }),
-          action: (new Laboratory.Post.SetBoost({
+          action: (new Laboratory.Post.SetReblog({
             id: this.props.id,
             value: false
           })).start
@@ -344,7 +344,7 @@
             id: "status.reblog",
             defaultMessage: "Boost"
           }),
-          action: (new Laboratory.Post.SetBoost({
+          action: (new Laboratory.Post.SetReblog({
             id: this.props.id,
             value: true
           })).start
@@ -1943,7 +1943,7 @@
   Object.defineProperty(window, "Labcoat", {
     value: Object.freeze({
       "ℹ": "https://github.com/marrus-sh/labcoat",
-      "Nº": 2.0
+      "Nº": 2.2
     }),
     enumerable: true
   });
