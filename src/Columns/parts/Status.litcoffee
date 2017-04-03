@@ -297,7 +297,7 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                         id: "status.unreblog"
                                         defaultMessage: "Unboost"
                                     action: (
-                                        new Laboratory.Post.SetBoost
+                                        new Laboratory.Post.SetReblog
                                             id: @props.id
                                             value: off
                                     ).start
@@ -310,7 +310,7 @@ We follow the Chicago convention of using "et al." if there are more than three 
                                         id: "status.reblog"
                                         defaultMessage: "Boost"
                                     action: (
-                                        new Laboratory.Post.SetBoost
+                                        new Laboratory.Post.SetReblog
                                             id: @props.id
                                             value: on
                                     ).start

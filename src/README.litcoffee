@@ -62,7 +62,7 @@ This is the first file in our compiled source, so let's identify ourselves real 
                Source code available at:
           https://github.com/marrus-sh/labcoat
 
-                    Version 0.2.0
+                    Version 0.2.2
 
     ###
 

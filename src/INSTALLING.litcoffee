@@ -196,7 +196,7 @@ Labcoat thus assures that minor and patch numbers will never exceed `99` (indeed
     Object.defineProperty window, "Labcoat",
         value : Object.freeze
             "ℹ"  : "https://github.com/marrus-sh/labcoat"
-            "Nº" : 2.0
+            "Nº" : 2.2
         enumerable : yes
 
 ###  Handling locale data:

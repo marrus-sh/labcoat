@@ -4,6 +4,12 @@
 
 ###  0.2:
 
+####  0.2.2 — “Theatre”.
+
+#####  CHANGED
+
+* Fixed breaking typo in 0.2.1
+
 ####  0.2.1 – “Tudor”.
 
 #####  CHANGED
